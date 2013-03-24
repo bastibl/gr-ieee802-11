@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<block>
+	<name>OFDM Equalize Symbols</name>
+	<key>ieee802_1_ofdm_equalize_symbols</key>
+	<category>IEEE802.11</category>
+	<import>import gnuradio.ieee802_11 as gr_ieee802_11</import>
+	<make>gr_ieee802_11.ofdm_equalize_symbols($debug)</make>
+
+	<param>
+		<name>Debug</name>
+		<key>debug</key>
+		<value>False</value>
+		<type>bool</type>
+
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
+
+	<sink>
+		<name>in</name>
+		<type>complex</type>
+                <vlen>64</vlen>
+		<nports>1</nports>
+	</sink>
+
+	<source>
+		<name>out</name>
+		<type>complex</type>
+		<vlen>48</vlen>
+		<nports>1</nports>
+	</source>
+
+</block>
+
