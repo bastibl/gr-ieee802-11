@@ -87,7 +87,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 	int o = 0;
 
 	switch(d_state) {
-	
+
 	case SYNC:
 		d_fir->filterN(d_correlation, in, std::min(SYNC_LENGTH, std::max(ninput - 63, 0)));
 
@@ -150,10 +150,11 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 				d_freq_est = gr_complex(0, 0);
 				d_state = SYNC;
 				break;
+			} else if(rel > 15) {
+				out[o] = 0;
+				o++;
 			}
 			d_offset++;
-			out[o] = 0;
-			o++;
 		}
 
 		break;
