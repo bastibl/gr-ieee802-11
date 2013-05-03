@@ -195,11 +195,6 @@ bool print_signal() {
 		return false;
 	}
 
-
-	if(d_copy_symbols > 57) {
-		d_copy_symbols = 0;
-	}
-	
 	dout << "d_copy_symbols: " << d_copy_symbols << std::endl;
 	dout << "length: " << d_len << std::endl;
 	return true;
