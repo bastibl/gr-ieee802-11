@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <gnuradio/ieee802_11/ofdm_sync_long.h>
-#include <gnuradio/gr_io_signature.h>
-#include <filter/fir_filter.h>
-#include <fft/fft.h>
+#include <gnuradio/io_signature.h>
+#include <gnuradio/filter/fir_filter.h>
+#include <gnuradio/fft/fft.h>
 
 #include <list>
 #include <tuple>
@@ -31,9 +31,9 @@ class ofdm_sync_long_impl : public ofdm_sync_long {
 #define dout d_debug && std::cout
 
 public:
-ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug) : gr_block("ofdm_sync_long",
-		gr_make_io_signature2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
-		gr_make_io_signature(1, 1, sizeof(gr_complex))),
+ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug) : gr::block("ofdm_sync_long",
+		gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
+		gr::io_signature::make(1, 1, sizeof(gr_complex))),
 		d_debug(debug),
 		d_offset(0),
 		d_freq_est(0),
@@ -41,7 +41,7 @@ ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug)
 		SYNC_LENGTH(sync_lenght),
 		FREQ_EST(freq_est) {
 
-	set_tag_propagation_policy(gr_block::TPP_DONT);
+	set_tag_propagation_policy(gr::block::TPP_DONT);
 	d_fir = new gr::filter::kernel::fir_filter_ccc(1, LONG);
 	d_correlation = gr::fft::malloc_complex(8192);
 }
@@ -68,9 +68,9 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 	const unsigned int nread = nitems_read(0);
 	get_tags_in_range(d_tags, 0, nread, nread + ninput);
 	if (d_tags.size()) {
-		std::sort(d_tags.begin(), d_tags.end(), gr_tag_t::offset_compare);
+		std::sort(d_tags.begin(), d_tags.end(), gr::tag_t::offset_compare);
 
-		const gr_tag_t &tag = d_tags.front();
+		const gr::tag_t &tag = d_tags.front();
 		const uint64_t offset = tag.offset;
 
 		if(offset > nread) {
@@ -125,9 +125,9 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 				if(rel == 16) {
 					assert(o == 0);
 					add_item_tag(0, nitems_written(0) + o,
-						pmt::pmt_string_to_symbol("ofdm_start"),
+						pmt::string_to_symbol("ofdm_start"),
 						pmt::PMT_T,
-						pmt::pmt_string_to_symbol(name()));
+						pmt::string_to_symbol(name()));
 				}
 
 				out[o] = in_delayed[i] * exp(gr_complex(0, d_offset * arg(d_freq_est) / 16));
@@ -223,7 +223,7 @@ private:
 	gr_complex  d_freq_est;
 	gr_complex *d_correlation;
 	std::list<std::tuple<double, int>> d_cor;
-	std::vector<gr_tag_t> d_tags;
+	std::vector<gr::tag_t> d_tags;
 	gr::filter::kernel::fir_filter_ccc *d_fir;
 
 	const bool d_debug;

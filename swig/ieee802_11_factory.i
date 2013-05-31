@@ -17,7 +17,7 @@
 %define GR_IEEE802_11_BLOCK_MAGIC2(PKG, BASE_NAME)
 %template(BASE_NAME ## _sptr) boost::shared_ptr<gr:: ## PKG ## :: ## BASE_NAME>;
 %pythoncode %{
-	BASE_NAME ## _sptr.__repr__ = lambda self: "<gr_block %s (%d)>" % (self.name(), self.unique_id())
+	BASE_NAME ## _sptr.__repr__ = lambda self: "<gr::block %s (%d)>" % (self.name(), self.unique_id())
 	BASE_NAME = BASE_NAME.make;
 %}
 %enddef

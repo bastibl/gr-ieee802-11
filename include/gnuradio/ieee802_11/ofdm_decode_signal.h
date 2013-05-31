@@ -18,12 +18,12 @@
 #define INCLUDED_GR_IEEE802_11_OFDM_DECODE_SIGNAL_H
 
 #include <gnuradio/ieee802_11/api.h>
-#include <gnuradio/gr_block.h>
+#include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class GR_IEEE802_11_API ofdm_decode_signal : virtual public gr_block
+class GR_IEEE802_11_API ofdm_decode_signal : virtual public gr::block
 {
 public:
 
