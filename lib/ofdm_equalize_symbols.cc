@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <gnuradio/ieee802_11/ofdm_equalize_symbols.h>
-#include <gnuradio/gr_io_signature.h>
+#include <gnuradio/io_signature.h>
 
 #include <iostream>
 
@@ -27,9 +27,9 @@ class ofdm_equalize_symbols_impl : public ofdm_equalize_symbols {
 #define dout d_debug && std::cout
 
 public:
-ofdm_equalize_symbols_impl(bool debug) : gr_block("ofdm_equalize_symbols",
-			gr_make_io_signature(1, 1, 64 * sizeof(gr_complex)),
-			gr_make_io_signature(1, 1, 48 * sizeof(gr_complex))),
+ofdm_equalize_symbols_impl(bool debug) : gr::block("ofdm_equalize_symbols",
+			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
+			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_debug(debug) {
 
 	set_relative_rate(1);
@@ -48,7 +48,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	int noutput = noutput_items;
 	int i = 0;
 
-	std::vector<gr_tag_t> tags;
+	std::vector<gr::tag_t> tags;
 	const uint64_t nread = nitems_read(0);
 
 	dout << "SYMBOLS: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
@@ -56,7 +56,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	while((i < ninput_items[0]) && (i < noutput)) {
 
 		get_tags_in_range(tags, 0, nread + i * 64, nread + (i + 1) * 64 - 1,
-			pmt::pmt_string_to_symbol("ofdm_start"));
+			pmt::string_to_symbol("ofdm_start"));
 
 		if(tags.size()) {
 			index = 0;
