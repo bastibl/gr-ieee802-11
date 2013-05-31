@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='ASCII'?>
 <flow_graph>
-  <timestamp>Fri May  3 14:41:28 2013</timestamp>
+  <timestamp>Fri May 31 10:55:49 2013</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -779,7 +779,7 @@
     </param>
   </block>
   <block>
-    <key>gr_skiphead</key>
+    <key>blocks_skiphead</key>
     <param>
       <key>id</key>
       <value>gr_skiphead_0</value>
@@ -841,7 +841,7 @@
     </param>
   </block>
   <block>
-    <key>gr_multiply_xx</key>
+    <key>blocks_multiply_xx</key>
     <param>
       <key>id</key>
       <value>gr_multiply_xx_0</value>
@@ -872,7 +872,7 @@
     </param>
   </block>
   <block>
-    <key>gr_complex_to_mag</key>
+    <key>blocks_complex_to_mag</key>
     <param>
       <key>id</key>
       <value>gr_complex_to_mag_0</value>
@@ -895,7 +895,7 @@
     </param>
   </block>
   <block>
-    <key>gr_file_sink</key>
+    <key>blocks_file_sink</key>
     <param>
       <key>id</key>
       <value>gr_file_sink_0_1_0</value>
@@ -930,7 +930,7 @@
     </param>
   </block>
   <block>
-    <key>gr_vector_to_stream</key>
+    <key>blocks_vector_to_stream</key>
     <param>
       <key>id</key>
       <value>gr_vector_to_stream_0_0</value>
@@ -961,7 +961,7 @@
     </param>
   </block>
   <block>
-    <key>gr_file_sink</key>
+    <key>blocks_file_sink</key>
     <param>
       <key>id</key>
       <value>gr_file_sink_0_1</value>
@@ -996,7 +996,7 @@
     </param>
   </block>
   <block>
-    <key>gr_vector_to_stream</key>
+    <key>blocks_vector_to_stream</key>
     <param>
       <key>id</key>
       <value>gr_vector_to_stream_0</value>
@@ -1070,7 +1070,7 @@
     </param>
   </block>
   <block>
-    <key>gr_file_sink</key>
+    <key>blocks_file_sink</key>
     <param>
       <key>id</key>
       <value>gr_file_sink_0</value>
@@ -1105,7 +1105,7 @@
     </param>
   </block>
   <block>
-    <key>gr_complex_to_mag_squared</key>
+    <key>blocks_complex_to_mag_squared</key>
     <param>
       <key>id</key>
       <value>gr_complex_to_mag_squared_0</value>
@@ -1159,7 +1159,7 @@
     </param>
   </block>
   <block>
-    <key>gr_tag_debug</key>
+    <key>blocks_tag_debug</key>
     <param>
       <key>id</key>
       <value>gr_tag_debug_0</value>
@@ -1198,7 +1198,7 @@
     </param>
   </block>
   <block>
-    <key>gr_file_sink</key>
+    <key>blocks_file_sink</key>
     <param>
       <key>id</key>
       <value>gr_file_sink_0_0</value>
@@ -1284,7 +1284,7 @@
     </param>
   </block>
   <block>
-    <key>gr_divide_xx</key>
+    <key>blocks_divide_xx</key>
     <param>
       <key>id</key>
       <value>gr_divide_xx_0</value>
@@ -1315,7 +1315,7 @@
     </param>
   </block>
   <block>
-    <key>gr_stream_to_vector</key>
+    <key>blocks_stream_to_vector</key>
     <param>
       <key>id</key>
       <value>gr_stream_to_vector_0</value>
@@ -1346,7 +1346,7 @@
     </param>
   </block>
   <block>
-    <key>gr_conjugate_cc</key>
+    <key>blocks_conjugate_cc</key>
     <param>
       <key>id</key>
       <value>gr_conjugate_cc_0</value>
@@ -1396,7 +1396,7 @@
     </param>
   </block>
   <block>
-    <key>gr_delay</key>
+    <key>blocks_delay</key>
     <param>
       <key>id</key>
       <value>gr_delay_0_0</value>
@@ -1431,7 +1431,7 @@
     </param>
   </block>
   <block>
-    <key>gr_delay</key>
+    <key>blocks_delay</key>
     <param>
       <key>id</key>
       <value>gr_delay_0</value>
@@ -1563,64 +1563,6 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_parse_mac</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_parse_mac_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1030, 857)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
-    <key>gr_socket_pdu</key>
-    <param>
-      <key>id</key>
-      <value>gr_socket_pdu_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>"UDP_SERVER"</value>
-    </param>
-    <param>
-      <key>host</key>
-      <value></value>
-    </param>
-    <param>
-      <key>port</key>
-      <value>12345</value>
-    </param>
-    <param>
-      <key>mtu</key>
-      <value>10000</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(771, 833)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
     <key>ieee802_1_ofdm_equalize_symbols</key>
     <param>
       <key>id</key>
@@ -1667,29 +1609,6 @@
     </param>
   </block>
   <block>
-    <key>ieee802_1_ofdm_decode_mac</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_1_ofdm_decode_mac_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1069, 729)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>ieee802_1_ofdm_sync_short</key>
     <param>
       <key>id</key>
@@ -1722,6 +1641,87 @@
     <param>
       <key>_rotation</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_1_ofdm_decode_mac</key>
+    <param>
+      <key>id</key>
+      <value>ieee802_1_ofdm_decode_mac_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1069, 729)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_ofdm_parse_mac</key>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_ofdm_parse_mac_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1030, 857)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_socket_pdu</key>
+    <param>
+      <key>id</key>
+      <value>gr_socket_pdu_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>"UDP_SERVER"</value>
+    </param>
+    <param>
+      <key>host</key>
+      <value></value>
+    </param>
+    <param>
+      <key>port</key>
+      <value>12345</value>
+    </param>
+    <param>
+      <key>mtu</key>
+      <value>10000</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(771, 839)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
     </param>
   </block>
   <connection>
@@ -1875,21 +1875,21 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_1_ofdm_decode_mac_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_parse_mac_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_parse_mac_0</source_block_id>
-    <sink_block_id>gr_socket_pdu_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>gr_divide_xx_0</source_block_id>
     <sink_block_id>ieee802_1_ofdm_sync_short_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_1_ofdm_decode_mac_0</source_block_id>
+    <sink_block_id>ieee802_11_ofdm_parse_mac_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_ofdm_parse_mac_0</source_block_id>
+    <sink_block_id>gr_socket_pdu_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
 </flow_graph>

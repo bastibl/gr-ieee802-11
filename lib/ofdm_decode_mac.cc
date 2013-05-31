@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <gnuradio/ieee802_11/ofdm_decode_mac.h>
-#include <gnuradio/gr_io_signature.h>
+#include <gnuradio/io_signature.h>
 #include <itpp/itcomm.h>
 
 #include <iostream>
@@ -173,9 +173,9 @@ class ofdm_decode_mac_impl : public ofdm_decode_mac {
 #define dout d_debug && std::cout
 
 public:
-ofdm_decode_mac_impl(bool debug) : gr_block("ofdm_decode_mac",
-			gr_make_io_signature(1, 1, 48 * sizeof(gr_complex)),
-			gr_make_io_signature(0, 0, 0)),
+ofdm_decode_mac_impl(bool debug) : gr::block("ofdm_decode_mac",
+			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
+			gr::io_signature::make(0, 0, 0)),
 			d_debug(debug),
 			ofdm(BPSK_1_2),
 			tx(ofdm, 0) {
@@ -194,7 +194,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 	int i = 0;
 
-	std::vector<gr_tag_t> tags;
+	std::vector<gr::tag_t> tags;
 	const uint64_t nread = this->nitems_read(0);
 
 	dout << "Decode MAC: input " << ninput_items[0] << std::endl;
@@ -202,12 +202,12 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	while(i < ninput_items[0]) {
 
 		get_tags_in_range(tags, 0, nread + i * 48, nread + (i + 1) * 48 - 1,
-			pmt::pmt_string_to_symbol("ofdm_start"));
+			pmt::string_to_symbol("ofdm_start"));
 
 		if(tags.size()) {
 			pmt::pmt_t tuple = tags[0].value;
-			int len_data = pmt::pmt_to_uint64(pmt::pmt_car(tuple));
-			int encoding = pmt::pmt_to_uint64(pmt::pmt_cdr(tuple));
+			int len_data = pmt::to_uint64(pmt::car(tuple));
+			int encoding = pmt::to_uint64(pmt::cdr(tuple));
 
 			ofdm = ofdm_param((ENCODING)encoding);
 			tx = tx_param(ofdm, len_data);
@@ -251,7 +251,7 @@ void decode() {
 	print_output();
 
 	// skip service field
-	pmt::pmt_t blob = pmt::pmt_make_blob(out_bytes + 2, tx.psdu_size);
+	pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, tx.psdu_size);
 	message_port_pub(pmt::mp("out"), blob);
 }
 

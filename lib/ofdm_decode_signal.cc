@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <gnuradio/ieee802_11/ofdm_decode_signal.h>
-#include <gnuradio/gr_io_signature.h>
+#include <gnuradio/io_signature.h>
 
 #include <iostream>
 #include <itpp/itcomm.h>
@@ -29,15 +29,15 @@ class ofdm_decode_signal_impl : public ofdm_decode_signal {
 #define dout d_debug && std::cout
 
 public:
-ofdm_decode_signal_impl(bool debug) : gr_block("ofdm_decode_signal",
-			gr_make_io_signature(1, 1, 48 * sizeof(gr_complex)),
-			gr_make_io_signature(1, 1, 48 * sizeof(gr_complex))),
+ofdm_decode_signal_impl(bool debug) : gr::block("ofdm_decode_signal",
+			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
+			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_debug(debug),
 			d_copy_symbols(0) {
 
 	decoded_bits.set_size(24);
 	set_relative_rate(1);
-	set_tag_propagation_policy(gr_block::TPP_DONT);
+	set_tag_propagation_policy(gr::block::TPP_DONT);
 }
 
 ~ofdm_decode_signal_impl(){
@@ -53,7 +53,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	int i = 0;
 	int o = 0;
 
-	std::vector<gr_tag_t> tags;
+	std::vector<gr::tag_t> tags;
 	const uint64_t nread = nitems_read(0);
 
 	dout << "Decode Signal: input " << ninput_items[0]
@@ -62,7 +62,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	while((i < ninput_items[0]) && (o < noutput_items)) {
 
 		get_tags_in_range(tags, 0, nread + i * 48, nread + (i + 1) * 48 - 1,
-			pmt::pmt_string_to_symbol("ofdm_start"));
+			pmt::string_to_symbol("ofdm_start"));
 
 		if(tags.size()) {
 			for(int n = 0; n < 48; n++) {
@@ -76,10 +76,10 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			if(print_signal()) {
 
 				add_item_tag(0, nitems_written(0) + o * 48,
-					pmt::pmt_string_to_symbol("ofdm_start"),
-					pmt::pmt_cons(pmt::pmt_from_uint64(d_len),
-						pmt::pmt_from_uint64(d_encoding)),
-					pmt::pmt_string_to_symbol(name()));
+					pmt::string_to_symbol("ofdm_start"),
+					pmt::cons(pmt::from_uint64(d_len),
+						pmt::from_uint64(d_encoding)),
+					pmt::string_to_symbol(name()));
 			}
 
 		} else if(d_copy_symbols) {

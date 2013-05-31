@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <gnuradio/ieee802_11/ofdm_sync_short.h>
-#include <gnuradio/gr_io_signature.h>
+#include <gnuradio/io_signature.h>
 
 #include <iostream>
 
@@ -27,9 +27,9 @@ class ofdm_sync_short_impl : public ofdm_sync_short {
 
 public:
 ofdm_sync_short_impl(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool debug) : gr_block("ofdm_sync_short",
-			gr_make_io_signature2(2, 2, sizeof(gr_complex), sizeof(float)),
-			gr_make_io_signature(1, 1, sizeof(gr_complex))),
+		unsigned int min_plateau, bool debug) : gr::block("ofdm_sync_short",
+			gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(float)),
+			gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			d_debug(debug),
 			d_state(SEARCH),
 			d_plateau(0),
@@ -37,7 +37,7 @@ ofdm_sync_short_impl(double threshold, unsigned int max_samples,
 			MIN_PLATEAU(min_plateau),
 			d_threshold(threshold) {
 
-	set_tag_propagation_policy(gr_block::TPP_DONT);
+	set_tag_propagation_policy(gr::block::TPP_DONT);
 }
 
 ~ofdm_sync_short_impl(){
@@ -110,9 +110,9 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 void insert_tag(uint64_t item) {
 	dout << "SYNC SHORT: insert ofdm_start at: " << item << std::endl;
 
-	const pmt::pmt_t key = pmt::pmt_string_to_symbol("ofdm_start");
+	const pmt::pmt_t key = pmt::string_to_symbol("ofdm_start");
 	const pmt::pmt_t value = pmt::PMT_T;
-	const pmt::pmt_t srcid = pmt::pmt_string_to_symbol(name());
+	const pmt::pmt_t srcid = pmt::string_to_symbol(name());
 	add_item_tag(0, item, key, value, srcid);
 }
 
