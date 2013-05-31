@@ -17,7 +17,7 @@
 #ifndef INCLUDED_GR_IEEE802_11_API_H
 #define INCLUDED_GR_IEEE802_11_API_H
 
-#include <gruel/attributes.h>
+#include <gnuradio/attributes.h>
 
 #ifdef gnuradio_ieee802_11_EXPORTS
 #  define GR_IEEE802_11_API __GR_ATTR_EXPORT
