@@ -1,9 +1,11 @@
-Hi!
+Hi,
+
+this code is already ported to GNU Radio v3.7. This version of GNU Radio is not backwards compatible. So checkout the current master branch.
 
 DEPENDENCIES
 ============
 IT++ (Version: 4.2-4)
-GNU Radio (with UHD)
+GNU Radio (v3.7 with UHD support)
 
 INSTALLATION
 ============
@@ -15,10 +17,16 @@ cd build
 cmake ..
 make
 sudo make install
+sudo ldconfig
 
 USAGE
 ===========
 Open examples/rx.grc.
+
+CONTRIBUTORS
+============
+Bastian Bloessl
+Tim O'Shea (port to GNU Radio v3.7)
 
 FURTHER INFORMATION
 ===================
