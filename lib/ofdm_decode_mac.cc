@@ -228,6 +228,8 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			if(copied == tx.n_sym) {
 				dout << "received complete frame - decoding" << std::endl;
 				decode();
+				in += 48;
+				i++;
 				break;
 			}
 		}
