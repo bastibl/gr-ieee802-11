@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <block>
-        <name>OFDM Sync Long</name>
-	<key>ieee802_1_ofdm_sync_long</key>
+	<name>OFDM Sync Long</name>
+	<key>ieee802_11_ofdm_sync_long</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.ofdm_sync_long($sync_length, $freq_est, $debug)</make>

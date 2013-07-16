@@ -2,7 +2,7 @@
 
 <block>
 	<name>OFDM Decode Signal</name>
-	<key>ieee802_1_ofdm_decode_signal</key>
+	<key>ieee802_11_ofdm_decode_signal</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.ofdm_decode_signal($debug)</make>

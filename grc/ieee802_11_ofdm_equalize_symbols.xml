@@ -2,7 +2,7 @@
 
 <block>
 	<name>OFDM Equalize Symbols</name>
-	<key>ieee802_1_ofdm_equalize_symbols</key>
+	<key>ieee802_11_ofdm_equalize_symbols</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.ofdm_equalize_symbols($debug)</make>
