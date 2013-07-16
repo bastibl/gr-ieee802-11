@@ -16,18 +16,20 @@
 #
 
 ########################################################################
-# Setup python install
+# Include python install macros
 ########################################################################
 include(GrPython)
+if(NOT PYTHONINTERP_FOUND)
+    return()
+endif()
 
-list(APPEND python_sources
-    __init__.py
-)
-
+########################################################################
+# Install python sources
+########################################################################
 GR_PYTHON_INSTALL(
-    FILES ${python_sources}
-    DESTINATION ${GR_PYTHON_DIR}/gnuradio/ieee802_11
-    COMPONENT "ieee802_11_python"
+    FILES
+    __init__.py
+    DESTINATION ${GR_PYTHON_DIR}/ieee802_11
 )
 
 ########################################################################
@@ -35,6 +37,6 @@ GR_PYTHON_INSTALL(
 ########################################################################
 include(GrTest)
 
-#set(GR_TEST_TARGET_DEPS gnuradio-ieee802-15-4)
-#set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
+set(GR_TEST_TARGET_DEPS gnuradio-ieee802-11)
+set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
 #GR_ADD_TEST(qa_howto ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_howto.py)
