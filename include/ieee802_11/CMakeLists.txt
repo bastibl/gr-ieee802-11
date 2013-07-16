@@ -21,6 +21,7 @@
 
 list(APPEND include_sources
     api.h
+    ether_encap.h
     ofdm_decode_mac.h
     ofdm_decode_signal.h
     ofdm_equalize_symbols.h

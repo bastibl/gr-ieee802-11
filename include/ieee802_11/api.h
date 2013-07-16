@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_GR_IEEE802_11_API_H
-#define INCLUDED_GR_IEEE802_11_API_H
+#ifndef INCLUDED_IEEE802_11_API_H
+#define INCLUDED_IEEE802_11_API_H
 
 #include <gnuradio/attributes.h>
 
 #ifdef gnuradio_ieee802_11_EXPORTS
-#  define GR_IEEE802_11_API __GR_ATTR_EXPORT
+#  define IEEE802_11_API __GR_ATTR_EXPORT
 #else
-#  define GR_IEEE802_11_API __GR_ATTR_IMPORT
+#  define IEEE802_11_API __GR_ATTR_IMPORT
 #endif
 
-#endif /* INCLUDED_GR_IEEE802_11_API_H */
+#endif /* INCLUDED_IEEE802_11_API_H */

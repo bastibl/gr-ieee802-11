@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_GR_IEEE802_11_OFDM_DECODE_MAC_H
-#define INCLUDED_GR_IEEE802_11_OFDM_DECODE_MAC_H
+#ifndef INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
+#define INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
 
-#include <gnuradio/ieee802_11/api.h>
+#include <ieee802-11/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class GR_IEEE802_11_API ofdm_decode_mac : virtual public gr::block
+class IEEE802_11_API ofdm_equalize_symbols : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<ofdm_decode_mac> sptr;
+	typedef boost::shared_ptr<ofdm_equalize_symbols> sptr;
 	static sptr make(bool debug = false);
 
 };
@@ -35,6 +35,5 @@ public:
 }  // namespace ieee802_11
 }  // namespace gr
 
-#endif /* INCLUDED_GR_IEEE802_11_OFDM_DECODE_MAC_H */
-
+#endif /* INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H*/
 

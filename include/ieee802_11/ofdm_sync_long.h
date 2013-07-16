@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_GR_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
-#define INCLUDED_GR_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
+#ifndef INCLUDED_IEEE802_11_OFDM_SYNC_LONG_H
+#define INCLUDED_IEEE802_11_OFDM_SYNC_LONG_H
 
-#include <gnuradio/ieee802_11/api.h>
+#include <ieee802-11/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class GR_IEEE802_11_API ofdm_equalize_symbols : virtual public gr::block
+class IEEE802_11_API ofdm_sync_long : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<ofdm_equalize_symbols> sptr;
-	static sptr make(bool debug = false);
+	typedef boost::shared_ptr<ofdm_sync_long> sptr;
+	static sptr make(unsigned int sync_length, unsigned int freq_est,
+			bool debug = false);
 
 };
 
 }  // namespace ieee802_11
 }  // namespace gr
 
-#endif /* INCLUDED_GR_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H*/
-
+#endif /* INCLUDED_IEEE802_11_OFDM_SYNC_LONG_H */
