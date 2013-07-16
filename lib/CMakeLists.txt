@@ -21,6 +21,7 @@
 include(GrPlatform) #define LIB_SUFFIX
 
 list(APPEND gr_ieee802_11_sources
+    ether_encap_impl.cc
     ofdm_decode_mac.cc
     ofdm_decode_signal.cc
     ofdm_equalize_symbols.cc
@@ -32,12 +33,10 @@ list(APPEND gr_ieee802_11_sources
 list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
     ${GNURADIO_RUNTIME_LIBRARIES}
-    ${GNURADIO_FILTER_LIBRARIES}
-    ${GNURADIO_FFT_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
-target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs} itpp)
+target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs} itpp gnuradio-fft gnuradio-filter)
 set_target_properties(gnuradio-ieee802_11 PROPERTIES DEFINE_SYMBOL "gnuradio_ieee802_11_EXPORTS")
 
 ########################################################################

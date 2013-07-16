@@ -14,17 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_PARSE_MAC_IMPL_H
-#define INCLUDED_IEEE802_11_OFDM_PARSE_MAC_IMPL_H
+#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
 
-struct mac_header {
-	uint16_t  frame_control;
-	uint16_t  duration;
-	uint8_t   addr1[6];
-	uint8_t   addr2[6];
-	uint8_t   addr3[6];
-	uint16_t  seq_control;
-}__attribute__((packed));
+#include <ieee802-11/ether_encap.h>
 
-#endif /* INCLUDED_IEEE802_11_OFDM_PARSE_MAC_IMPL_H */
+namespace gr {
+namespace ieee802_11 {
+
+	struct ethernet_header {
+		uint8_t   dest[6];
+		uint8_t   src[6];
+		uint16_t  type;
+	}__attribute__((packed));
+
+	class ether_encap_impl : public ether_encap {
+
+		public:
+			ether_encap_impl(bool debug);
+
+		private:
+			void parse(pmt::pmt_t msg);
+
+			bool d_debug;
+			char buf[3000];
+			uint16_t d_last_seq;
+	};
+
+} // namespace ieee802_11
+} // namespace gr
+
+#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
 

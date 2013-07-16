@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <gnuradio/ieee802_11/ofdm_equalize_symbols.h>
+#include <ieee802-11/ofdm_equalize_symbols.h>
 #include <gnuradio/io_signature.h>
 
 #include <iostream>
@@ -27,7 +27,7 @@ class ofdm_equalize_symbols_impl : public ofdm_equalize_symbols {
 #define dout d_debug && std::cout
 
 public:
-ofdm_equalize_symbols_impl(bool debug) : gr::block("ofdm_equalize_symbols",
+ofdm_equalize_symbols_impl(bool debug) : block("ofdm_equalize_symbols",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_debug(debug) {

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <gnuradio/ieee802_11/ofdm_decode_signal.h>
+#include <ieee802-11/ofdm_decode_signal.h>
 #include <gnuradio/io_signature.h>
 
 #include <iostream>
@@ -29,7 +29,7 @@ class ofdm_decode_signal_impl : public ofdm_decode_signal {
 #define dout d_debug && std::cout
 
 public:
-ofdm_decode_signal_impl(bool debug) : gr::block("ofdm_decode_signal",
+ofdm_decode_signal_impl(bool debug) : block("ofdm_decode_signal",
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_debug(debug),
@@ -37,7 +37,7 @@ ofdm_decode_signal_impl(bool debug) : gr::block("ofdm_decode_signal",
 
 	decoded_bits.set_size(24);
 	set_relative_rate(1);
-	set_tag_propagation_policy(gr::block::TPP_DONT);
+	set_tag_propagation_policy(block::TPP_DONT);
 }
 
 ~ofdm_decode_signal_impl(){

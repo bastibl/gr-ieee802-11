@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <gnuradio/ieee802_11/ofdm_sync_long.h>
+#include <ieee802-11/ofdm_sync_long.h>
 #include <gnuradio/io_signature.h>
 #include <gnuradio/filter/fir_filter.h>
 #include <gnuradio/fft/fft.h>
@@ -31,7 +31,7 @@ class ofdm_sync_long_impl : public ofdm_sync_long {
 #define dout d_debug && std::cout
 
 public:
-ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug) : gr::block("ofdm_sync_long",
+ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug) : block("ofdm_sync_long",
 		gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
 		gr::io_signature::make(1, 1, sizeof(gr_complex))),
 		d_debug(debug),
@@ -41,7 +41,7 @@ ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug)
 		SYNC_LENGTH(sync_lenght),
 		FREQ_EST(freq_est) {
 
-	set_tag_propagation_policy(gr::block::TPP_DONT);
+	set_tag_propagation_policy(block::TPP_DONT);
 	d_fir = new gr::filter::kernel::fir_filter_ccc(1, LONG);
 	d_correlation = gr::fft::malloc_complex(8192);
 }

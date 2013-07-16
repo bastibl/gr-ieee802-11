@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <gnuradio/ieee802_11/ofdm_parse_mac.h>
+#include <ieee802-11/ofdm_parse_mac.h>
 #include "ofdm_parse_mac_impl.h"
 
 #include <gnuradio/io_signature.h>
@@ -30,9 +30,9 @@ class ofdm_parse_mac_impl : public ofdm_parse_mac {
 public:
 
 ofdm_parse_mac_impl(bool debug) :
-		gr::block("ofdm_parse_mac",
-				gr::io_signature::make (0, 0, 0),
-				gr::io_signature::make (0, 0, 0)),
+		block("ofdm_parse_mac",
+				gr::io_signature::make(0, 0, 0),
+				gr::io_signature::make(0, 0, 0)),
 		d_debug(debug) {
 
     message_port_register_out(pmt::mp("out"));
@@ -45,41 +45,6 @@ ofdm_parse_mac_impl(bool debug) :
 
 }
 
-unsigned int update_crc32(unsigned int crc, const char *data, size_t len) {
-	int j;
-	unsigned int byte, mask;
-	static unsigned int table[256];
-	/* Set up the table if necesary */
-	if (table[1] == 0) {
-		for (byte = 0; byte <= 255; byte++) {
-			crc = byte;
-			for (j = 7; j >= 0; j--) {
-				mask = -(crc & 1);
-				crc = (crc >> 1) ^ (0xEDB88320 & mask);
-			}
-			table[byte] = crc;
-		}
-	}
-
-	/* Calculate the CRC32*/
-	size_t i = 0;
-	crc = 0xFFFFFFFF;
-	for (i = 0; i < len; i++) {
-		byte = data[i];    //Get next byte
-		crc = (crc >> 8) ^ table[(crc ^ byte) & 0xFF];
-	}
-	unsigned int crc_reversed;
-	crc_reversed = 0x00000000;
-	for (j = 31; j >= 0; j--) {
-		crc_reversed |= ((crc >> j) & 1) << (31 - j);
-	}
-	return crc;
-}
-
-unsigned int crc32(const char *buf, int len) {
-	return update_crc32(0xffffffff, buf, len) ^ 0xffffffff;
-}
-
 void parse(pmt::pmt_t msg) {
 
 	if(pmt::is_eof_object(msg)) {
@@ -88,7 +53,7 @@ void parse(pmt::pmt_t msg) {
 		return;
 	}
 
-	assert(pmt::is_blob(msg));
+	msg = pmt::cdr(msg);
 
 	int data_len = pmt::blob_length(msg);
 	mac_header *h = (mac_header*)pmt::blob_data(msg);
@@ -125,28 +90,22 @@ void parse(pmt::pmt_t msg) {
 			break;
 	}
 
-	bool crc = check_crc((char*)pmt::blob_data(msg), data_len);
-	dout << "crc ";
-	dout << (crc ? "correct" : "wrong") << std::endl;
-
-
-	if(!crc || data_len < 32) {
+	if(data_len < 32) {
 		return;
 	}
 
 	char *frame = (char*)pmt::blob_data(msg);
-	frame[data_len - 4] = '\n';
 
 	// DATA
 	if((((h->frame_control) >> 2) & 63) == 2) {
-		print_ascii(frame + 24, data_len - 24 - 4);
-		pmt::pmt_t payload = pmt::make_blob(frame + 24, data_len - 24 - 3);
+		print_ascii(frame + 24, data_len - 24);
+		pmt::pmt_t payload = pmt::make_blob(frame + 24, data_len - 24);
 
 		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
 	// QoS Data
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
-		print_ascii(frame + 26, data_len - 26 - 4);
-		pmt::pmt_t payload = pmt::make_blob(frame + 26, data_len - 26 - 3);
+		print_ascii(frame + 26, data_len - 26);
+		pmt::pmt_t payload = pmt::make_blob(frame + 26, data_len - 26);
 
 		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
 	}
@@ -384,14 +343,6 @@ void print_ascii(char* buf, int length) {
 		}
 	}
 	dout << std::endl;
-}
-
-bool check_crc(char *data, int len) {
-	unsigned int crc = crc32(data, len);
-	if(crc == 558161692) {
-		return true;
-	}
-	return false;
 }
 
 private:

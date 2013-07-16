@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <gnuradio/ieee802_11/ofdm_sync_short.h>
+#include <ieee802-11/ofdm_sync_short.h>
 #include <gnuradio/io_signature.h>
 
 #include <iostream>
@@ -27,7 +27,7 @@ class ofdm_sync_short_impl : public ofdm_sync_short {
 
 public:
 ofdm_sync_short_impl(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool debug) : gr::block("ofdm_sync_short",
+		unsigned int min_plateau, bool debug) : block("ofdm_sync_short",
 			gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(float)),
 			gr::io_signature::make(1, 1, sizeof(gr_complex))),
 			d_debug(debug),
@@ -37,7 +37,7 @@ ofdm_sync_short_impl(double threshold, unsigned int max_samples,
 			MIN_PLATEAU(min_plateau),
 			d_threshold(threshold) {
 
-	set_tag_propagation_policy(gr::block::TPP_DONT);
+	set_tag_propagation_policy(block::TPP_DONT);
 }
 
 ~ofdm_sync_short_impl(){
