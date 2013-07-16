@@ -28,6 +28,7 @@ list(APPEND gr_ieee802_11_sources
     ofdm_parse_mac.cc
     ofdm_sync_long.cc
     ofdm_sync_short.cc
+    ofdm_utils.cc
 )
 
 list(APPEND gr_ieee802_11_libs
