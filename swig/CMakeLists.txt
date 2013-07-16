@@ -18,62 +18,38 @@
 ########################################################################
 # Include swig generation macros
 ########################################################################
-include(GrPython)
 find_package(SWIG)
 find_package(PythonLibs)
 if(NOT SWIG_FOUND OR NOT PYTHONLIBS_FOUND)
     return()
 endif()
 include(GrSwig)
+include(GrPython)
 
 ########################################################################
 # Setup swig generation
 ########################################################################
-set(GR_SWIG_INCLUDE_DIRS
-    ${GR_IEEE802_11_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 foreach(incdir ${GNURADIO_RUNTIME_INCLUDE_DIRS})
     list(APPEND GR_SWIG_INCLUDE_DIRS ${incdir}/gnuradio/swig)
 endforeach(incdir)
 
-foreach(incdir ${GRUEL_INCLUDE_DIRS})
-    list(APPEND GR_SWIG_INCLUDE_DIRS ${incdir}/gruel/swig)
-endforeach(incdir)
-
 set(GR_SWIG_LIBRARIES gnuradio-ieee802_11)
 set(GR_SWIG_DOC_FILE ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i)
-set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include/gnuradio/ieee802_11)
+set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 GR_SWIG_MAKE(ieee802_11_swig ieee802_11_swig.i)
 
 ########################################################################
 # Install the build swig module
 ########################################################################
-GR_SWIG_INSTALL(
-    TARGETS ieee802_11_swig
-    DESTINATION ${GR_PYTHON_DIR}/gnuradio/ieee802_11
-    COMPONENT "ieee802_11_python"
-)
+GR_SWIG_INSTALL(TARGETS ieee802_11_swig DESTINATION ${GR_PYTHON_DIR}/ieee802_11)
 
 ########################################################################
 # Install swig .i files for development
 ########################################################################
-list(APPEND swig_sources
-    ieee802_11_swig.i
-    ieee802_11_factory.i
-    ieee802_11_ofdm_decode_mac.i
-    ieee802_11_ofdm_decode_signal.i
-    ieee802_11_ofdm_equalize_symbols.i
-    ieee802_11_ofdm_parse_mac.i
-    ieee802_11_ofdm_sync_long.i
-    ieee802_11_ofdm_sync_short.i
-    ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i
-)
-
 install(
-    FILES ${swig_sources}
-    DESTINATION ${GR_INCLUDE_DIR}/gnuradio/ieee802_11/swig
-    COMPONENT "ieee802_11_swig"
+    FILES
+	ieee802_11_swig.i
+    ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i
+    DESTINATION ${GR_INCLUDE_DIR}/ieee802_11/swig
 )

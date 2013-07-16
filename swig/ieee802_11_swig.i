@@ -14,20 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#define GR_IEEE802_11_API
+#define IEEE802_11_API
 
-########################################################################
-# standard includes
-########################################################################
-%include <gnuradio.i>
-%include "ieee802_11_factory.i"
+%include "gnuradio.i"
 
-########################################################################
-# block includes
-########################################################################
-%include <ieee802_11_ofdm_decode_mac.i>
-%include <ieee802_11_ofdm_decode_signal.i>
-%include <ieee802_11_ofdm_equalize_symbols.i>
-%include <ieee802_11_ofdm_parse_mac.i>
-%include <ieee802_11_ofdm_sync_long.i>
-%include <ieee802_11_ofdm_sync_short.i>
+%include "ieee802_11_swig_doc.i"
+
+%{
+#include "ieee802-11/ether_encap.h"
+#include "ieee802-11/ofdm_decode_mac.h"
+#include "ieee802-11/ofdm_decode_signal.h"
+#include "ieee802-11/ofdm_equalize_symbols.h"
+#include "ieee802-11/ofdm_parse_mac.h"
+#include "ieee802-11/ofdm_sync_long.h"
+#include "ieee802-11/ofdm_sync_short.h"
+%}
+
+%include "ieee802-11/ether_encap.h"
+%include "ieee802-11/ofdm_decode_mac.h"
+%include "ieee802-11/ofdm_decode_signal.h"
+%include "ieee802-11/ofdm_equalize_symbols.h"
+%include "ieee802-11/ofdm_parse_mac.h"
+%include "ieee802-11/ofdm_sync_long.h"
+%include "ieee802-11/ofdm_sync_short.h"
+
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ether_encap);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_mac);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_signal);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_equalize_symbols);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_parse_mac);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_long);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_short);
+
