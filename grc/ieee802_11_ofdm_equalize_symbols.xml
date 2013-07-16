@@ -4,8 +4,8 @@
 	<name>OFDM Equalize Symbols</name>
 	<key>ieee802_1_ofdm_equalize_symbols</key>
 	<category>IEEE802.11</category>
-	<import>import gnuradio.ieee802_11 as gr_ieee802_11</import>
-	<make>gr_ieee802_11.ofdm_equalize_symbols($debug)</make>
+	<import>import ieee802_11</import>
+	<make>ieee802_11.ofdm_equalize_symbols($debug)</make>
 
 	<param>
 		<name>Debug</name>

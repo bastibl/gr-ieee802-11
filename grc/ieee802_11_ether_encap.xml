@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>OFDM Decode MAC</name>
-	<key>ieee802_1_ofdm_decode_mac</key>
+	<name>Ethernet Encapsulation</name>
+	<key>ieee802_11_ether_encap</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_decode_mac($debug)</make>
+	<make>ieee802_11.ether_encap($debug)</make>
 
 	<param>
 		<name>Debug</name>
@@ -25,17 +25,12 @@
 
 	<sink>
 		<name>in</name>
-		<type>complex</type>
-		<vlen>48</vlen>
-		<nports>1</nports>
+		<type>message</type>
 	</sink>
 
 	<source>
 		<name>out</name>
 		<type>message</type>
 	</source>
-
 </block>
-
-
 

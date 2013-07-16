@@ -1,5 +1,6 @@
 
-install(FILES 
+install(FILES
+	ieee802_11_ether_encap.xml
 	ieee802_11_ofdm_decode_mac.xml
 	ieee802_11_ofdm_decode_signal.xml
 	ieee802_11_ofdm_equalize_symbols.xml

@@ -4,8 +4,8 @@
 	<name>OFDM Parse MAC</name>
 	<key>ieee802_11_ofdm_parse_mac</key>
 	<category>IEEE802.11</category>
-	<import>import gnuradio.ieee802_11 as gr_ieee802_11</import>
-	<make>gr_ieee802_11.ofdm_parse_mac($debug)</make>
+	<import>import ieee802_11</import>
+	<make>ieee802_11.ofdm_parse_mac($debug)</make>
 
 	<param>
 		<name>Debug</name>
