@@ -4,3 +4,4 @@ examples/*.py
 .project
 .pydevproject
 .settings
+*.pyc
