@@ -25,5 +25,5 @@ echo "setting interface >>${IFACE}<< to monitor channel >>${CHANNEL}<<"
 sudo service network-manager stop
 sudo ifconfig ${IFACE} down
 sudo iwconfig ${IFACE} mode monitor
-sudo iwconfig ${IFACE} channel ${CHANNEL}
 sudo ifconfig ${IFACE} up
+sudo iwconfig ${IFACE} channel ${CHANNEL}
