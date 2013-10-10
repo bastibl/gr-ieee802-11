@@ -28,7 +28,7 @@ class IEEE802_11_API ofdm_decode_mac : virtual public block
 public:
 
 	typedef boost::shared_ptr<ofdm_decode_mac> sptr;
-	static sptr make(bool debug = false);
+	static sptr make(bool log = false, bool debug = false);
 
 };
 

@@ -16,6 +16,7 @@
  */
 #include <ieee802-11/ofdm_sync_short.h>
 #include <gnuradio/io_signature.h>
+#include "utils.h"
 
 #include <iostream>
 
@@ -23,13 +24,12 @@ using namespace gr::ieee802_11;
 
 class ofdm_sync_short_impl : public ofdm_sync_short {
 
-#define dout d_debug && std::cout
-
 public:
 ofdm_sync_short_impl(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool debug) : block("ofdm_sync_short",
+		unsigned int min_plateau, bool log, bool debug) : block("ofdm_sync_short",
 			gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(float)),
 			gr::io_signature::make(1, 1, sizeof(gr_complex))),
+			d_log(log),
 			d_debug(debug),
 			d_state(SEARCH),
 			d_plateau(0),
@@ -108,7 +108,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 }
 
 void insert_tag(uint64_t item) {
-	dout << "SYNC SHORT: insert ofdm_start at: " << item << std::endl;
+	mylog(boost::format("frame start at %1%") % item);
 
 	const pmt::pmt_t key = pmt::string_to_symbol("ofdm_start");
 	const pmt::pmt_t value = pmt::PMT_T;
@@ -121,6 +121,7 @@ private:
 	int d_copy_left;
 	int d_plateau;
 	const double d_threshold;
+	const bool d_log;
 	const bool d_debug;
 	const unsigned int MAX_SAMPLES;
 	const unsigned int MIN_PLATEAU;
@@ -128,7 +129,7 @@ private:
 
 ofdm_sync_short::sptr
 ofdm_sync_short::make(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool debug) {
+		unsigned int min_plateau, bool log, bool debug) {
 	return gnuradio::get_initial_sptr(new ofdm_sync_short_impl(threshold,
-			max_samples, min_plateau, debug));
+			max_samples, min_plateau, log, debug));
 }

@@ -14,35 +14,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#ifndef INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_IMPL_H
+#define INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_IMPL_H
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802-11/wave_short_message.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
+	struct wave_hdr_v0 {
+		uint8_t version;
+		uint8_t security;
+		uint8_t channel;
+		uint8_t rate;
+		uint8_t power;
+		uint8_t app_class;
+		uint8_t acm_length;
+		uint16_t length;
 	}__attribute__((packed));
 
-	class ether_encap_impl : public ether_encap {
+	struct wave_hdr_v2 {
+		uint8_t version;
+		uint8_t psid;
+		uint8_t wsm_id;
+		uint16_t length;
+	}__attribute__((packed));
+
+	class wave_short_message_impl : public wave_short_message {
+
 
 		public:
-			ether_encap_impl(bool debug);
+			wave_short_message_impl(int version);
 
 		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+			void make_frame (pmt::pmt_t msg);
+			void set_version(int version);
 
-			bool d_debug;
-			uint16_t d_last_seq;
+			wave_hdr_v0 hdr0;
+			wave_hdr_v2 hdr2;
+			int d_version;
 	};
 
 } // namespace ieee802_11
 } // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
+#endif /* INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_IMPL_H */
 

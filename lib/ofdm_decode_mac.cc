@@ -16,12 +16,11 @@
  */
 #include <ieee802-11/ofdm_decode_mac.h>
 
-#include "ofdm_utils.h"
+#include "utils.h"
 
 #include <boost/crc.hpp>
 #include <gnuradio/io_signature.h>
 #include <itpp/itcomm.h>
-#include <iostream>
 #include <iomanip>
 
 using namespace gr::ieee802_11;
@@ -29,17 +28,86 @@ using namespace itpp;
 
 class ofdm_decode_mac_impl : public ofdm_decode_mac {
 
-#define dout d_debug && std::cout
-
 public:
-ofdm_decode_mac_impl(bool debug) : block("ofdm_decode_mac",
+ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
 			gr::io_signature::make(0, 0, 0)),
+			d_log(log),
 			d_debug(debug),
 			ofdm(BPSK_1_2),
 			tx(ofdm, 0) {
 
 	message_port_register_out(pmt::mp("out"));
+
+	// bpsk
+	std::complex<double> bpsk_syms[] = {std::complex<double>(-1, 0), std::complex<double>(1, 0)};
+	int bpsk_bits[] = {0, 1};
+	bpsk.set(cvec(bpsk_syms, 2), ivec(bpsk_bits, 2));
+
+	// qpsk
+	std::complex<double> qpsk_syms[] = {
+			std::complex<double>(-1, -1), std::complex<double>(-1,  1),
+			std::complex<double>( 1, -1), std::complex<double>( 1,  1)};
+	int qpsk_bits[] = {0, 1, 2, 3};
+	qpsk.set(cvec(qpsk_syms, 4), ivec(qpsk_bits, 4));
+
+	// qam16
+	std::complex<double> qam16_syms[] = {
+		std::complex<double>(-0.9487, -0.9487), std::complex<double>(-0.9487, -0.3162),
+		std::complex<double>(-0.9487, 0.9487), std::complex<double>(-0.9487, 0.3162),
+		std::complex<double>(-0.3162, -0.9487), std::complex<double>(-0.3162, -0.3162),
+		std::complex<double>(-0.3162, 0.9487), std::complex<double>(-0.3162, 0.3162),
+		std::complex<double>(0.9487, -0.9487), std::complex<double>(0.9487, -0.3162),
+		std::complex<double>(0.9487, 0.9487), std::complex<double>(0.9487, 0.3162),
+		std::complex<double>(0.3162, -0.9487), std::complex<double>(0.3162, -0.3162),
+		std::complex<double>(0.3162, 0.9487), std::complex<double>(0.3162, 0.3162)};
+	int qam16_bits[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+	qam16.set(cvec(qam16_syms, 16), ivec(qam16_bits, 16));
+
+	// qam64
+	std::complex<double> qam64_syms[] = {
+		std::complex<double>(-1.0801, -1.0801), std::complex<double>(-1.0801, -0.7715),
+		std::complex<double>(-1.0801, -0.1543), std::complex<double>(-1.0801, -0.4629),
+		std::complex<double>(-1.0801, 1.0801), std::complex<double>(-1.0801, 0.7715),
+		std::complex<double>(-1.0801, 0.1543), std::complex<double>(-1.0801, 0.4629),
+		std::complex<double>(-0.7715, -1.0801), std::complex<double>(-0.7715, -0.7715),
+		std::complex<double>(-0.7715, -0.1543), std::complex<double>(-0.7715, -0.4629),
+		std::complex<double>(-0.7715, 1.0801), std::complex<double>(-0.7715, 0.7715),
+		std::complex<double>(-0.7715, 0.1543), std::complex<double>(-0.7715, 0.4629),
+		std::complex<double>(-0.1543, -1.0801), std::complex<double>(-0.1543, -0.7715),
+		std::complex<double>(-0.1543, -0.1543), std::complex<double>(-0.1543, -0.4629),
+		std::complex<double>(-0.1543, 1.0801), std::complex<double>(-0.1543, 0.7715),
+		std::complex<double>(-0.1543, 0.1543), std::complex<double>(-0.1543, 0.4629),
+		std::complex<double>(-0.4629, -1.0801), std::complex<double>(-0.4629, -0.7715),
+		std::complex<double>(-0.4629, -0.1543), std::complex<double>(-0.4629, -0.4629),
+		std::complex<double>(-0.4629, 1.0801), std::complex<double>(-0.4629, 0.7715),
+		std::complex<double>(-0.4629, 0.1543), std::complex<double>(-0.4629, 0.4629),
+		std::complex<double>(1.0801, -1.0801), std::complex<double>(1.0801, -0.7715),
+		std::complex<double>(1.0801, -0.1543), std::complex<double>(1.0801, -0.4629),
+		std::complex<double>(1.0801, 1.0801), std::complex<double>(1.0801, 0.7715),
+		std::complex<double>(1.0801, 0.1543), std::complex<double>(1.0801, 0.4629),
+		std::complex<double>(0.7715, -1.0801), std::complex<double>(0.7715, -0.7715),
+		std::complex<double>(0.7715, -0.1543), std::complex<double>(0.7715, -0.4629),
+		std::complex<double>(0.7715, 1.0801), std::complex<double>(0.7715, 0.7715),
+		std::complex<double>(0.7715, 0.1543), std::complex<double>(0.7715, 0.4629),
+		std::complex<double>(0.1543, -1.0801), std::complex<double>(0.1543, -0.7715),
+		std::complex<double>(0.1543, -0.1543), std::complex<double>(0.1543, -0.4629),
+		std::complex<double>(0.1543, 1.0801), std::complex<double>(0.1543, 0.7715),
+		std::complex<double>(0.1543, 0.1543), std::complex<double>(0.1543, 0.4629),
+		std::complex<double>(0.4629, -1.0801), std::complex<double>(0.4629, -0.7715),
+		std::complex<double>(0.4629, -0.1543), std::complex<double>(0.4629, -0.4629),
+		std::complex<double>(0.4629, 1.0801), std::complex<double>(0.4629, 0.7715),
+		std::complex<double>(0.4629, 0.1543), std::complex<double>(0.4629, 0.4629)};
+
+	int qam64_bits[] = {
+		 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
+		10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+		20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+		30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+		40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+		60, 61, 62, 63};
+	qam64.set(cvec(qam64_syms, 64), ivec(qam64_bits, 64));
 }
 
 ~ofdm_decode_mac_impl(){
@@ -68,13 +136,16 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			int len_data = pmt::to_uint64(pmt::car(tuple));
 			int encoding = pmt::to_uint64(pmt::cdr(tuple));
 
-			ofdm = ofdm_param((ENCODING)encoding);
+			ofdm = ofdm_param((Encoding)encoding);
 			tx = tx_param(ofdm, len_data);
 
-			if(tx.n_sym > 100) {
-				tx.n_sym = 100;
-			}
 			copied = 0;
+
+			// this frame is garbage
+			if(tx.n_sym > 100) {
+				// FIXME: make this nicer, this way garbage frames are skipped
+				copied = tx.n_sym + 1;
+			}
 			dout << "Decode MAC: frame start -- len " << len_data
 				<< "  symbols " << tx.n_sym << "  encoding "
 				<< encoding << std::endl;
@@ -102,9 +173,6 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 }
 
 void decode() {
-	if(ofdm.encoding > 3) {
-		return;
-	}
 	demodulate();
 	deinterleave();
 	decode_conv();
@@ -119,6 +187,9 @@ void decode() {
 		return;
 	}
 
+	mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%")
+			% ofdm.encoding % tx.psdu_size % tx.n_sym);
+
 	// create PDU
 	pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, tx.psdu_size - 4);
 	pmt::pmt_t enc = pmt::from_uint64(ofdm.encoding);
@@ -128,36 +199,38 @@ void decode() {
 }
 
 void demodulate() {
-	gr_complex s;
-	for(int i = 0; i < tx.n_sym; i++) {
-		for(int n = 0; n < 48; n++) {
 
-			switch(ofdm.encoding) {
-			case 0: // BPSK
-			case 1:
-				bits[i * 48 + n] = -real(sym[i * 48 + n]);
-				break;
-
-			case 2:  // QPSK
-			case 3:
-				s = sym[i * 48 + n];
-				bits[(i * 48 + n) * 2]     = -real(s);
-				bits[(i * 48 + n) * 2 + 1] = -imag(s);
-
-				break;
-
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-
-
-			default:
-				assert(false);
-
-			}
-		}
+	cvec symbols;
+	symbols.set_length(tx.n_sym * 48);
+	for(int i = 0; i < tx.n_sym * 48; i++) {
+		symbols[i] = std::complex<double>(sym[i]);
 	}
+
+	switch(ofdm.encoding) {
+	case BPSK_1_2:
+	case BPSK_3_4:
+
+		bits = to_vec(bpsk.demodulate_bits(symbols));
+		break;
+
+	case QPSK_1_2:
+	case QPSK_3_4:
+
+		bits = to_vec(qpsk.demodulate_bits(symbols));
+		break;
+
+	case QAM16_1_2:
+	case QAM16_3_4:
+		bits = to_vec(qam16.demodulate_bits(symbols));
+		break;
+	case QAM64_2_3:
+	case QAM64_3_4:
+		bits = to_vec(qam64.demodulate_bits(symbols));
+		break;
+	}
+
+	// I hate the guy who wrote itpp
+	bits = bits * (-2) + 1;
 }
 
 void deinterleave() {
@@ -191,21 +264,20 @@ void decode_conv() {
 
 	bmat puncture_matrix;
 	switch(ofdm.encoding) {
-	case 0:
-	case 2:
+	case BPSK_1_2:
+	case QPSK_1_2:
+	case QAM16_1_2:
 		puncture_matrix = "1 1; 1 1";
 		break;
-	case 1:
-	case 3:
+	case BPSK_3_4:
+	case QPSK_3_4:
+	case QAM16_3_4:
+	case QAM64_3_4:
 		puncture_matrix = "1 1 0; 1 0 1;";
 		break;
-	case 4:
-	case 5:
-	case 6:
-	case 7:
+	case QAM64_2_3:
+		puncture_matrix = "1 1 1 1 1 1; 1 0 1 0 1 0;";
 		break;
-	default:
-		assert(false);
 	}
 	code.set_puncture_matrix(puncture_matrix);
 	code.set_truncation_length(30);
@@ -221,7 +293,6 @@ void decode_conv() {
 
 	//dout << "length decoded " << decoded_bits.size() << std::endl;
 	//std::cout << decoded_bits << std::endl;
-	//
 }
 
 void descramble () {
@@ -276,21 +347,27 @@ void print_output() {
 
 private:
 	gr_complex sym[1000 * 48 * 100];
-	double bits[1000 * 48];
+	vec bits;
 	double deinter[1000 * 48];
 	char out_bits[40000];
 	char out_bytes[40000];
         bvec decoded_bits;
 	bool   d_debug;
+	bool   d_log;
 	tx_param tx;
 	ofdm_param ofdm;
 	int copied;
 	static int scrambler_init[128];
+
+	Modulator<std::complex<double> > bpsk;
+	Modulator<std::complex<double> > qpsk;
+	Modulator<std::complex<double> > qam16;
+	Modulator<std::complex<double> > qam64;
 };
 
 ofdm_decode_mac::sptr
-ofdm_decode_mac::make(bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_decode_mac_impl(debug));
+ofdm_decode_mac::make(bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_decode_mac_impl(log, debug));
 }
 
 int ofdm_decode_mac_impl::scrambler_init[128] = {

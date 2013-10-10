@@ -14,35 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#ifndef INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_H
+#define INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_H
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802-11/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
-	}__attribute__((packed));
+class IEEE802_11_API wave_short_message : virtual public block
+{
+public:
 
-	class ether_encap_impl : public ether_encap {
+	virtual void set_version(int version) = 0;
 
-		public:
-			ether_encap_impl(bool debug);
+	typedef boost::shared_ptr<wave_short_message> sptr;
+	static sptr make(int version);
+};
 
-		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+}  // namespace ieee802_11
+}  // namespace gr
 
-			bool d_debug;
-			uint16_t d_last_seq;
-	};
-
-} // namespace ieee802_11
-} // namespace gr
-
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
-
+#endif /* INCLUDED_IEEE802_11_WAVE_SHORT_MESSAGE_H */

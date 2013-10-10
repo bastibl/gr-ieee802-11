@@ -16,8 +16,8 @@
  */
 #include <ieee802-11/ofdm_decode_signal.h>
 #include <gnuradio/io_signature.h>
+#include "utils.h"
 
-#include <iostream>
 #include <itpp/itcomm.h>
 
 using namespace gr::ieee802_11;
@@ -26,12 +26,11 @@ using namespace itpp;
 
 class ofdm_decode_signal_impl : public ofdm_decode_signal {
 
-#define dout d_debug && std::cout
-
 public:
-ofdm_decode_signal_impl(bool debug) : block("ofdm_decode_signal",
+ofdm_decode_signal_impl(bool log, bool debug) : block("ofdm_decode_signal",
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
+			d_log(log),
 			d_debug(debug),
 			d_copy_symbols(0) {
 
@@ -195,6 +194,9 @@ bool print_signal() {
 		return false;
 	}
 
+	mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%")
+			% d_encoding % d_len % d_copy_symbols);
+
 	dout << "d_copy_symbols: " << d_copy_symbols << std::endl;
 	dout << "length: " << d_len << std::endl;
 	return true;
@@ -203,6 +205,7 @@ bool print_signal() {
 private:
 	int    d_len;
 	int    d_encoding;
+	bool   d_log;
 	bool   d_debug;
 	double bits[48];
 	int    d_copy_symbols;
@@ -211,8 +214,8 @@ private:
 };
 
 ofdm_decode_signal::sptr
-ofdm_decode_signal::make(bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_decode_signal_impl(debug));
+ofdm_decode_signal::make(bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_decode_signal_impl(log, debug));
 }
 
 int ofdm_decode_signal_impl::inter[48]={0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47};

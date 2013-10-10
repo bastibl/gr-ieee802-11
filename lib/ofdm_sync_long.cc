@@ -15,40 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <ieee802-11/ofdm_sync_long.h>
+#include "utils.h"
 #include <gnuradio/io_signature.h>
 #include <gnuradio/filter/fir_filter.h>
 #include <gnuradio/fft/fft.h>
 
 #include <list>
 #include <tuple>
-#include <iostream>
 
 using namespace gr::ieee802_11;
+using namespace std;
 
 
 class ofdm_sync_long_impl : public ofdm_sync_long {
 
-#define dout d_debug && std::cout
-
 public:
-ofdm_sync_long_impl(unsigned int sync_lenght, unsigned int freq_est, bool debug) : block("ofdm_sync_long",
+ofdm_sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("ofdm_sync_long",
 		gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
 		gr::io_signature::make(1, 1, sizeof(gr_complex))),
+		d_log(log),
 		d_debug(debug),
 		d_offset(0),
 		d_freq_est(0),
 		d_state(SYNC),
-		SYNC_LENGTH(sync_lenght),
-		FREQ_EST(freq_est) {
+		SYNC_LENGTH(sync_length) {
 
 	set_tag_propagation_policy(block::TPP_DONT);
 	d_fir = new gr::filter::kernel::fir_filter_ccc(1, LONG);
 	d_correlation = gr::fft::malloc_complex(8192);
+	d_freq_est_buf = static_cast<gr_complex*>(std::malloc(sync_length * sizeof(gr_complex)));
 }
 
 ~ofdm_sync_long_impl(){
 	delete d_fir;
 	gr::fft::free(d_correlation);
+	free(d_freq_est_buf);
 }
 
 int general_work (int noutput, gr_vector_int& ninput_items,
@@ -93,9 +94,8 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 		while(i + 63 < ninput) {
 
-			if(d_offset < FREQ_EST) {
-				d_freq_est += in[i] * conj(in[i + 16]);
-			}
+			d_freq_est += in[i] * conj(in[i + 16]);
+			d_freq_est_buf[d_offset] = d_freq_est;
 
 			d_cor.push_back(std::tuple<double, int>(abs(d_correlation[i]), d_offset));
 
@@ -104,8 +104,12 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 			if(d_offset == SYNC_LENGTH) {
 				search_frame_start();
+				d_freq_est = d_freq_est_buf[std::max<int>(0, d_frame_start - 160 - 17)];
 				d_offset = 0;
 				d_state = COPY;
+
+				mylog(boost::format("frame at %1% - freq_est (20M): %2%") % d_frame_start
+						% ((arg(d_freq_est) / 16) * 20e6 / (2 * M_PI)));
 				break;
 			}
 		}
@@ -160,7 +164,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 		break;
 
 	default:
-		assert(false);
+		std::runtime_error("bad state");
 		break;
 	}
 
@@ -173,6 +177,8 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 void forecast (int noutput_items, gr_vector_int &ninput_items_required) {
 
+	// in sync state we need at least a symbol to correlate
+	// with the pattern
 	if(d_state == SYNC) {
 		ninput_items_required[0] = 64;
 		ninput_items_required[1] = 64;
@@ -181,39 +187,38 @@ void forecast (int noutput_items, gr_vector_int &ninput_items_required) {
 		ninput_items_required[0] = noutput_items;
 		ninput_items_required[1] = noutput_items;
 	}
-
-	0 && dout << "LONG forecast noutput_items: " << noutput_items
-		<< "  state: " << d_state
-		<< "  req[0] " << ninput_items_required[0]
-		<< "  req[1] " << ninput_items_required[1]
-		<< std::endl;
 }
 
 void search_frame_start() {
 
+	// sort list (highest correlation first)
 	assert(d_cor.size() == SYNC_LENGTH);
 	d_cor.sort();
 	d_cor.reverse();
 
-	std::list<std::tuple<double, int>>::iterator it = d_cor.begin();
-
-	int m1 = std::get<1>(*it);
-	it++;
-	int m2 = std::get<1>(*it);
-	it++;
-	int m3 = std::get<1>(*it);
-	int m = std::max(m1, std::max(m2, m3));
-
-	d_frame_start = m + 64;
-
-	dout << "d_frame_start  " << d_frame_start << std::endl;
-	dout << "peaks " << m1 << " " << m2 << " " << m3 << std::endl;
-
-	//for(it = d_cor.begin(); it != d_cor.end(); it++) {
-		//std::cout << std::get<0>(*it) << "  " << std::get<1>(*it) << std::endl;
-	//}
-
+	// copy list in vector for nicer access
+	vector<tuple<double, int>> vec(d_cor.begin(), d_cor.end());
 	d_cor.clear();
+
+	// in case we don't find anything use SYNC_LENGTH
+	d_frame_start = SYNC_LENGTH;
+
+	for(int i = 0; i < 3; i++) {
+		for(int k = i + 1; k < 4; k++) {
+			int diff = abs(get<1>(vec[i]) - get<1>(vec[k]));
+			if(diff == 64) {
+				d_frame_start =  max(get<1>(vec[i]), get<1>(vec[k])) + 64;
+				// nice match found, return immediately
+				return;
+
+			// TODO: check if these offsets make sense
+			} else if(diff == 63) {
+				d_frame_start = max(get<1>(vec[i]), get<1>(vec[k])) + 63;
+			} else if(diff = 65) {
+				d_frame_start = max(get<1>(vec[i]), get<1>(vec[k])) + 64;
+			}
+		}
+	}
 }
 
 private:
@@ -222,20 +227,21 @@ private:
 	int         d_frame_start;
 	gr_complex  d_freq_est;
 	gr_complex *d_correlation;
+	gr_complex *d_freq_est_buf;
 	std::list<std::tuple<double, int>> d_cor;
 	std::vector<gr::tag_t> d_tags;
 	gr::filter::kernel::fir_filter_ccc *d_fir;
 
+	const bool d_log;
 	const bool d_debug;
 	const int  SYNC_LENGTH;
-	const int  FREQ_EST;
 
 	static const std::vector<gr_complex> LONG;
 };
 
 ofdm_sync_long::sptr
-ofdm_sync_long::make(unsigned int sync_length, unsigned int freq_est, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_sync_long_impl(sync_length, freq_est, debug));
+ofdm_sync_long::make(unsigned int sync_length, bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_sync_long_impl(sync_length, log, debug));
 }
 
 const std::vector<gr_complex> ofdm_sync_long_impl::LONG = {

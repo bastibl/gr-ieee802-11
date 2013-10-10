@@ -16,14 +16,13 @@
  */
 #include "ether_encap_impl.h"
 #include "ofdm_parse_mac_impl.h"
+#include "utils.h"
 
 #include <gnuradio/io_signature.h>
 #include <gnuradio/block_detail.h>
 #include <string>
 
 using namespace gr::ieee802_11;
-
-#define dout d_debug && std::cout
 
 ether_encap_impl::ether_encap_impl(bool debug) :
 		block("ether_encap",
@@ -32,20 +31,17 @@ ether_encap_impl::ether_encap_impl(bool debug) :
 		d_debug(debug),
 		d_last_seq(123) {
 
-    message_port_register_out(pmt::mp("out"));
+    message_port_register_out(pmt::mp("to tap"));
+    message_port_register_out(pmt::mp("to wifi"));
 
-    message_port_register_in(pmt::mp("in"));
-    set_msg_handler(pmt::mp("in"), boost::bind(&ether_encap_impl::parse, this, _1));
+    message_port_register_in(pmt::mp("from tap"));
+    set_msg_handler(pmt::mp("from tap"), boost::bind(&ether_encap_impl::from_tap, this, _1));
+    message_port_register_in(pmt::mp("from wifi"));
+    set_msg_handler(pmt::mp("from wifi"), boost::bind(&ether_encap_impl::from_wifi, this, _1));
 }
 
 void
-ether_encap_impl::parse(pmt::pmt_t msg) {
-
-	if(pmt::is_eof_object(msg)) {
-		message_port_pub(pmt::mp("out"), pmt::PMT_EOF);
-		detail().get()->set_done(true);
-		return;
-	}
+ether_encap_impl::from_wifi(pmt::pmt_t msg) {
 
 	msg = pmt::cdr(msg);
 
@@ -59,11 +55,14 @@ ether_encap_impl::parse(pmt::pmt_t msg) {
 
 	d_last_seq = mhdr->seq_control;
 
+
 	if(data_len < 33) {
 		dout << "Ether Encap: frame too short to parse (<33)" << std::endl;
 		return;
 	}
 
+	// this is more than neeed
+	char *buf = static_cast<char*>(std::malloc(data_len + sizeof(ethernet_header)));
 	ethernet_header *ehdr = reinterpret_cast<ethernet_header*>(buf);
 
         if(((mhdr->frame_control >> 2) & 3) != 2) {
@@ -71,8 +70,8 @@ ether_encap_impl::parse(pmt::pmt_t msg) {
 		return;
 	}
 
-	memcpy(ehdr->dest, mhdr->addr1, 6);
-	memcpy(ehdr->src, mhdr->addr2, 6);
+	std::memcpy(ehdr->dest, mhdr->addr1, 6);
+	std::memcpy(ehdr->src, mhdr->addr2, 6);
 	ehdr->type = 0x0008;
 
 	char *frame = (char*)pmt::blob_data(msg);
@@ -81,15 +80,52 @@ ether_encap_impl::parse(pmt::pmt_t msg) {
 	if((((mhdr->frame_control) >> 2) & 63) == 2) {
 		memcpy(buf + sizeof(ethernet_header), frame + 32, data_len - 32);
 		pmt::pmt_t payload = pmt::make_blob(buf, data_len - 32 + 14);
-		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
+		message_port_pub(pmt::mp("to tap"), pmt::cons(pmt::PMT_NIL, payload));
 
 	// QoS Data
 	} else if((((mhdr->frame_control) >> 2) & 63) == 34) {
 
 		memcpy(buf + sizeof(ethernet_header), frame + 34, data_len - 34);
 		pmt::pmt_t payload = pmt::make_blob(buf, data_len - 34 + 14);
-		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
+		message_port_pub(pmt::mp("to tap"), pmt::cons(pmt::PMT_NIL, payload));
 	}
+
+	free(buf);
+}
+
+void
+ether_encap_impl::from_tap(pmt::pmt_t msg) {
+	size_t len = pmt::blob_length(pmt::cdr(msg));
+	const char* data = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
+
+	const ethernet_header *ehdr = reinterpret_cast<const ethernet_header*>(data);
+
+	switch(ehdr->type) {
+	case 0x0008: {
+		std::cout << "ether type: IP" << std::endl;
+
+		char *buf = static_cast<char*>(malloc(len + 8 - sizeof(ethernet_header)));
+		buf[0] = 0xaa;
+		buf[1] = 0xaa;
+		buf[2] = 0x03;
+		buf[3] = 0x00;
+		buf[4] = 0x00;
+		buf[5] = 0x00;
+		buf[6] = 0x08;
+		buf[7] = 0x00;
+		std::memcpy(buf + 8, data + sizeof(ethernet_header), len - sizeof(ethernet_header));
+		pmt::pmt_t blob = pmt::make_blob(buf, len + 8 - sizeof(ethernet_header));
+		message_port_pub(pmt::mp("to wifi"), pmt::cons(pmt::PMT_NIL, blob));
+		break;
+	}
+	case 0x0608:
+		std::cout << "ether type: ARP " << std::endl;
+		break;
+	default:
+		std::cout << "unknown ether type" << std::endl;
+		break;
+	}
+
 }
 
 ether_encap::sptr

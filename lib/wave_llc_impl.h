@@ -14,35 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#ifndef INCLUDED_IEEE802_11_WAVE_LLC_IMPL_H
+#define INCLUDED_IEEE802_11_WAVE_LLC_IMPL_H
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802-11/wave_llc.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
-	}__attribute__((packed));
+	class wave_llc_impl : public wave_llc {
 
-	class ether_encap_impl : public ether_encap {
 
 		public:
-			ether_encap_impl(bool debug);
+			wave_llc_impl();
 
 		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+			void make_frame (pmt::pmt_t msg);
 
-			bool d_debug;
-			uint16_t d_last_seq;
+			char d_header[8];
 	};
 
 } // namespace ieee802_11
 } // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
+#endif /* INCLUDED_IEEE802_11_WAVE_LLC_IMPL_H */
 

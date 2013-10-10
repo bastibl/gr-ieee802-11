@@ -16,6 +16,7 @@
  */
 #include <ieee802-11/ofdm_parse_mac.h>
 #include "ofdm_parse_mac_impl.h"
+#include "utils.h"
 
 #include <gnuradio/io_signature.h>
 #include <gnuradio/block_detail.h>
@@ -25,17 +26,14 @@ using namespace gr::ieee802_11;
 
 class ofdm_parse_mac_impl : public ofdm_parse_mac {
 
-#define dout d_debug && std::cout
-
 public:
 
-ofdm_parse_mac_impl(bool debug) :
+ofdm_parse_mac_impl(bool log, bool debug) :
 		block("ofdm_parse_mac",
 				gr::io_signature::make(0, 0, 0),
 				gr::io_signature::make(0, 0, 0)),
+		d_log(log),
 		d_debug(debug) {
-
-    message_port_register_out(pmt::mp("out"));
 
     message_port_register_in(pmt::mp("in"));
     set_msg_handler(pmt::mp("in"), boost::bind(&ofdm_parse_mac_impl::parse, this, _1));
@@ -48,8 +46,9 @@ ofdm_parse_mac_impl(bool debug) :
 void parse(pmt::pmt_t msg) {
 
 	if(pmt::is_eof_object(msg)) {
-		message_port_pub(pmt::mp("out"), pmt::PMT_EOF);
 		detail().get()->set_done(true);
+		return;
+	} else if(pmt::is_symbol(msg)) {
 		return;
 	}
 
@@ -57,6 +56,8 @@ void parse(pmt::pmt_t msg) {
 
 	int data_len = pmt::blob_length(msg);
 	mac_header *h = (mac_header*)pmt::blob_data(msg);
+
+	mylog(boost::format("length: %1%") % data_len );
 
 	dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
 	dout << "=========================================" << std::endl;
@@ -67,7 +68,6 @@ void parse(pmt::pmt_t msg) {
 	#define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
 	dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
 	dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
-
 
         switch((h->frame_control >> 2) & 3) {
 
@@ -99,15 +99,9 @@ void parse(pmt::pmt_t msg) {
 	// DATA
 	if((((h->frame_control) >> 2) & 63) == 2) {
 		print_ascii(frame + 24, data_len - 24);
-		pmt::pmt_t payload = pmt::make_blob(frame + 24, data_len - 24);
-
-		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
 	// QoS Data
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
 		print_ascii(frame + 26, data_len - 26);
-		pmt::pmt_t payload = pmt::make_blob(frame + 26, data_len - 26);
-
-		message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL, payload));
 	}
 }
 
@@ -346,13 +340,14 @@ void print_ascii(char* buf, int length) {
 }
 
 private:
+	bool d_log;
 	bool d_debug;
 
 };
 
 ofdm_parse_mac::sptr
-ofdm_parse_mac::make(bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_parse_mac_impl(debug));
+ofdm_parse_mac::make(bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_parse_mac_impl(log, debug));
 }
 
 

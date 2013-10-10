@@ -14,35 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#ifndef @GUARD_NAME@
+#define @GUARD_NAME@
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802-11/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
-	}__attribute__((packed));
+class IEEE802_11_API @NAME@ : virtual public sync_block
+{
+public: 
+	typedef boost::shared_ptr<@NAME@> sptr;
+	static sptr make(int length);
 
-	class ether_encap_impl : public ether_encap {
+	virtual int length() const = 0;
+	virtual void set_length(int length) = 0;
 
-		public:
-			ether_encap_impl(bool debug);
+};
 
-		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+} /* namespace blocks */
+} /* namespace gr */
 
-			bool d_debug;
-			uint16_t d_last_seq;
-	};
-
-} // namespace ieee802_11
-} // namespace gr
-
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
-
+#endif /* @GUARD_NAME@ */

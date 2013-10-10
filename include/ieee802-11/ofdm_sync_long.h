@@ -28,8 +28,8 @@ class IEEE802_11_API ofdm_sync_long : virtual public block
 public:
 
 	typedef boost::shared_ptr<ofdm_sync_long> sptr;
-	static sptr make(unsigned int sync_length, unsigned int freq_est,
-			bool debug = false);
+	static sptr make(unsigned int sync_length,
+			bool log = false, bool debug = false);
 
 };
 

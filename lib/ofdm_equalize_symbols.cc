@@ -15,16 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <ieee802-11/ofdm_equalize_symbols.h>
-#include <gnuradio/io_signature.h>
 
-#include <iostream>
+#include "utils.h"
+#include <gnuradio/io_signature.h>
 
 using namespace gr::ieee802_11;
 
 
 class ofdm_equalize_symbols_impl : public ofdm_equalize_symbols {
-
-#define dout d_debug && std::cout
 
 public:
 ofdm_equalize_symbols_impl(bool debug) : block("ofdm_equalize_symbols",
@@ -65,6 +63,10 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		gr_complex p = POLARITY[index];
 		index++;
 
+		// FIXME: think about this... average over amplitude or power
+		double avg_mag = (abs(in[11]) + abs(in[25]) + abs(in[39]) + abs(in[53])) / 4;
+
+
 		double p1 = arg( p * in[11]);
 		double p2 = arg( p * in[25] * conj(p * in[11])) + p1;
 		double p3 = arg( p * in[39] * conj(p * in[25])) + p2;
@@ -83,7 +85,8 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			if( (n == 11) || (n == 25) || (n == 32) || (n == 39) || (n == 53) || (n < 6) || ( n > 58)) {
 				continue;
 			} else {
-				out[o] = in[n] * exp(gr_complex(0, -n * beta - alpha));
+				// FIXME: think about this... square or not
+				out[o] = in[n] * exp(gr_complex(0, -n * beta - alpha)) * gr_complex(1 / avg_mag, 0);
 				o++;
 			}
 		}

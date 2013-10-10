@@ -29,7 +29,7 @@ public:
 
 	typedef boost::shared_ptr<ofdm_sync_short> sptr;
 	static sptr make(double threshold, unsigned int max_samples,
-			unsigned int min_plateau, bool debug = false);
+			unsigned int min_plateau, bool log = false, bool debug = false);
 
 };
 

@@ -26,6 +26,11 @@ endif()
 include(GrSwig)
 include(GrPython)
 
+set(GR_SWIG_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include/
+    ${CMAKE_CURRENT_BINARY_DIR}/../include/
+)
+
 ########################################################################
 # Setup swig generation
 ########################################################################
@@ -35,7 +40,12 @@ endforeach(incdir)
 
 set(GR_SWIG_LIBRARIES gnuradio-ieee802_11)
 set(GR_SWIG_DOC_FILE ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i)
-set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+set(GR_SWIG_DOC_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include/ieee802-11/
+    ${CMAKE_CURRENT_BINARY_DIR}/../include/ieee802-11/
+)
+
+set(GR_SWIG_TARGET_DEPS ieee802_11_generated_includes)
 
 GR_SWIG_MAKE(ieee802_11_swig ieee802_11_swig.i)
 
@@ -49,7 +59,7 @@ GR_SWIG_INSTALL(TARGETS ieee802_11_swig DESTINATION ${GR_PYTHON_DIR}/ieee802_11)
 ########################################################################
 install(
     FILES
-	ieee802_11_swig.i
+    ieee802_11_swig.i
     ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i
     DESTINATION ${GR_INCLUDE_DIR}/ieee802_11/swig
 )

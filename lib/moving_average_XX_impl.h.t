@@ -14,35 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
+#ifndef @GUARD_NAME_IMPL@
+#define @GUARD_NAME_IMPL@
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802-11/@NAME@.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
-	}__attribute__((packed));
+class @NAME_IMPL@ : public @NAME@
+{
+private:
+	int d_length;
+	int d_new_length;
+	bool d_updated;
 
-	class ether_encap_impl : public ether_encap {
+public:
+	@NAME_IMPL@(int length);
 
-		public:
-			ether_encap_impl(bool debug);
+	int length() const { return d_new_length; }
+	void set_length(int length);
 
-		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+	int work(int noutput_items,
+		gr_vector_const_void_star &input_items,
+		gr_vector_void_star &output_items);
 
-			bool d_debug;
-			uint16_t d_last_seq;
-	};
+};
 
-} // namespace ieee802_11
-} // namespace gr
+} /* namespace blocks */
+} /* namespace gr */
 
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
-
+#endif /* @GUARD_NAME_IMPL@ */
