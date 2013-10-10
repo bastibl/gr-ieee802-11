@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<block>
+	<name>OFDM MAC</name>
+	<key>ieee802_11_ofdm_mac</key>
+	<category>IEEE802.11</category>
+	<import>import ieee802_11</import>
+	<make>ieee802_11.ofdm_mac()</make>
+
+	<sink>
+		<name>app in</name>
+		<type>message</type>
+		<optional>1</optional>
+	</sink>
+
+	<sink>
+		<name>phy in</name>
+		<type>message</type>
+		<optional>1</optional>
+	</sink>
+
+	<source>
+		<name>app out</name>
+		<type>message</type>
+		<optional>1</optional>
+	</source>
+
+	<source>
+		<name>phy out</name>
+		<type>message</type>
+		<optional>1</optional>
+	</source>
+</block>

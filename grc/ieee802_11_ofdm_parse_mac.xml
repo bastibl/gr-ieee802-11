@@ -5,7 +5,23 @@
 	<key>ieee802_11_ofdm_parse_mac</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_parse_mac($debug)</make>
+	<make>ieee802_11.ofdm_parse_mac($log, $debug)</make>
+
+	<param>
+		<name>Log</name>
+		<key>log</key>
+		<value>False</value>
+		<type>bool</type>
+
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
 
 	<param>
 		<name>Debug</name>
@@ -28,9 +44,5 @@
 		<type>message</type>
 	</sink>
 
-	<source>
-		<name>out</name>
-		<type>message</type>
-	</source>
 </block>
 

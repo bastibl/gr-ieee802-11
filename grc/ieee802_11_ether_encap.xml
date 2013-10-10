@@ -24,13 +24,27 @@
 	</param>
 
 	<sink>
-		<name>in</name>
+		<name>from tap</name>
 		<type>message</type>
+		<optional>1</optional>
+	</sink>
+
+	<sink>
+		<name>from wifi</name>
+		<type>message</type>
+		<optional>1</optional>
 	</sink>
 
 	<source>
-		<name>out</name>
+		<name>to tap</name>
 		<type>message</type>
+		<optional>1</optional>
+	</source>
+
+	<source>
+		<name>to wifi</name>
+		<type>message</type>
+		<optional>1</optional>
 	</source>
 </block>
 

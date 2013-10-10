@@ -5,7 +5,23 @@
 	<key>ieee802_11_ofdm_sync_long</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_sync_long($sync_length, $freq_est, $debug)</make>
+	<make>ieee802_11.ofdm_sync_long($sync_length, $log, $debug)</make>
+
+	<param>
+		<name>Log</name>
+		<key>log</key>
+		<value>False</value>
+		<type>bool</type>
+
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
 
 	<param>
 		<name>Debug</name>
@@ -30,14 +46,6 @@
 		<type>int</type>
 	</param>
 
-	<param>
-		<name>Freq Est Samples</name>
-		<key>freq_est</key>
-		<value>100</value>
-		<type>int</type>
-	</param>
-
-	<check>$freq_est > 0</check>
 	<check>$sync_length > 0</check>
 
 	<sink>
