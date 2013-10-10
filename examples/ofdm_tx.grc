@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='ASCII'?>
 <flow_graph>
-  <timestamp>Wed Sep 25 15:49:06 2013</timestamp>
+  <timestamp>Mon Aug 26 11:59:20 2013</timestamp>
   <block>
     <key>options</key>
     <param>
       <key>id</key>
-      <value>ofdm_rx</value>
+      <value>ofdm_tx</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -37,7 +37,7 @@
     </param>
     <param>
       <key>run_options</key>
-      <value>prompt</value>
+      <value>run</value>
     </param>
     <param>
       <key>run</key>
@@ -49,221 +49,11 @@
     </param>
     <param>
       <key>realtime_scheduling</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(291, 45)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>sync_length</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>320 - 64</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(459, 46)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>window_size</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>48</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(562, 49)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>fft_vxx</key>
-    <param>
-      <key>id</key>
-      <value>fft_vxx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>fft_size</key>
-      <value>64</value>
-    </param>
-    <param>
-      <key>forward</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>window</key>
-      <value></value>
-    </param>
-    <param>
-      <key>shift</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>nthreads</key>
       <value>1</value>
     </param>
     <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
       <key>_coordinate</key>
-      <value>(91, 697)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_conjugate_cc</key>
-    <param>
-      <key>id</key>
-      <value>gr_conjugate_cc_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(329, 320)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_equalize_symbols</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_equalize_symbols_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(465, 729)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_slider</key>
-    <param>
-      <key>id</key>
-      <value>gain</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>27</value>
-    </param>
-    <param>
-      <key>min</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>max</key>
-      <value>100</value>
-    </param>
-    <param>
-      <key>num_steps</key>
-      <value>100</value>
-    </param>
-    <param>
-      <key>style</key>
-      <value>wx.SL_HORIZONTAL</value>
-    </param>
-    <param>
-      <key>converver</key>
-      <value>float_converter</value>
-    </param>
-    <param>
-      <key>grid_pos</key>
-      <value></value>
-    </param>
-    <param>
-      <key>notebook</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(680, 26)</value>
+      <value>(103, 27)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -314,7 +104,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 20)</value>
+      <value>(419, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -365,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(992, 24)</value>
+      <value>(629, 14)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -373,81 +163,54 @@
     </param>
   </block>
   <block>
-    <key>blocks_delay</key>
+    <key>variable_slider</key>
     <param>
       <key>id</key>
-      <value>gr_delay_0_0</value>
+      <value>gain</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>delay</key>
-      <value>sync_length</value>
-    </param>
-    <param>
-      <key>num_ports</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
+      <key>label</key>
       <value></value>
     </param>
     <param>
-      <key>minoutbuf</key>
+      <key>value</key>
+      <value>25</value>
+    </param>
+    <param>
+      <key>min</key>
       <value>0</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(354, 539)</value>
+      <key>max</key>
+      <value>100</value>
     </param>
     <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_sync_long</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_sync_long_0</value>
+      <key>num_steps</key>
+      <value>100</value>
     </param>
     <param>
-      <key>_enabled</key>
-      <value>True</value>
+      <key>style</key>
+      <value>wx.SL_HORIZONTAL</value>
     </param>
     <param>
-      <key>log</key>
-      <value>False</value>
+      <key>converver</key>
+      <value>float_converter</value>
     </param>
     <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>sync_length</key>
-      <value>sync_length</value>
-    </param>
-    <param>
-      <key>affinity</key>
+      <key>grid_pos</key>
       <value></value>
     </param>
     <param>
-      <key>minoutbuf</key>
-      <value>0</value>
+      <key>notebook</key>
+      <value></value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(571, 506)</value>
+      <value>(291, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -455,302 +218,54 @@
     </param>
   </block>
   <block>
-    <key>blocks_stream_to_vector</key>
+    <key>variable_slider</key>
     <param>
       <key>id</key>
-      <value>gr_stream_to_vector_0</value>
+      <value>mult</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>type</key>
-      <value>complex</value>
+      <key>label</key>
+      <value></value>
     </param>
     <param>
-      <key>num_items</key>
-      <value>64</value>
-    </param>
-    <param>
-      <key>vlen</key>
+      <key>value</key>
       <value>1</value>
     </param>
     <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
+      <key>min</key>
       <value>0</value>
     </param>
     <param>
-      <key>_coordinate</key>
-      <value>(864, 522)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_complex_to_mag</key>
-    <param>
-      <key>id</key>
-      <value>gr_complex_to_mag_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(977, 303)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_moving_average_xx</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_moving_average_xx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>length</key>
-      <value>window_size</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(738, 299)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_divide_xx</key>
-    <param>
-      <key>id</key>
-      <value>gr_divide_xx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
+      <key>max</key>
       <value>2</value>
     </param>
     <param>
-      <key>affinity</key>
+      <key>num_steps</key>
+      <value>100</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.SL_HORIZONTAL</value>
+    </param>
+    <param>
+      <key>converver</key>
+      <value>float_converter</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
       <value></value>
     </param>
     <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1154, 383)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>270</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_decode_signal</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_decode_signal_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(819, 721)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_moving_average_xx</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_moving_average_xx_1</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>length</key>
-      <value>window_size</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(626, 215)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_parse_mac</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_parse_mac_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>affinity</key>
+      <key>notebook</key>
       <value></value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1030, 857)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_decode_mac</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_decode_mac_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1068, 721)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_ctrlport_monitor</key>
-    <param>
-      <key>id</key>
-      <value>blocks_ctrlport_monitor_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>en</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(828, 166)</value>
+      <value>(979, 10)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -773,7 +288,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(972, 169)</value>
+      <value>(982, 299)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -781,34 +296,162 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_sync_short</key>
+    <key>blocks_ctrlport_monitor</key>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_sync_short_0</value>
+      <value>blocks_ctrlport_monitor_0</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>log</key>
       <value>False</value>
     </param>
     <param>
+      <key>en</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1027, 451)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_ofdm_mac</key>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_ofdm_mac_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(464, 192)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_chooser</key>
+    <param>
+      <key>id</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Encoding</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>choices</key>
+      <value>[0,1,2,3,4,5,6,7]</value>
+    </param>
+    <param>
+      <key>labels</key>
+      <value>["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM 3/4", "64QAM 2/3", "64QAM 3/4"]</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>radio_buttons</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.RA_HORIZONTAL</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
+      <value></value>
+    </param>
+    <param>
+      <key>notebook</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(780, 17)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_message_strobe</key>
+    <param>
+      <key>id</key>
+      <value>blocks_message_strobe_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("Hello World")</value>
+    </param>
+    <param>
+      <key>period</key>
+      <value>100</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(176, 180)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>foo_packet_pad</key>
+    <param>
+      <key>id</key>
+      <value>foo_packet_pad_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
       <key>debug</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
-      <key>threshold</key>
-      <value>0.8</value>
+      <key>pad_front</key>
+      <value>500000</value>
     </param>
     <param>
-      <key>max_samples</key>
-      <value>80 * 160</value>
-    </param>
-    <param>
-      <key>min_plateau</key>
-      <value>2</value>
+      <key>pad_tail</key>
+      <value>500000</value>
     </param>
     <param>
       <key>affinity</key>
@@ -820,7 +463,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(100, 473)</value>
+      <value>(72, 428)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -828,123 +471,10 @@
     </param>
   </block>
   <block>
-    <key>blocks_delay</key>
+    <key>uhd_usrp_sink</key>
     <param>
       <key>id</key>
-      <value>gr_delay_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>delay</key>
-      <value>16</value>
-    </param>
-    <param>
-      <key>num_ports</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(112, 316)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_complex_to_mag_squared</key>
-    <param>
-      <key>id</key>
-      <value>gr_complex_to_mag_squared_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(340, 219)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_multiply_xx</key>
-    <param>
-      <key>id</key>
-      <value>gr_multiply_xx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>2</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(588, 286)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>uhd_usrp_source</key>
-    <param>
-      <key>id</key>
-      <value>uhd_usrp_source_0</value>
+      <value>uhd_usrp_sink_0</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -956,7 +486,7 @@
     </param>
     <param>
       <key>otw</key>
-      <value></value>
+      <value>sc16</value>
     </param>
     <param>
       <key>stream_args</key>
@@ -1096,7 +626,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value></value>
+      <value>TX/RX</value>
     </param>
     <param>
       <key>bw0</key>
@@ -1603,141 +1133,152 @@
       <value></value>
     </param>
     <param>
+      <key>_coordinate</key>
+      <value>(321, 412)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_multiply_const_vxx</key>
+    <param>
+      <key>id</key>
+      <value>blocks_multiply_const_vxx_1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>const</key>
+      <value>mult</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
       <key>minoutbuf</key>
       <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 33)</value>
+      <value>(225, 330)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>270</value>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>ofdm_phy_hier</key>
+    <param>
+      <key>id</key>
+      <value>ofdm_phy_hier_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(460, 300)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_null_source</key>
+    <param>
+      <key>id</key>
+      <value>blocks_null_source_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(692, 334)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
     </param>
   </block>
   <connection>
-    <source_block_id>gr_conjugate_cc_0</source_block_id>
-    <sink_block_id>gr_multiply_xx_0</sink_block_id>
+    <source_block_id>blocks_message_strobe_0</source_block_id>
+    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
     <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_multiply_const_vxx_1</source_block_id>
+    <sink_block_id>foo_packet_pad_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ofdm_phy_hier_0</source_block_id>
+    <sink_block_id>blocks_multiply_const_vxx_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>foo_packet_pad_0</source_block_id>
+    <sink_block_id>uhd_usrp_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_ofdm_mac_0</source_block_id>
+    <sink_block_id>ofdm_phy_hier_0</sink_block_id>
+    <source_key>1</source_key>
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>gr_complex_to_mag_0</source_block_id>
-    <sink_block_id>gr_divide_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_delay_0</source_block_id>
-    <sink_block_id>gr_conjugate_cc_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>fft_vxx_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_equalize_symbols_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_equalize_symbols_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_decode_signal_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_decode_signal_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_decode_mac_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_sync_short_0</source_block_id>
-    <sink_block_id>gr_delay_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_delay_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_short_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_delay_0_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_long_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_sync_short_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_long_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_stream_to_vector_0</source_block_id>
-    <sink_block_id>fft_vxx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_divide_xx_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_short_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_sync_long_0</source_block_id>
-    <sink_block_id>gr_stream_to_vector_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>gr_complex_to_mag_squared_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>gr_delay_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>uhd_usrp_source_0</source_block_id>
-    <sink_block_id>gr_multiply_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_multiply_xx_0</source_block_id>
-    <sink_block_id>ieee802_11_moving_average_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_moving_average_xx_0</source_block_id>
-    <sink_block_id>gr_complex_to_mag_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>gr_complex_to_mag_squared_0</source_block_id>
-    <sink_block_id>ieee802_11_moving_average_xx_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_moving_average_xx_1</source_block_id>
-    <sink_block_id>gr_divide_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_ofdm_decode_mac_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_parse_mac_0</sink_block_id>
+    <source_block_id>blocks_null_source_0</source_block_id>
+    <sink_block_id>ofdm_phy_hier_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
