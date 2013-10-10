@@ -28,15 +28,15 @@ fi
 ### reconfigure it in any case, just to be sure it's up
 sudo ifconfig tap0 down
 sudo ifconfig tap0 hw ether 12:34:56:78:90:ab
-sudo ifconfig tap0 mtu 260
+sudo ifconfig tap0 mtu 440
 sudo ifconfig tap0 up
 sudo ifconfig tap0 192.168.123.1
 
 sudo route del -net 192.168.123.0/24
-sudo route add -net 192.168.123.0/24 mss 200 dev tap0
+sudo route add -net 192.168.123.0/24 mss 400 dev tap0
 
 sudo tc qdisc del dev tap0 root
-sudo tc qdisc add dev tap0 root netem delay 100ms
+sudo tc qdisc add dev tap0 root netem delay 10ms
 
 sudo arp -s 192.168.123.2 30:14:4a:e6:46:e4
 
