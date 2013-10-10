@@ -1,11 +1,13 @@
 Hi,
 
-this code is already ported to GNU Radio v3.7. This version of GNU Radio is not backwards compatible. So checkout the current master branch.
+this a IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. and the USRP N210. I tested it with the XCVR2450 and CBX daughterboards.
 
 DEPENDENCIES
 ============
 IT++ (Version: 4.2-4)
 GNU Radio (v3.7 with UHD support)
+If you want to run the receive demo (the one that plots the subcarrier constellations), please assert that you have python-opengl installed. The nongl version of the plot does not work for me.
+
 
 INSTALLATION
 ============
@@ -19,15 +21,14 @@ make
 sudo make install
 sudo ldconfig
 
-USAGE
-===========
-Open examples/rx.grc.
+The physical layer is encapsulated in a hierarchical block. To install it, open examples/ofdm_phy_hier.grc in GRC and click build.
 
-CONTRIBUTORS
-============
-Bastian Bloessl
-Tim O'Shea (port to GNU Radio v3.7)
+
+USAGE
+=====
+In the examples folder are several flow graphs. For the more complex ones, there are start scripts in the apps folder.
+
 
 FURTHER INFORMATION
 ===================
-http://www.ccs-labs.org/
+http://www.ccs-labs.org/projects/wime/
