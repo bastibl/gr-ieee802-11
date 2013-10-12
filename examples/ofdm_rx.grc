@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='ASCII'?>
 <flow_graph>
-  <timestamp>Wed Sep 25 15:49:06 2013</timestamp>
+  <timestamp>Sat Oct 12 19:47:12 2013</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -64,29 +64,6 @@
     <key>variable</key>
     <param>
       <key>id</key>
-      <value>sync_length</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>320 - 64</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(459, 46)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
       <value>window_size</value>
     </param>
     <param>
@@ -100,6 +77,29 @@
     <param>
       <key>_coordinate</key>
       <value>(562, 49)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
+      <value>sync_length</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>320 - 64</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(459, 46)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -941,6 +941,57 @@
     </param>
   </block>
   <block>
+    <key>variable_chooser</key>
+    <param>
+      <key>id</key>
+      <value>lo_offset</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>LO Offset</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>choices</key>
+      <value>[0, 6e9, 11e9]</value>
+    </param>
+    <param>
+      <key>labels</key>
+      <value>['0 MHz', '6 MHz', '11 MHz']</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>drop_down</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.RA_HORIZONTAL</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
+      <value></value>
+    </param>
+    <param>
+      <key>notebook</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(111, 24)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>uhd_usrp_source</key>
     <param>
       <key>id</key>
@@ -1088,7 +1139,7 @@
     </param>
     <param>
       <key>center_freq0</key>
-      <value>freq</value>
+      <value>uhd.tune_request(freq, lo_offset)</value>
     </param>
     <param>
       <key>gain0</key>
