@@ -18,10 +18,13 @@
 // Thanks for contributions:
 // 2007-03-15 fixes to getopt_long code by Matteo Croce rootkit85@yahoo.it
 
-#include <time.h>
+#include <getopt.h>
+#include <pcap.h>
+#include <resolv.h>
 #include <stdlib.h>
-#include "packetspammer.h"
-#include "radiotap.h"
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 
 static const uint8_t radiotap_hdr[] = {
 
@@ -51,27 +54,17 @@ static const char llc_hdr[] = {
 	0x88, 0xb5
 };
 
-static const char wsm_hdr[] = {
-	0x02, 0x55, 0x04, 0x01, 0x40, 0x10,
-	0x01, 0x0c, 0x0f, 0x01, 0xb2, 0x50,
-	0x00, 0x20,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
 void
 usage(void)
 {
 	printf(
 		"(c)2006-2007 Andy Green <andy@warmcat.com>  Licensed under GPL2\n\n"
-		"packet spammer\n=================================="
+		"packet spammer\n=========================================="
 		"\n"
-		"Usage: packetspammer [options] <interface>\n\nOptions\n\n"
+		"Usage: packetspammer <interface> [options] \n\nOptions\n\n"
 		"      -n/--number <nr packets> number of packets to send\n\n"
-		"      -r/--rate <rate> packets per second\n\n"
-		"      -s/--size <size> packets size in byte (including MAC header)\n\n"
+		"      -r/--rate   <rate> packets per second\n\n"
+		"      -s/--size   <size> packet size in byte (including MAC header and CRC)\n\n"
 		"\n");
 	exit(1);
 }
@@ -178,11 +171,11 @@ main(int argc, char *argv[])
 		memcpy(pu8, llc_hdr, sizeof(llc_hdr));
 		pu8 += sizeof(llc_hdr);
 
+		// add number and size as payload
 		pu8 += sprintf((char *)pu8, "%06d ", number);
-		pu8 += sprintf((char *)pu8, "%06d", size);
-		*pu8 = 0;
-		pu8++;
+		pu8 += sprintf((char *)pu8, "%06d ", size);
 
+		// subtract 4 bytes here, since CRC is added by mac layer
 		int packet_size = size + sizeof(radiotap_hdr) - 4;
 		if((pu8 - buf) > packet_size) {
 			printf("size is too small: %d\n", size);
