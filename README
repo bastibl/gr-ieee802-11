@@ -1,6 +1,6 @@
 Hi,
 
-this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested it with the Ettus USRP N210 with XCVR2450 and CBX daughterboards. The code can also be used to make packet error rate simulations.
+this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested it with the Ettus USRP N210 with XCVR2450 and CBX daughterboards. For interoperability tests I use mainly an Atheros (ath5k) WiFi card. The code can also be used to make packet error rate simulations.
 
 ### DEPENDENCIES
 
