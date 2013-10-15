@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ether_encap_impl.h"
-#include "ofdm_parse_mac_impl.h"
 #include "utils.h"
 
 #include <gnuradio/io_signature.h>
@@ -48,12 +47,12 @@ ether_encap_impl::from_wifi(pmt::pmt_t msg) {
 	int data_len = pmt::blob_length(msg);
 	const mac_header *mhdr = reinterpret_cast<const mac_header*>(pmt::blob_data(msg));
 
-	if(d_last_seq == mhdr->seq_control) {
+	if(d_last_seq == mhdr->seq_nr) {
 		dout << "Ether Encap: frame already seen -- skipping" << std::endl;
 		return;
 	}
 
-	d_last_seq = mhdr->seq_control;
+	d_last_seq = mhdr->seq_nr;
 
 
 	if(data_len < 33) {

@@ -36,14 +36,14 @@ extern const std::complex<double> QPSK_D[4];
 extern const std::complex<double> QAM16_D[16];
 extern const std::complex<double> QAM64_D[64];
 
-struct MAC_DATAFRAME_HEADER {
+struct mac_header {
 	//protocol version, type, subtype, to_ds, from_ds, ...
-	char frame_control[2];
-	char duration[2];
-	char address1[6];
-	char address2[6];
-	char address3[6];
-	uint16_t sequence;
+	uint16_t frame_control;
+	uint16_t duration;
+	uint8_t addr1[6];
+	uint8_t addr2[6];
+	uint8_t addr3[6];
+	uint16_t seq_nr;
 }__attribute__((packed));
 
 /**

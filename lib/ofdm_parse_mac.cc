@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <ieee802-11/ofdm_parse_mac.h>
-#include "ofdm_parse_mac_impl.h"
 #include "utils.h"
 
 #include <gnuradio/io_signature.h>
@@ -179,7 +178,7 @@ void parse_management(char *buf, int length) {
 	}
 	dout << std::endl;
 
-	dout << "seq nr: " << int(h->seq_control >> 4) << std::endl;
+	dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
 	dout << "mac 2: ";
@@ -252,7 +251,7 @@ void parse_data(char *buf, int length) {
 	}
 	dout << std::endl;
 
-	dout << "seq nr: " << int(h->seq_control >> 4) << std::endl;
+	dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
 	dout << "mac 2: ";

@@ -100,46 +100,39 @@ void app_in (pmt::pmt_t msg) {
 
 void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *psdu_size) {
 
-	//mac frame
-	MAC_DATAFRAME_HEADER header;
-	//frame check sequence
-	unsigned int fcs;
+	// mac header
+	mac_header header;
+	header.frame_control = 0x0008;
+	header.duration = 0x002e;
 
-	// TODO: change this back to 0x08
-	header.frame_control[0] = 0x08;//0x20; //00000100 00100000  indicate DATA frame (LOL, not), to_ds, from_ds, more frag, retry
-	header.frame_control[1] = 0x00;//0x40; //all other flags, unutilized //00000010 01000000
+	header.addr1[0] = 0x30;
+	header.addr1[1] = 0x14;
+	header.addr1[2] = 0x4a;
+	header.addr1[3] = 0xe6;
+	header.addr1[4] = 0x46;
+	header.addr1[5] = 0xe4;
 
-	header.duration[0] = 0x00; //TODO: set accordingly to payload
-	header.duration[1] = 0x2e; //0x74; //2e = 00101110 -> 01110100 -> 74
+	header.addr2[0] = 0x12;
+	header.addr2[1] = 0x34;
+	header.addr2[2] = 0x56;
+	header.addr2[3] = 0x78;
+	header.addr2[4] = 0x90;
+	header.addr2[5] = 0xab;
 
-	header.address1[0] = 0x30;
-	header.address1[1] = 0x14;
-	header.address1[2] = 0x4a;
-	header.address1[3] = 0xe6;
-	header.address1[4] = 0x46;
-	header.address1[5] = 0xe4;
+	header.addr3[0] = 0x42;
+	header.addr3[1] = 0x42;
+	header.addr3[2] = 0x42;
+	header.addr3[3] = 0x42;
+	header.addr3[4] = 0x42;
+	header.addr3[5] = 0x42;
 
-	header.address2[0] = 0x12;
-	header.address2[1] = 0x34;
-	header.address2[2] = 0x56;
-	header.address2[3] = 0x78;
-	header.address2[4] = 0x90;
-	header.address2[5] = 0xab;
-
-	header.address3[0] = 0x42;
-	header.address3[1] = 0x42;
-	header.address3[2] = 0x42;
-	header.address3[3] = 0x42;
-	header.address3[4] = 0x42;
-	header.address3[5] = 0x42;
-
-	header.sequence = 0;
+	header.seq_nr = 0;
 	for (int i = 0; i < 12; i++) {
 		if(d_seq_nr & (1 << i)) {
-			header.sequence |=  (1 << (i + 4));
+			header.seq_nr |=  (1 << (i + 4));
 		}
 	}
-	header.sequence = htole16(header.sequence);
+	header.seq_nr = htole16(header.seq_nr);
 	d_seq_nr++;
 
 	//header size is 24, plus 4 for FCS means 28 bytes
@@ -153,7 +146,8 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *
 	//compute and store fcs
 	boost::crc_32_type result;
 	result.process_bytes(*psdu, msdu_size + 24);
-	fcs = result.checksum();
+
+	unsigned int fcs = result.checksum();
 	memcpy(*psdu + msdu_size + 24, &fcs, sizeof(unsigned int));
 }
 
