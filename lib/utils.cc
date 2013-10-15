@@ -87,7 +87,7 @@ ofdm_param::ofdm_param(Encoding e) {
 }
 
 void
-ofdm_param::print_out() {
+ofdm_param::print() {
 	std::cout << "OFDM Parameters:" << std::endl;
 	std::cout << "endcoding :" << encoding << std::endl;
 	std::cout << "rate_field :" << (int)rate_field << std::endl;
@@ -112,7 +112,7 @@ tx_param::tx_param(ofdm_param &ofdm, int psdu_length) {
 	n_encoded_bits = n_sym * ofdm.n_cbps;
 }
 void
-tx_param::print_out() {
+tx_param::print() {
 	std::cout << "TX Parameters:" << std::endl;
 	std::cout << "psdu_size: " << psdu_size << std::endl;
 	std::cout << "n_sym: " << n_sym << std::endl;

@@ -53,7 +53,7 @@ public:
 	// number of data bits per OFDM symbol
 	int      n_dbps;
 
-	void print_out();
+	void print();
 };
 
 /**
@@ -72,7 +72,7 @@ public:
 	int n_pad;
 	int n_encoded_bits;
 
-	void print_out();
+	void print();
 };
 
 /**
