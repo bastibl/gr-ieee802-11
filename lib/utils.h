@@ -19,11 +19,17 @@
 
 #include <ieee802-11/api.h>
 #include <ieee802-11/ofdm_mapper.h>
+#include <gnuradio/config.h>
 #include <cinttypes>
 #include <iostream>
 
 #define dout d_debug && std::cout
-#define mylog(msg) do { if(d_log) *d_logger << log4cpp::Priority::INFO << msg << log4cpp::eol; } while(0);
+
+#ifdef HAVE_LOG4CPP
+#define mylog(msg) do { if(d_log) { *d_logger << log4cpp::Priority::INFO << msg << log4cpp::eol; }} while(0);
+#else
+#define mylog(msg) do { d_log && std::cout << msg << std::endl; } while(0);
+#endif
 
 extern const std::complex<float> BPSK[2];
 extern const std::complex<float> QPSK[4];
