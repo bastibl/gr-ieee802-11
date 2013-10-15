@@ -35,8 +35,6 @@
 #include "ieee802-11/ofdm_preamble.h"
 #include "ieee802-11/ofdm_sync_long.h"
 #include "ieee802-11/ofdm_sync_short.h"
-#include "ieee802-11/wave_llc.h"
-#include "ieee802-11/wave_short_message.h"
 %}
 
 %include "ieee802-11/ether_encap.h"
@@ -53,8 +51,6 @@
 %include "ieee802-11/ofdm_preamble.h"
 %include "ieee802-11/ofdm_sync_long.h"
 %include "ieee802-11/ofdm_sync_short.h"
-%include "ieee802-11/wave_llc.h"
-%include "ieee802-11/wave_short_message.h"
 
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ether_encap);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_cc);
@@ -70,6 +66,4 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_pilot);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_preamble);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_long);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_short);
-GR_SWIG_BLOCK_MAGIC2(ieee802_11, wave_llc);
-GR_SWIG_BLOCK_MAGIC2(ieee802_11, wave_short_message);
 

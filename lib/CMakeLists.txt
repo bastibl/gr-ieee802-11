@@ -114,8 +114,6 @@ list(APPEND gr_ieee802_11_sources
     ofdm_sync_long.cc
     ofdm_sync_short.cc
     utils.cc
-    wave_llc_impl.cc
-    wave_short_message_impl.cc
 )
 
 list(APPEND gr_ieee802_11_libs

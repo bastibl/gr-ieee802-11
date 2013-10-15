@@ -81,8 +81,6 @@ list(APPEND include_sources
     ofdm_preamble.h
     ofdm_sync_long.h
     ofdm_sync_short.h
-    wave_llc.h
-    wave_short_message.h
 )
 
 install(
