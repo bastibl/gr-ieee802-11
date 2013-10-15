@@ -63,7 +63,7 @@ void map_to_symbols(const char *bits, size_t len) {
 	for(int i = 0; i < len; i++) {
 
 		// the signal field is bpsk encoded
-		d_symbols[i] = (i < 48) ? bpsk_mapping[bits[i]] : mapping[bits[i]];
+		d_symbols[i] = (i < 48) ? BPSK[bits[i]] : mapping[bits[i]];
 		dout << d_symbols[i] << " ";
 	}
 	dout << std::endl;
@@ -194,22 +194,22 @@ void set_encoding(Encoding encoding) {
 	switch (encoding) {
 	case BPSK_1_2:
 	case BPSK_3_4:
-		mapping = bpsk_mapping;
+		mapping = BPSK;
 		break;
 
 	case QPSK_1_2:
 	case QPSK_3_4:
-		mapping = qpsk_mapping;
+		mapping = QPSK;
 		break;
 
 	case QAM16_1_2:
 	case QAM16_3_4:
-		mapping = qam16_mapping;
+		mapping = QAM16;
 		break;
 
 	case QAM64_2_3:
 	case QAM64_3_4:
-		mapping = qam64_mapping;
+		mapping = QAM64;
 		break;
 
 	default:
@@ -227,61 +227,7 @@ private:
 	gr::thread::mutex d_mutex;
 
 	const        gr_complex *mapping;
-	static const gr_complex bpsk_mapping[2];
-	static const gr_complex qpsk_mapping[4];
-	static const gr_complex qam16_mapping[16];
-	static const gr_complex qam64_mapping[64];
 };
-
-// constellations for different modulations (normalized to avg power 1)
-const gr_complex ofdm_mapper_impl::bpsk_mapping[2] = {
-		gr_complex(-1.0, 0.0), gr_complex(1.0, 0.0)};
-const gr_complex ofdm_mapper_impl::qpsk_mapping[4] = {
-		gr_complex(-0.7071, -0.7071), gr_complex(-0.7071, 0.7071),
-		gr_complex(+0.7071, -0.7071), gr_complex(+0.7071, 0.7071)};
-const gr_complex ofdm_mapper_impl::qam16_mapping[16] = {
-		gr_complex(-0.9487, -0.9487), gr_complex(-0.9487, -0.3162),
-		gr_complex(-0.9487, 0.9487), gr_complex(-0.9487, 0.3162),
-		gr_complex(-0.3162, -0.9487), gr_complex(-0.3162, -0.3162),
-		gr_complex(-0.3162, 0.9487), gr_complex(-0.3162, 0.3162),
-		gr_complex(0.9487, -0.9487), gr_complex(0.9487, -0.3162),
-		gr_complex(0.9487, 0.9487), gr_complex(0.9487, 0.3162),
-		gr_complex(0.3162, -0.9487), gr_complex(0.3162, -0.3162),
-		gr_complex(0.3162, 0.9487), gr_complex(0.3162, 0.3162)};
-const gr_complex ofdm_mapper_impl::qam64_mapping[64] = {
-		gr_complex(-1.0801, -1.0801), gr_complex(-1.0801, -0.7715),
-		gr_complex(-1.0801, -0.1543), gr_complex(-1.0801, -0.4629),
-		gr_complex(-1.0801, 1.0801), gr_complex(-1.0801, 0.7715),
-		gr_complex(-1.0801, 0.1543), gr_complex(-1.0801, 0.4629),
-		gr_complex(-0.7715, -1.0801), gr_complex(-0.7715, -0.7715),
-		gr_complex(-0.7715, -0.1543), gr_complex(-0.7715, -0.4629),
-		gr_complex(-0.7715, 1.0801), gr_complex(-0.7715, 0.7715),
-		gr_complex(-0.7715, 0.1543), gr_complex(-0.7715, 0.4629),
-		gr_complex(-0.1543, -1.0801), gr_complex(-0.1543, -0.7715),
-		gr_complex(-0.1543, -0.1543), gr_complex(-0.1543, -0.4629),
-		gr_complex(-0.1543, 1.0801), gr_complex(-0.1543, 0.7715),
-		gr_complex(-0.1543, 0.1543), gr_complex(-0.1543, 0.4629),
-		gr_complex(-0.4629, -1.0801), gr_complex(-0.4629, -0.7715),
-		gr_complex(-0.4629, -0.1543), gr_complex(-0.4629, -0.4629),
-		gr_complex(-0.4629, 1.0801), gr_complex(-0.4629, 0.7715),
-		gr_complex(-0.4629, 0.1543), gr_complex(-0.4629, 0.4629),
-		gr_complex(1.0801, -1.0801), gr_complex(1.0801, -0.7715),
-		gr_complex(1.0801, -0.1543), gr_complex(1.0801, -0.4629),
-		gr_complex(1.0801, 1.0801), gr_complex(1.0801, 0.7715),
-		gr_complex(1.0801, 0.1543), gr_complex(1.0801, 0.4629),
-		gr_complex(0.7715, -1.0801), gr_complex(0.7715, -0.7715),
-		gr_complex(0.7715, -0.1543), gr_complex(0.7715, -0.4629),
-		gr_complex(0.7715, 1.0801), gr_complex(0.7715, 0.7715),
-		gr_complex(0.7715, 0.1543), gr_complex(0.7715, 0.4629),
-		gr_complex(0.1543, -1.0801), gr_complex(0.1543, -0.7715),
-		gr_complex(0.1543, -0.1543), gr_complex(0.1543, -0.4629),
-		gr_complex(0.1543, 1.0801), gr_complex(0.1543, 0.7715),
-		gr_complex(0.1543, 0.1543), gr_complex(0.1543, 0.4629),
-		gr_complex(0.4629, -1.0801), gr_complex(0.4629, -0.7715),
-		gr_complex(0.4629, -0.1543), gr_complex(0.4629, -0.4629),
-		gr_complex(0.4629, 1.0801), gr_complex(0.4629, 0.7715),
-		gr_complex(0.4629, 0.1543), gr_complex(0.4629, 0.4629)};
-
 
 ofdm_mapper::sptr
 ofdm_mapper::make(Encoding mcs, bool debug) {

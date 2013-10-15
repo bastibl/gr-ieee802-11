@@ -20,6 +20,112 @@
 #include <cstring>
 #include <math.h>
 
+// constellations for different modulations (normalized to avg power 1)
+const std::complex<float> BPSK[2] = {
+		std::complex<float>(-1.0, 0.0), std::complex<float>(1.0, 0.0)};
+
+const std::complex<double> BPSK_D[2] = {
+		std::complex<double>(-1.0, 0.0), std::complex<double>(1.0, 0.0)};
+
+
+const std::complex<float> QPSK[4] = {
+		std::complex<float>(-0.7071, -0.7071), std::complex<float>(-0.7071, 0.7071),
+		std::complex<float>(+0.7071, -0.7071), std::complex<float>(+0.7071, 0.7071)};
+
+const std::complex<double> QPSK_D[4] = {
+		std::complex<double>(-0.7071, -0.7071), std::complex<double>(-0.7071, 0.7071),
+		std::complex<double>(+0.7071, -0.7071), std::complex<double>(+0.7071, 0.7071)};
+
+
+const std::complex<float> QAM16[16] = {
+		std::complex<float>(-0.9487, -0.9487), std::complex<float>(-0.9487, -0.3162),
+		std::complex<float>(-0.9487, 0.9487), std::complex<float>(-0.9487, 0.3162),
+		std::complex<float>(-0.3162, -0.9487), std::complex<float>(-0.3162, -0.3162),
+		std::complex<float>(-0.3162, 0.9487), std::complex<float>(-0.3162, 0.3162),
+		std::complex<float>(0.9487, -0.9487), std::complex<float>(0.9487, -0.3162),
+		std::complex<float>(0.9487, 0.9487), std::complex<float>(0.9487, 0.3162),
+		std::complex<float>(0.3162, -0.9487), std::complex<float>(0.3162, -0.3162),
+		std::complex<float>(0.3162, 0.9487), std::complex<float>(0.3162, 0.3162)};
+
+const std::complex<double> QAM16_D[16] = {
+		std::complex<double>(-0.9487, -0.9487), std::complex<double>(-0.9487, -0.3162),
+		std::complex<double>(-0.9487, 0.9487), std::complex<double>(-0.9487, 0.3162),
+		std::complex<double>(-0.3162, -0.9487), std::complex<double>(-0.3162, -0.3162),
+		std::complex<double>(-0.3162, 0.9487), std::complex<double>(-0.3162, 0.3162),
+		std::complex<double>(0.9487, -0.9487), std::complex<double>(0.9487, -0.3162),
+		std::complex<double>(0.9487, 0.9487), std::complex<double>(0.9487, 0.3162),
+		std::complex<double>(0.3162, -0.9487), std::complex<double>(0.3162, -0.3162),
+		std::complex<double>(0.3162, 0.9487), std::complex<double>(0.3162, 0.3162)};
+
+
+const std::complex<float> QAM64[64] = {
+		std::complex<float>(-1.0801, -1.0801), std::complex<float>(-1.0801, -0.7715),
+		std::complex<float>(-1.0801, -0.1543), std::complex<float>(-1.0801, -0.4629),
+		std::complex<float>(-1.0801, 1.0801), std::complex<float>(-1.0801, 0.7715),
+		std::complex<float>(-1.0801, 0.1543), std::complex<float>(-1.0801, 0.4629),
+		std::complex<float>(-0.7715, -1.0801), std::complex<float>(-0.7715, -0.7715),
+		std::complex<float>(-0.7715, -0.1543), std::complex<float>(-0.7715, -0.4629),
+		std::complex<float>(-0.7715, 1.0801), std::complex<float>(-0.7715, 0.7715),
+		std::complex<float>(-0.7715, 0.1543), std::complex<float>(-0.7715, 0.4629),
+		std::complex<float>(-0.1543, -1.0801), std::complex<float>(-0.1543, -0.7715),
+		std::complex<float>(-0.1543, -0.1543), std::complex<float>(-0.1543, -0.4629),
+		std::complex<float>(-0.1543, 1.0801), std::complex<float>(-0.1543, 0.7715),
+		std::complex<float>(-0.1543, 0.1543), std::complex<float>(-0.1543, 0.4629),
+		std::complex<float>(-0.4629, -1.0801), std::complex<float>(-0.4629, -0.7715),
+		std::complex<float>(-0.4629, -0.1543), std::complex<float>(-0.4629, -0.4629),
+		std::complex<float>(-0.4629, 1.0801), std::complex<float>(-0.4629, 0.7715),
+		std::complex<float>(-0.4629, 0.1543), std::complex<float>(-0.4629, 0.4629),
+		std::complex<float>(1.0801, -1.0801), std::complex<float>(1.0801, -0.7715),
+		std::complex<float>(1.0801, -0.1543), std::complex<float>(1.0801, -0.4629),
+		std::complex<float>(1.0801, 1.0801), std::complex<float>(1.0801, 0.7715),
+		std::complex<float>(1.0801, 0.1543), std::complex<float>(1.0801, 0.4629),
+		std::complex<float>(0.7715, -1.0801), std::complex<float>(0.7715, -0.7715),
+		std::complex<float>(0.7715, -0.1543), std::complex<float>(0.7715, -0.4629),
+		std::complex<float>(0.7715, 1.0801), std::complex<float>(0.7715, 0.7715),
+		std::complex<float>(0.7715, 0.1543), std::complex<float>(0.7715, 0.4629),
+		std::complex<float>(0.1543, -1.0801), std::complex<float>(0.1543, -0.7715),
+		std::complex<float>(0.1543, -0.1543), std::complex<float>(0.1543, -0.4629),
+		std::complex<float>(0.1543, 1.0801), std::complex<float>(0.1543, 0.7715),
+		std::complex<float>(0.1543, 0.1543), std::complex<float>(0.1543, 0.4629),
+		std::complex<float>(0.4629, -1.0801), std::complex<float>(0.4629, -0.7715),
+		std::complex<float>(0.4629, -0.1543), std::complex<float>(0.4629, -0.4629),
+		std::complex<float>(0.4629, 1.0801), std::complex<float>(0.4629, 0.7715),
+		std::complex<float>(0.4629, 0.1543), std::complex<float>(0.4629, 0.4629)};
+
+const std::complex<double> QAM64_D[64] = {
+		std::complex<double>(-1.0801, -1.0801), std::complex<double>(-1.0801, -0.7715),
+		std::complex<double>(-1.0801, -0.1543), std::complex<double>(-1.0801, -0.4629),
+		std::complex<double>(-1.0801, 1.0801), std::complex<double>(-1.0801, 0.7715),
+		std::complex<double>(-1.0801, 0.1543), std::complex<double>(-1.0801, 0.4629),
+		std::complex<double>(-0.7715, -1.0801), std::complex<double>(-0.7715, -0.7715),
+		std::complex<double>(-0.7715, -0.1543), std::complex<double>(-0.7715, -0.4629),
+		std::complex<double>(-0.7715, 1.0801), std::complex<double>(-0.7715, 0.7715),
+		std::complex<double>(-0.7715, 0.1543), std::complex<double>(-0.7715, 0.4629),
+		std::complex<double>(-0.1543, -1.0801), std::complex<double>(-0.1543, -0.7715),
+		std::complex<double>(-0.1543, -0.1543), std::complex<double>(-0.1543, -0.4629),
+		std::complex<double>(-0.1543, 1.0801), std::complex<double>(-0.1543, 0.7715),
+		std::complex<double>(-0.1543, 0.1543), std::complex<double>(-0.1543, 0.4629),
+		std::complex<double>(-0.4629, -1.0801), std::complex<double>(-0.4629, -0.7715),
+		std::complex<double>(-0.4629, -0.1543), std::complex<double>(-0.4629, -0.4629),
+		std::complex<double>(-0.4629, 1.0801), std::complex<double>(-0.4629, 0.7715),
+		std::complex<double>(-0.4629, 0.1543), std::complex<double>(-0.4629, 0.4629),
+		std::complex<double>(1.0801, -1.0801), std::complex<double>(1.0801, -0.7715),
+		std::complex<double>(1.0801, -0.1543), std::complex<double>(1.0801, -0.4629),
+		std::complex<double>(1.0801, 1.0801), std::complex<double>(1.0801, 0.7715),
+		std::complex<double>(1.0801, 0.1543), std::complex<double>(1.0801, 0.4629),
+		std::complex<double>(0.7715, -1.0801), std::complex<double>(0.7715, -0.7715),
+		std::complex<double>(0.7715, -0.1543), std::complex<double>(0.7715, -0.4629),
+		std::complex<double>(0.7715, 1.0801), std::complex<double>(0.7715, 0.7715),
+		std::complex<double>(0.7715, 0.1543), std::complex<double>(0.7715, 0.4629),
+		std::complex<double>(0.1543, -1.0801), std::complex<double>(0.1543, -0.7715),
+		std::complex<double>(0.1543, -0.1543), std::complex<double>(0.1543, -0.4629),
+		std::complex<double>(0.1543, 1.0801), std::complex<double>(0.1543, 0.7715),
+		std::complex<double>(0.1543, 0.1543), std::complex<double>(0.1543, 0.4629),
+		std::complex<double>(0.4629, -1.0801), std::complex<double>(0.4629, -0.7715),
+		std::complex<double>(0.4629, -0.1543), std::complex<double>(0.4629, -0.4629),
+		std::complex<double>(0.4629, 1.0801), std::complex<double>(0.4629, 0.7715),
+		std::complex<double>(0.4629, 0.1543), std::complex<double>(0.4629, 0.4629)};
+
 
 ofdm_param::ofdm_param(Encoding e) {
 	encoding = e;

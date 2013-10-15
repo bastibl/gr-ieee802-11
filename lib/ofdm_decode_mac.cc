@@ -40,65 +40,18 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 	message_port_register_out(pmt::mp("out"));
 
 	// bpsk
-	std::complex<double> bpsk_syms[] = {std::complex<double>(-1, 0), std::complex<double>(1, 0)};
 	int bpsk_bits[] = {0, 1};
-	bpsk.set(cvec(bpsk_syms, 2), ivec(bpsk_bits, 2));
+	bpsk.set(cvec(BPSK_D, 2), ivec(bpsk_bits, 2));
 
 	// qpsk
-	std::complex<double> qpsk_syms[] = {
-			std::complex<double>(-1, -1), std::complex<double>(-1,  1),
-			std::complex<double>( 1, -1), std::complex<double>( 1,  1)};
 	int qpsk_bits[] = {0, 1, 2, 3};
-	qpsk.set(cvec(qpsk_syms, 4), ivec(qpsk_bits, 4));
+	qpsk.set(cvec(QPSK_D, 4), ivec(qpsk_bits, 4));
 
 	// qam16
-	std::complex<double> qam16_syms[] = {
-		std::complex<double>(-0.9487, -0.9487), std::complex<double>(-0.9487, -0.3162),
-		std::complex<double>(-0.9487, 0.9487), std::complex<double>(-0.9487, 0.3162),
-		std::complex<double>(-0.3162, -0.9487), std::complex<double>(-0.3162, -0.3162),
-		std::complex<double>(-0.3162, 0.9487), std::complex<double>(-0.3162, 0.3162),
-		std::complex<double>(0.9487, -0.9487), std::complex<double>(0.9487, -0.3162),
-		std::complex<double>(0.9487, 0.9487), std::complex<double>(0.9487, 0.3162),
-		std::complex<double>(0.3162, -0.9487), std::complex<double>(0.3162, -0.3162),
-		std::complex<double>(0.3162, 0.9487), std::complex<double>(0.3162, 0.3162)};
 	int qam16_bits[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-	qam16.set(cvec(qam16_syms, 16), ivec(qam16_bits, 16));
+	qam16.set(cvec(QAM16_D, 16), ivec(qam16_bits, 16));
 
 	// qam64
-	std::complex<double> qam64_syms[] = {
-		std::complex<double>(-1.0801, -1.0801), std::complex<double>(-1.0801, -0.7715),
-		std::complex<double>(-1.0801, -0.1543), std::complex<double>(-1.0801, -0.4629),
-		std::complex<double>(-1.0801, 1.0801), std::complex<double>(-1.0801, 0.7715),
-		std::complex<double>(-1.0801, 0.1543), std::complex<double>(-1.0801, 0.4629),
-		std::complex<double>(-0.7715, -1.0801), std::complex<double>(-0.7715, -0.7715),
-		std::complex<double>(-0.7715, -0.1543), std::complex<double>(-0.7715, -0.4629),
-		std::complex<double>(-0.7715, 1.0801), std::complex<double>(-0.7715, 0.7715),
-		std::complex<double>(-0.7715, 0.1543), std::complex<double>(-0.7715, 0.4629),
-		std::complex<double>(-0.1543, -1.0801), std::complex<double>(-0.1543, -0.7715),
-		std::complex<double>(-0.1543, -0.1543), std::complex<double>(-0.1543, -0.4629),
-		std::complex<double>(-0.1543, 1.0801), std::complex<double>(-0.1543, 0.7715),
-		std::complex<double>(-0.1543, 0.1543), std::complex<double>(-0.1543, 0.4629),
-		std::complex<double>(-0.4629, -1.0801), std::complex<double>(-0.4629, -0.7715),
-		std::complex<double>(-0.4629, -0.1543), std::complex<double>(-0.4629, -0.4629),
-		std::complex<double>(-0.4629, 1.0801), std::complex<double>(-0.4629, 0.7715),
-		std::complex<double>(-0.4629, 0.1543), std::complex<double>(-0.4629, 0.4629),
-		std::complex<double>(1.0801, -1.0801), std::complex<double>(1.0801, -0.7715),
-		std::complex<double>(1.0801, -0.1543), std::complex<double>(1.0801, -0.4629),
-		std::complex<double>(1.0801, 1.0801), std::complex<double>(1.0801, 0.7715),
-		std::complex<double>(1.0801, 0.1543), std::complex<double>(1.0801, 0.4629),
-		std::complex<double>(0.7715, -1.0801), std::complex<double>(0.7715, -0.7715),
-		std::complex<double>(0.7715, -0.1543), std::complex<double>(0.7715, -0.4629),
-		std::complex<double>(0.7715, 1.0801), std::complex<double>(0.7715, 0.7715),
-		std::complex<double>(0.7715, 0.1543), std::complex<double>(0.7715, 0.4629),
-		std::complex<double>(0.1543, -1.0801), std::complex<double>(0.1543, -0.7715),
-		std::complex<double>(0.1543, -0.1543), std::complex<double>(0.1543, -0.4629),
-		std::complex<double>(0.1543, 1.0801), std::complex<double>(0.1543, 0.7715),
-		std::complex<double>(0.1543, 0.1543), std::complex<double>(0.1543, 0.4629),
-		std::complex<double>(0.4629, -1.0801), std::complex<double>(0.4629, -0.7715),
-		std::complex<double>(0.4629, -0.1543), std::complex<double>(0.4629, -0.4629),
-		std::complex<double>(0.4629, 1.0801), std::complex<double>(0.4629, 0.7715),
-		std::complex<double>(0.4629, 0.1543), std::complex<double>(0.4629, 0.4629)};
-
 	int qam64_bits[] = {
 		 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
 		10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -107,10 +60,7 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 		40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
 		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
 		60, 61, 62, 63};
-	qam64.set(cvec(qam64_syms, 64), ivec(qam64_bits, 64));
-}
-
-~ofdm_decode_mac_impl(){
+	qam64.set(cvec(QAM64_D, 64), ivec(qam64_bits, 64));
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,

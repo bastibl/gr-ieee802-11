@@ -25,6 +25,17 @@
 #define dout d_debug && std::cout
 #define mylog(msg) do { if(d_log) *d_logger << log4cpp::Priority::INFO << msg << log4cpp::eol; } while(0);
 
+extern const std::complex<float> BPSK[2];
+extern const std::complex<float> QPSK[4];
+extern const std::complex<float> QAM16[16];
+extern const std::complex<float> QAM64[64];
+
+// same mappings in double (itpp sucks)
+extern const std::complex<double> BPSK_D[2];
+extern const std::complex<double> QPSK_D[4];
+extern const std::complex<double> QAM16_D[16];
+extern const std::complex<double> QAM64_D[64];
+
 struct MAC_DATAFRAME_HEADER {
 	//protocol version, type, subtype, to_ds, from_ds, ...
 	char frame_control[2];
