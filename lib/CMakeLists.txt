@@ -119,13 +119,14 @@ list(APPEND gr_ieee802_11_sources
 list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
     ${GNURADIO_RUNTIME_LIBRARIES}
-    ${GNURADIO_FFT_LIBRARIES} 
+    ${GNURADIO_FFT_LIBRARIES}
+    ${GNURADIO_PMT_LIBRARIES}
     ${GNURADIO_FILTER_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
 add_dependencies(gnuradio-ieee802_11 ieee802_11_generated_includes)
-target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs} itpp)
+target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs} itpp log4cpp)
 set_target_properties(gnuradio-ieee802_11 PROPERTIES DEFINE_SYMBOL "gnuradio_ieee802_11_EXPORTS")
 
 ########################################################################
