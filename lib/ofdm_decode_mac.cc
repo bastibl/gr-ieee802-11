@@ -246,17 +246,16 @@ void decode_conv() {
 }
 
 void descramble () {
-	int index = 0;
+	int state = 0;
 	for(int i = 0; i < 7; i++) {
 		if(decoded_bits(i)) {
-			index |= 1 << (6 - i);
+			state |= 1 << (6 - i);
 		}
 	}
-	int state = scrambler_init[index];
 
 	int feedback;
 
-	for(int i = 0; i < decoded_bits.size(); i++) {
+	for(int i = 7; i < decoded_bits.size(); i++) {
 		feedback = ((!!(state & 64))) ^ (!!(state & 8));
 		out_bits[i] = feedback ^ decoded_bits(i);
 		state = ((state << 1) & 0x7e) | feedback;
@@ -307,7 +306,6 @@ private:
 	tx_param tx;
 	ofdm_param ofdm;
 	int copied;
-	static int scrambler_init[128];
 
 	Modulator<std::complex<double> > bpsk;
 	Modulator<std::complex<double> > qpsk;
@@ -319,7 +317,4 @@ ofdm_decode_mac::sptr
 ofdm_decode_mac::make(bool log, bool debug) {
 	return gnuradio::get_initial_sptr(new ofdm_decode_mac_impl(log, debug));
 }
-
-int ofdm_decode_mac_impl::scrambler_init[128] = {
-0, 73, 18, 91, 36, 109, 54, 127, 72, 1, 90, 19, 108, 37, 126, 55, 89, 16, 75, 2, 125, 52, 111, 38, 17, 88, 3, 74, 53, 124, 39, 110, 50, 123, 32, 105, 22, 95, 4, 77, 122, 51, 104, 33, 94, 23, 76, 5, 107, 34, 121, 48, 79, 6, 93, 20, 35, 106, 49, 120, 7, 78, 21, 92, 100, 45, 118, 63, 64, 9, 82, 27, 44, 101, 62, 119, 8, 65, 26, 83, 61, 116, 47, 102, 25, 80, 11, 66, 117, 60, 103, 46, 81, 24, 67, 10, 86, 31, 68, 13, 114, 59, 96, 41, 30, 87, 12, 69, 58, 115, 40, 97, 15, 70, 29, 84, 43, 98, 57, 112, 71, 14, 85, 28, 99, 42, 113, 56};
 
