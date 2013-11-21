@@ -5,6 +5,7 @@ this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested
 ### DEPENDENCIES
 
 IT++ (Version: 4.2-4)
+log4cpp (for now, until my cmake foo gets better)
 GNU Radio (v3.7 with UHD support)
 If you want to run the receive demo (the one that plots the subcarrier constellations), please assert that you have python-opengl installed. The nongl version of the plot does not work for me.
 
@@ -12,6 +13,7 @@ If you want to run the receive demo (the one that plots the subcarrier constella
 ### INSTALLATION
 
 sudo apt-get install libitpp-dev
+sudo apt-get install liblog4cpp5-dev
 git clone git://github.com/bastibl/gr-ieee802-11.git
 cd gr-ieee802-11
 mkdir build
@@ -26,6 +28,8 @@ https://github.com/bastibl/gr-foo
 
 The physical layer is encapsulated in a hierarchical block. To install it, open examples/ofdm_phy_hier.grc in GRC and click build.
 
+The message ports in the flow graphs might not be connected. In that case just reconnect them. See
+http://comments.gmane.org/gmane.comp.gnu.radio.general/48222
 
 ### USAGE
 
