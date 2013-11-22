@@ -214,7 +214,7 @@ void search_frame_start() {
 			// TODO: check if these offsets make sense
 			} else if(diff == 63) {
 				d_frame_start = max(get<1>(vec[i]), get<1>(vec[k])) + 63;
-			} else if(diff = 65) {
+			} else if(diff == 65) {
 				d_frame_start = max(get<1>(vec[i]), get<1>(vec[k])) + 64;
 			}
 		}
