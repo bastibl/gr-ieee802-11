@@ -141,7 +141,7 @@ bool print_signal() {
 	d_len = 0;
 	bool parity = false;
 	for(int i = 0; i < 17; i++) {
-		parity ^= decoded_bits[i];
+		parity ^= (bool)decoded_bits[i];
 
 		if((i < 4) && decoded_bits[i]) {
 			r = r | (1 << i);

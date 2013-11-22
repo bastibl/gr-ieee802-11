@@ -257,7 +257,7 @@ void descramble () {
 
 	for(int i = 7; i < decoded_bits.size(); i++) {
 		feedback = ((!!(state & 64))) ^ (!!(state & 8));
-		out_bits[i] = feedback ^ decoded_bits(i);
+		out_bits[i] = feedback ^ (int)decoded_bits(i);
 		state = ((state << 1) & 0x7e) | feedback;
 	}
 

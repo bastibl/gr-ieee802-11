@@ -97,7 +97,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 			d_freq_est += in[i] * conj(in[i + 16]);
 			d_freq_est_buf[d_offset] = d_freq_est;
 
-			d_cor.push_back(std::tuple<double, int>(abs(d_correlation[i]), d_offset));
+			d_cor.push_back(pair<double, int>(abs(d_correlation[i]), d_offset));
 
 			i++;
 			d_offset++;
@@ -197,7 +197,7 @@ void search_frame_start() {
 	d_cor.reverse();
 
 	// copy list in vector for nicer access
-	vector<tuple<double, int>> vec(d_cor.begin(), d_cor.end());
+	vector<pair<double, int> > vec(d_cor.begin(), d_cor.end());
 	d_cor.clear();
 
 	// in case we don't find anything use SYNC_LENGTH
@@ -228,7 +228,7 @@ private:
 	gr_complex  d_freq_est;
 	gr_complex *d_correlation;
 	gr_complex *d_freq_est_buf;
-	std::list<std::tuple<double, int>> d_cor;
+	list<pair<double, int> > d_cor;
 	std::vector<gr::tag_t> d_tags;
 	gr::filter::kernel::fir_filter_ccc *d_fir;
 
