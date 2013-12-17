@@ -10,9 +10,9 @@ this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested
 
 ### log4cpp
 
-I use the new [logging feature](http://gnuradio.org/doc/doxygen/page_logger.html) of GNU Radio which relies on log4cpp. This should be an optional dependency some when, but currently it is required. You can install it with
+I use the new [logging feature](http://gnuradio.org/doc/doxygen/page_logger.html) of GNU Radio which relies on log4cpp. This should be an optional dependency some day, but currently it is required. You can install it with
 
-    sudo apt-get install log4cpp5-dev
+    sudo apt-get install liblog4cpp5-dev
     sudo port install log4cpp
 
 
@@ -28,6 +28,7 @@ There are several ways to install GNU Radio. You can use
 ### IT++
 
 I use the Viterbi decoder of IT++.
+
     sudo apt-get install libitpp-dev
     sudo port install itpp
 
@@ -88,7 +89,7 @@ If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to
 
 # Checking you installation
 
-As a first step I recommend to test the loopback flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
+As a first step I recommend to test the ```ofdm_loopback.grc``` flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
 
 
 # Usage
@@ -101,7 +102,7 @@ The loopback flow graph should give you an idea of how simulations can be conduc
 
 ## Unidirectional communication
 
-As first over the air test I recommend to try ofdm_rx and ofdm_tx. Just open the flow graphs in GNU Radio companion and execute them. If it does not work out of the box, try to play around with the gain. If everything works as intended you should see similar output as in the loopback example.
+As first over the air test I recommend to try ```ofdm_rx.grc``` and ```ofdm_tx.grc```. Just open the flow graphs in GNU Radio companion and execute them. If it does not work out of the box, try to play around with the gain. If everything works as intended you should see similar output as in the ```ofdm_loopback.grc``` example.
 
 
 ## RX frames from a WiFi card
@@ -132,9 +133,16 @@ TBD
 - Did you calibrate your daughterboard?
 - Did you run volk_profile?
 - Did you try different gain settings?
-- Did you close the devices?
+- Did you close the case of the devices?
 - Did you try real-time priority?
 - Did you compile GNU Radio and gr-ieee802-11 in release mode?
+- If you see warnings that ```blocks_ctrlport_monitor_performance``` is missing that means that you installed GNU Radio without control port or performance counters. These blocks allow you to monitor the performance of the transceiver while it is running, but are not required. You can just delete them from the flow graph.
+- The message
+
+    You must now use ifconfig to set its IP address. E.g.,
+    $ sudo ifconfig tap0 192.168.200.1
+
+is normal and is output by the TUN/Tap Block during startup. The configuration of the TUN/TAP interface is handled by the scripts in the ```apps``` folder.
 - Did you try to tune the RF frequency out of the band of interest (i.e. used the LO offset menu of the flow graphs)?
 - If 'D's appear, it might be related to your Ethernet card. Assert that you made the sysconf changes recommended by Ettus. Did you try to connect you PC directly to the USRP without a switch in between?
 
