@@ -7,6 +7,8 @@ this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested
 
 ## Dependencies
 
+Please note that ```apt-get``` is the package manager of Debian/Ubuntu based systems, while ```port``` is one package manager for OSX. So use either (not both) according to your needs.
+
 
 ### log4cpp
 
@@ -90,6 +92,21 @@ If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to
 # Checking you installation
 
 As a first step I recommend to test the ```ofdm_loopback.grc``` flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
+
+## Troubleshooting
+
+If GRC complains that it can't find some blocks (other than performance counters and hierarchical blocks) like
+
+    >>> Error: Block key "ieee802_11_ofdm_mac" not found in Platform - grc(GNU Radio Companion)
+    >>> Error: Block key "foo_packet_pad" not found in Platform - grc(GNU Radio Companion)
+
+Most likely you used a different ```CMAKE_INSTALL_PREFIX``` for the module than for GNU Radio. Therefore, the blocks of the module ended up in a different directory and GRC can't find them. You have to tell GRC where these blocks are by creating/adding to your ```~/.gnuradio/config.conf``` something like
+
+    [grc]
+    global_blocks_path = /opt/local/share/gnuradio/grc/blocks
+    local_blocks_path = /Users/basti/usr/share/gnuradio/grc/blocks
+
+But with the directories that match your installation.
 
 
 # Usage
