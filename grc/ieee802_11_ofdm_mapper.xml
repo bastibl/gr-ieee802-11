@@ -40,8 +40,7 @@
 
 	<source>
 		<name>out</name>
-		<type>complex</type>
-		<vlen>48</vlen>
+		<type>byte</type>
 		<nports>1</nports>
 	</source>
 
