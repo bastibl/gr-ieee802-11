@@ -18,12 +18,12 @@
 #define INCLUDED_IEEE802_11_OFDM_PREAMBLE_H
 
 #include <ieee802-11/api.h>
-#include <gnuradio/block.h>
+#include <gnuradio/tagged_stream_block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API ofdm_preamble : virtual public block
+class IEEE802_11_API ofdm_preamble : virtual public tagged_stream_block
 {
 public:
 
