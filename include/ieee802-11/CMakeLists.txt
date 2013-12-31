@@ -69,6 +69,7 @@ add_custom_target(ieee802_11_generated_includes DEPENDS
 list(APPEND include_sources
     ${generated_includes}
     api.h
+    chunks_to_symbols.h
     ether_encap.h
     ofdm_decode_mac.h
     ofdm_decode_signal.h
@@ -77,10 +78,11 @@ list(APPEND include_sources
     ofdm_mac.h
     ofdm_mapper.h
     ofdm_parse_mac.h
-    ofdm_pilot.h
     ofdm_preamble.h
     ofdm_sync_long.h
     ofdm_sync_short.h
+    packet_headergenerator.h
+    wifi_signal_field.h
 )
 
 install(

@@ -15,12 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #define IEEE802_11_API
+#define DIGITAL_API
 
 %include "gnuradio.i"
+//%include "digital_swig.i"
 
 %include "ieee802_11_swig_doc.i"
 
 %{
+#include "gnuradio/digital/packet_header_default.h"
+
+#include "ieee802-11/chunks_to_symbols.h"
 #include "ieee802-11/ether_encap.h"
 #include "ieee802-11/moving_average_cc.h"
 #include "ieee802-11/moving_average_ff.h"
@@ -31,12 +36,16 @@
 #include "ieee802-11/ofdm_mac.h"
 #include "ieee802-11/ofdm_mapper.h"
 #include "ieee802-11/ofdm_parse_mac.h"
-#include "ieee802-11/ofdm_pilot.h"
 #include "ieee802-11/ofdm_preamble.h"
 #include "ieee802-11/ofdm_sync_long.h"
 #include "ieee802-11/ofdm_sync_short.h"
+#include "ieee802-11/packet_headergenerator.h"
+#include "ieee802-11/wifi_signal_field.h"
 %}
 
+%include "gnuradio/digital/packet_header_default.h"
+
+%include "ieee802-11/chunks_to_symbols.h"
 %include "ieee802-11/ether_encap.h"
 %include "ieee802-11/moving_average_cc.h"
 %include "ieee802-11/moving_average_ff.h"
@@ -47,11 +56,13 @@
 %include "ieee802-11/ofdm_mac.h"
 %include "ieee802-11/ofdm_mapper.h"
 %include "ieee802-11/ofdm_parse_mac.h"
-%include "ieee802-11/ofdm_pilot.h"
 %include "ieee802-11/ofdm_preamble.h"
 %include "ieee802-11/ofdm_sync_long.h"
 %include "ieee802-11/ofdm_sync_short.h"
+%include "ieee802-11/packet_headergenerator.h"
+%include "ieee802-11/wifi_signal_field.h"
 
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, chunks_to_symbols);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ether_encap);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_cc);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_ff);
@@ -62,8 +73,13 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_freq_est);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mapper);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_parse_mac);
-GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_pilot);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_preamble);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_long);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_short);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, packet_headergenerator);
 
+%template(wifi_signal_field_sptr) boost::shared_ptr<gr::ieee802_11::wifi_signal_field>;
+%pythoncode %{
+wifi_signal_field_sptr.__repr__ = lambda self: "<wifi_signal_field>"
+wifi_signal_field = wifi_signal_field .make;
+%}
