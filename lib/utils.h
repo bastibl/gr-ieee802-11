@@ -31,11 +31,6 @@
 #define mylog(msg) do { d_log && std::cout << msg << std::endl; } while(0);
 #endif
 
-extern const std::complex<float> BPSK[2];
-extern const std::complex<float> QPSK[4];
-extern const std::complex<float> QAM16[16];
-extern const std::complex<float> QAM64[64];
-
 // same mappings in double (itpp sucks)
 extern const std::complex<double> BPSK_D[2];
 extern const std::complex<double> QPSK_D[4];
@@ -119,8 +114,6 @@ void interleave(const char *input, char *out, tx_param &tx, ofdm_param &ofdm, bo
 void interleave(const double *input, double *out, tx_param &tx, ofdm_param &ofdm, bool reverse = false);
 
 void split_symbols(const char *input, char *out, tx_param &tx, ofdm_param &ofdm);
-
-void generate_signal_field(char *out, tx_param &tx, ofdm_param &ofdm);
 
 void generate_bits(const char *psdu, char *data_bits, tx_param &tx);
 

@@ -21,31 +21,14 @@
 #include <math.h>
 
 // constellations for different modulations (normalized to avg power 1)
-const std::complex<float> BPSK[2] = {
-		std::complex<float>(-1.0, 0.0), std::complex<float>(1.0, 0.0)};
-
 const std::complex<double> BPSK_D[2] = {
 		std::complex<double>(-1.0, 0.0), std::complex<double>(1.0, 0.0)};
 
-
-const std::complex<float> QPSK[4] = {
-		std::complex<float>(-0.7071, -0.7071), std::complex<float>(-0.7071, 0.7071),
-		std::complex<float>(+0.7071, -0.7071), std::complex<float>(+0.7071, 0.7071)};
 
 const std::complex<double> QPSK_D[4] = {
 		std::complex<double>(-0.7071, -0.7071), std::complex<double>(-0.7071, 0.7071),
 		std::complex<double>(+0.7071, -0.7071), std::complex<double>(+0.7071, 0.7071)};
 
-
-const std::complex<float> QAM16[16] = {
-		std::complex<float>(-0.9487, -0.9487), std::complex<float>(-0.9487, -0.3162),
-		std::complex<float>(-0.9487, 0.9487), std::complex<float>(-0.9487, 0.3162),
-		std::complex<float>(-0.3162, -0.9487), std::complex<float>(-0.3162, -0.3162),
-		std::complex<float>(-0.3162, 0.9487), std::complex<float>(-0.3162, 0.3162),
-		std::complex<float>(0.9487, -0.9487), std::complex<float>(0.9487, -0.3162),
-		std::complex<float>(0.9487, 0.9487), std::complex<float>(0.9487, 0.3162),
-		std::complex<float>(0.3162, -0.9487), std::complex<float>(0.3162, -0.3162),
-		std::complex<float>(0.3162, 0.9487), std::complex<float>(0.3162, 0.3162)};
 
 const std::complex<double> QAM16_D[16] = {
 		std::complex<double>(-0.9487, -0.9487), std::complex<double>(-0.9487, -0.3162),
@@ -57,40 +40,6 @@ const std::complex<double> QAM16_D[16] = {
 		std::complex<double>(0.3162, -0.9487), std::complex<double>(0.3162, -0.3162),
 		std::complex<double>(0.3162, 0.9487), std::complex<double>(0.3162, 0.3162)};
 
-
-const std::complex<float> QAM64[64] = {
-		std::complex<float>(-1.0801, -1.0801), std::complex<float>(-1.0801, -0.7715),
-		std::complex<float>(-1.0801, -0.1543), std::complex<float>(-1.0801, -0.4629),
-		std::complex<float>(-1.0801, 1.0801), std::complex<float>(-1.0801, 0.7715),
-		std::complex<float>(-1.0801, 0.1543), std::complex<float>(-1.0801, 0.4629),
-		std::complex<float>(-0.7715, -1.0801), std::complex<float>(-0.7715, -0.7715),
-		std::complex<float>(-0.7715, -0.1543), std::complex<float>(-0.7715, -0.4629),
-		std::complex<float>(-0.7715, 1.0801), std::complex<float>(-0.7715, 0.7715),
-		std::complex<float>(-0.7715, 0.1543), std::complex<float>(-0.7715, 0.4629),
-		std::complex<float>(-0.1543, -1.0801), std::complex<float>(-0.1543, -0.7715),
-		std::complex<float>(-0.1543, -0.1543), std::complex<float>(-0.1543, -0.4629),
-		std::complex<float>(-0.1543, 1.0801), std::complex<float>(-0.1543, 0.7715),
-		std::complex<float>(-0.1543, 0.1543), std::complex<float>(-0.1543, 0.4629),
-		std::complex<float>(-0.4629, -1.0801), std::complex<float>(-0.4629, -0.7715),
-		std::complex<float>(-0.4629, -0.1543), std::complex<float>(-0.4629, -0.4629),
-		std::complex<float>(-0.4629, 1.0801), std::complex<float>(-0.4629, 0.7715),
-		std::complex<float>(-0.4629, 0.1543), std::complex<float>(-0.4629, 0.4629),
-		std::complex<float>(1.0801, -1.0801), std::complex<float>(1.0801, -0.7715),
-		std::complex<float>(1.0801, -0.1543), std::complex<float>(1.0801, -0.4629),
-		std::complex<float>(1.0801, 1.0801), std::complex<float>(1.0801, 0.7715),
-		std::complex<float>(1.0801, 0.1543), std::complex<float>(1.0801, 0.4629),
-		std::complex<float>(0.7715, -1.0801), std::complex<float>(0.7715, -0.7715),
-		std::complex<float>(0.7715, -0.1543), std::complex<float>(0.7715, -0.4629),
-		std::complex<float>(0.7715, 1.0801), std::complex<float>(0.7715, 0.7715),
-		std::complex<float>(0.7715, 0.1543), std::complex<float>(0.7715, 0.4629),
-		std::complex<float>(0.1543, -1.0801), std::complex<float>(0.1543, -0.7715),
-		std::complex<float>(0.1543, -0.1543), std::complex<float>(0.1543, -0.4629),
-		std::complex<float>(0.1543, 1.0801), std::complex<float>(0.1543, 0.7715),
-		std::complex<float>(0.1543, 0.1543), std::complex<float>(0.1543, 0.4629),
-		std::complex<float>(0.4629, -1.0801), std::complex<float>(0.4629, -0.7715),
-		std::complex<float>(0.4629, -0.1543), std::complex<float>(0.4629, -0.4629),
-		std::complex<float>(0.4629, 1.0801), std::complex<float>(0.4629, 0.7715),
-		std::complex<float>(0.4629, 0.1543), std::complex<float>(0.4629, 0.4629)};
 
 const std::complex<double> QAM64_D[64] = {
 		std::complex<double>(-1.0801, -1.0801), std::complex<double>(-1.0801, -0.7715),
@@ -192,6 +141,7 @@ ofdm_param::ofdm_param(Encoding e) {
 	}
 }
 
+
 void
 ofdm_param::print() {
 	std::cout << "OFDM Parameters:" << std::endl;
@@ -201,6 +151,7 @@ ofdm_param::print() {
 	std::cout << "n_cbps :" << n_cbps << std::endl;
 	std::cout << "n_dbps :" << n_dbps << std::endl;
 }
+
 
 tx_param::tx_param(ofdm_param &ofdm, int psdu_length) {
 
@@ -226,9 +177,6 @@ tx_param::print() {
 	std::cout << "n_pad: " << n_pad << std::endl;
 }
 
-int get_bit(int b, int i) {
-	return (b & (1 << i) ? 1 : 0);
-}
 
 void scramble(const char *in, char *out, tx_param &tx, char initial_state) {
 
@@ -243,9 +191,11 @@ void scramble(const char *in, char *out, tx_param &tx, char initial_state) {
     }
 }
 
+
 void reset_tail_bits(char *scrambled_data, tx_param &tx) {
 	memset(scrambled_data + tx.n_data - tx.n_pad - 6, 0, 6 * sizeof(char));
 }
+
 
 int ones(int n) {
 	int sum = 0;
@@ -256,6 +206,7 @@ int ones(int n) {
 	}
 	return sum;
 }
+
 
 void convolutional_encoding(const char *in, char *out, tx_param &tx) {
 
@@ -268,6 +219,7 @@ void convolutional_encoding(const char *in, char *out, tx_param &tx) {
 		out[i * 2 + 1] = ones(state & 0117) % 2;
 	}
 }
+
 
 void puncturing(const char *in, char *out, tx_param &tx, ofdm_param &ofdm) {
 
@@ -306,6 +258,7 @@ void puncturing(const char *in, char *out, tx_param &tx, ofdm_param &ofdm) {
 	}
 }
 
+
 void interleave(const char *in, char *out, tx_param &tx, ofdm_param &ofdm, bool reverse) {
 
 	int n_cbps = ofdm.n_cbps;
@@ -332,6 +285,7 @@ void interleave(const char *in, char *out, tx_param &tx, ofdm_param &ofdm, bool 
 	}
 }
 
+
 void interleave(const double *in, double *out, tx_param &tx, ofdm_param &ofdm, bool reverse) {
 
 	int n_cbps = ofdm.n_cbps;
@@ -357,6 +311,8 @@ void interleave(const double *in, double *out, tx_param &tx, ofdm_param &ofdm, b
 		}
 	}
 }
+
+
 void split_symbols(const char *in, char *out, tx_param &tx, ofdm_param &ofdm) {
 
 	int symbols = tx.n_sym * 48;
@@ -371,69 +327,6 @@ void split_symbols(const char *in, char *out, tx_param &tx, ofdm_param &ofdm) {
 	}
 }
 
-
-void generate_signal_field(char *out, tx_param &tx, ofdm_param &ofdm) {
-
-	//data bits of the signal header
-	char *signal_header = (char *) malloc(sizeof(char) * 24);
-
-	//signal header after...
-	//convolutional encoding
-	char *encoded_signal_header = (char *) malloc(sizeof(char) * 48);
-	//interleaving
-	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48);
-
-	int length = tx.psdu_size;
-
-	// first 4 bits represent the modulation and coding scheme
-	signal_header[ 0] = get_bit(ofdm.rate_field, 3);
-	signal_header[ 1] = get_bit(ofdm.rate_field, 2);
-	signal_header[ 2] = get_bit(ofdm.rate_field, 1);
-	signal_header[ 3] = get_bit(ofdm.rate_field, 0);
-	// 5th bit is reserved and must be set to 0
-	signal_header[ 4] = 0;
-	// then 12 bits represent the length
-	signal_header[ 5] = get_bit(length,  0);
-	signal_header[ 6] = get_bit(length,  1);
-	signal_header[ 7] = get_bit(length,  2);
-	signal_header[ 8] = get_bit(length,  3);
-	signal_header[ 9] = get_bit(length,  4);
-	signal_header[10] = get_bit(length,  5);
-	signal_header[11] = get_bit(length,  6);
-	signal_header[12] = get_bit(length,  7);
-	signal_header[13] = get_bit(length,  8);
-	signal_header[14] = get_bit(length,  9);
-	signal_header[15] = get_bit(length, 10);
-	signal_header[16] = get_bit(length, 11);
-	//18-th bit is the parity bit for the first 17 bits
-	int sum = 0;
-	for(int i = 0; i < 17; i++) {
-		if(signal_header[i]) {
-			sum++;
-		}
-	}
-	signal_header[17] = sum % 2;
-
-	// last 6 bits must be set to 0
-	for (int i = 0; i < 6; i++) {
-		signal_header[18 + i] = 0;
-	}
-
-	ofdm_param signal_ofdm(BPSK_1_2);
-	tx_param signal_tx(signal_ofdm, 3);
-	signal_tx.n_data = 24;
-	signal_tx.n_sym = 1;
-
-	// convolutional encoding (scrambling is not needed)
-	convolutional_encoding(signal_header, encoded_signal_header, signal_tx);
-	// interleaving
-	//interleave(encoded_signal_header, interleaved_signal_header, signal_tx, signal_ofdm);
-	interleave(encoded_signal_header, out, signal_tx, signal_ofdm);
-
-	free(signal_header);
-	free(encoded_signal_header);
-	free(interleaved_signal_header);
-}
 
 void generate_bits(const char *psdu, char *data_bits, tx_param &tx) {
 
