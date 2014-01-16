@@ -81,7 +81,6 @@ list(APPEND include_sources
     ofdm_preamble.h
     ofdm_sync_long.h
     ofdm_sync_short.h
-    packet_headergenerator.h
     wifi_signal_field.h
 )
 

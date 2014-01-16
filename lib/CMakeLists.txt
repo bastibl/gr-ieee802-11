@@ -113,7 +113,6 @@ list(APPEND gr_ieee802_11_sources
     ofdm_preamble.cc
     ofdm_sync_long.cc
     ofdm_sync_short.cc
-    packet_headergenerator_impl.cc
     utils.cc
     wifi_signal_field_impl.cc
 )
