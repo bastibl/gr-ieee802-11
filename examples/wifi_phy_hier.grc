@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='ASCII'?>
 <flow_graph>
-  <timestamp>Thu Jan 16 07:41:05 2014</timestamp>
+  <timestamp>Mon Jan 20 14:02:22 2014</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -64,6 +64,29 @@
     <key>variable</key>
     <param>
       <key>id</key>
+      <value>header_formatter</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>ieee802_11.wifi_signal_field()</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(518, 18)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>id</key>
       <value>sync_length</value>
     </param>
     <param>
@@ -100,29 +123,6 @@
     <param>
       <key>_coordinate</key>
       <value>(323, 14)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>id</key>
-      <value>header_formatter</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>ieee802_11.wifi_signal_field()</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(518, 18)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -829,37 +829,6 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_chunks_to_symbols_xx</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_chunks_to_symbols_xx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(499, 303)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_multiply_xx</key>
     <param>
       <key>id</key>
@@ -977,88 +946,6 @@
     </param>
   </block>
   <block>
-    <key>digital_ofdm_cyclic_prefixer</key>
-    <param>
-      <key>id</key>
-      <value>digital_ofdm_cyclic_prefixer_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>input_size</key>
-      <value>64</value>
-    </param>
-    <param>
-      <key>cp_len</key>
-      <value>16</value>
-    </param>
-    <param>
-      <key>rolloff</key>
-      <value>2</value>
-    </param>
-    <param>
-      <key>tagname</key>
-      <value>"packet_len"</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(731, 412)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_preamble</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_preamble_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(510, 428)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
     <key>pad_sink</key>
     <param>
       <key>id</key>
@@ -1098,33 +985,111 @@
     </param>
   </block>
   <block>
-    <key>blocks_tagged_stream_mux</key>
+    <key>ieee802_11_ofdm_mapper</key>
     <param>
       <key>id</key>
-      <value>blocks_tagged_stream_mux_0</value>
+      <value>ieee802_11_ofdm_mapper_0</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>type</key>
-      <value>complex</value>
+      <key>encoding</key>
+      <value>encoding</value>
     </param>
     <param>
-      <key>ninputs</key>
-      <value>2</value>
+      <key>debug</key>
+      <value>False</value>
     </param>
     <param>
-      <key>lengthtagname</key>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(135, 123)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>digital_packet_headergenerator_bb</key>
+    <param>
+      <key>id</key>
+      <value>digital_packet_headergenerator_bb_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>header_formatter</key>
+      <value>header_formatter.formatter()</value>
+    </param>
+    <param>
+      <key>len_tag_key</key>
       <value>"packet_len"</value>
     </param>
     <param>
-      <key>vlen</key>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(222, 230)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>digital_chunks_to_symbols_xx</key>
+    <param>
+      <key>id</key>
+      <value>digital_chunks_to_symbols_xx_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>in_type</key>
+      <value>byte</value>
+    </param>
+    <param>
+      <key>out_type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>symbol_table</key>
+      <value>[-1, 1]</value>
+    </param>
+    <param>
+      <key>dimension</key>
       <value>1</value>
     </param>
     <param>
-      <key>tag_preserve_head_pos</key>
+      <key>num_ports</key>
       <value>1</value>
     </param>
     <param>
@@ -1141,7 +1106,38 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(743, 269)</value>
+      <value>(494, 230)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_chunks_to_symbols_xx</key>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_chunks_to_symbols_xx_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>48000</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(499, 303)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1204,96 +1200,6 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_mapper</key>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_mapper_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>encoding</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(135, 123)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-  </block>
-  <block>
-    <key>digital_chunks_to_symbols_xx</key>
-    <param>
-      <key>id</key>
-      <value>digital_chunks_to_symbols_xx_0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>in_type</key>
-      <value>byte</value>
-    </param>
-    <param>
-      <key>out_type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>symbol_table</key>
-      <value>[-1, 1]</value>
-    </param>
-    <param>
-      <key>dimension</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>num_ports</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(494, 230)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>digital_ofdm_carrier_allocator_cvc</key>
     <param>
       <key>id</key>
@@ -1333,7 +1239,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
+      <value>1000</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1341,7 +1247,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1021, 242)</value>
+      <value>(1023, 242)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1349,21 +1255,64 @@
     </param>
   </block>
   <block>
-    <key>digital_packet_headergenerator_bb</key>
+    <key>ieee802_11_ofdm_preamble</key>
     <param>
       <key>id</key>
-      <value>digital_packet_headergenerator_bb_0</value>
+      <value>ieee802_11_ofdm_preamble_0</value>
     </param>
     <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
-      <key>header_formatter</key>
-      <value>header_formatter.formatter()</value>
+      <key>debug</key>
+      <value>False</value>
     </param>
     <param>
-      <key>len_tag_key</key>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>48000</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(510, 428)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>digital_ofdm_cyclic_prefixer</key>
+    <param>
+      <key>id</key>
+      <value>digital_ofdm_cyclic_prefixer_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>input_size</key>
+      <value>64</value>
+    </param>
+    <param>
+      <key>cp_len</key>
+      <value>16</value>
+    </param>
+    <param>
+      <key>rolloff</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>tagname</key>
       <value>"packet_len"</value>
     </param>
     <param>
@@ -1372,7 +1321,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
+      <value>48000</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1380,7 +1329,58 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(222, 230)</value>
+      <value>(731, 412)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_tagged_stream_mux</key>
+    <param>
+      <key>id</key>
+      <value>blocks_tagged_stream_mux_0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>ninputs</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>lengthtagname</key>
+      <value>"packet_len"</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>tag_preserve_head_pos</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>48000</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(743, 269)</value>
     </param>
     <param>
       <key>_rotation</key>
