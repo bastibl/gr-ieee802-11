@@ -82,6 +82,10 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 
 			// ############ INSERT MAC STUFF
 			tx_param tx(d_ofdm, psdu_length);
+			if(tx.n_sym > 120) {
+				std::cout << "packet too large" <<std::endl;
+				return 0;
+			}
 
 			//alloc memory for modulation steps
 			char *data_bits        = (char*)calloc(tx.n_data, sizeof(char));
