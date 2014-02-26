@@ -245,25 +245,22 @@ ofdm_sync_long::make(unsigned int sync_length, bool log, bool debug) {
 }
 
 const std::vector<gr_complex> ofdm_sync_long_impl::LONG = {
-gr_complex( -0.04097-0.9626011), gr_complex( 0.3179976-0.8892635), gr_complex( 0.7746551+0.6623833),
-gr_complex( 0.1688942+0.2230874), gr_complex( 0.4785908-0.7016541), gr_complex( -0.9210497-0.441444),
-gr_complex( -0.3065277-0.8493673), gr_complex( 0.7803301-0.2071068), gr_complex( 0.4267019+0.0326106),
-gr_complex( 0.0079118-0.9200371), gr_complex( -1.094439-0.379038), gr_complex( 0.1958068-0.4682544),
-gr_complex( 0.4693501-0.119512), gr_complex( -0.179866+1.285259), gr_complex( 0.9539127-0.0327648),
-gr_complex( 0.5-0.5), gr_complex( 0.2953435+0.7867532), gr_complex( -0.4576508+0.3143887),
-gr_complex( -1.050101+0.521818), gr_complex( 0.6577466+0.7388524), gr_complex( 0.5564548+0.1129757),
-gr_complex( -0.4824808+0.650289), gr_complex( -0.451641-0.1744314), gr_complex( -0.28033-1.207107),
-gr_complex( -0.9750961-0.1325297), gr_complex( -1.018595-0.164011), gr_complex( 0.6005896-0.5923234),
-gr_complex( -0.0224476+0.4301941), gr_complex( -0.7351004+0.9210297), gr_complex( 0.7337324+0.8469733),
-gr_complex( 0.0982767+0.7807964), gr_complex( -1.25+0), gr_complex( 0.0982767-0.7807964),
-gr_complex( 0.7337324-0.8469733), gr_complex( -0.7351004-0.9210297), gr_complex( -0.0224476-0.4301941),
-gr_complex( 0.6005896+0.5923234), gr_complex( -1.018595+0.164011), gr_complex( -0.9750961+0.1325297),
-gr_complex( -0.28033+1.207107), gr_complex( -0.451641+0.1744314), gr_complex( -0.4824808-0.650289),
-gr_complex( 0.5564548-0.1129757), gr_complex( 0.6577466-0.7388524), gr_complex( -1.050101-0.521818),
-gr_complex( -0.4576508-0.3143887), gr_complex( 0.2953435-0.7867532), gr_complex( 0.5+0.5),
-gr_complex( 0.9539127+0.0327648), gr_complex( -0.179866-1.285259), gr_complex( 0.4693501+0.119512),
-gr_complex( 0.1958068+0.4682544), gr_complex( -1.094439+0.379038), gr_complex( 0.0079118+0.9200371),
-gr_complex( 0.4267019-0.0326106), gr_complex( 0.7803301+0.2071068), gr_complex( -0.3065277+0.8493673),
-gr_complex( -0.9210497+0.441444), gr_complex( 0.4785908+0.7016541), gr_complex( 0.1688942-0.2230874),
-gr_complex( 0.7746551-0.6623833), gr_complex( 0.3179976+0.8892635), gr_complex( -0.04097+0.9626011),
-gr_complex( 1.25+0)};
+
+gr_complex( 1.3868,  0.0000), gr_complex(-0.0455, -1.0679), gr_complex( 0.3528, -0.9865), gr_complex( 0.8594,  0.7348),
+gr_complex( 0.1874,  0.2475), gr_complex( 0.5309, -0.7784), gr_complex(-1.0218, -0.4897), gr_complex(-0.3401, -0.9423),
+gr_complex( 0.8657, -0.2298), gr_complex( 0.4734,  0.0362), gr_complex( 0.0088, -1.0207), gr_complex(-1.2142, -0.4205),
+gr_complex( 0.2172, -0.5195), gr_complex( 0.5207, -0.1326), gr_complex(-0.1995,  1.4259), gr_complex( 1.0583, -0.0363),
+gr_complex( 0.5547, -0.5547), gr_complex( 0.3277,  0.8728), gr_complex(-0.5077,  0.3488), gr_complex(-1.1650,  0.5789),
+gr_complex( 0.7297,  0.8197), gr_complex( 0.6173,  0.1253), gr_complex(-0.5353,  0.7214), gr_complex(-0.5011, -0.1935),
+gr_complex(-0.3110, -1.3392), gr_complex(-1.0818, -0.1470), gr_complex(-1.1300, -0.1820), gr_complex( 0.6663, -0.6571),
+gr_complex(-0.0249,  0.4773), gr_complex(-0.8155,  1.0218), gr_complex( 0.8140,  0.9396), gr_complex( 0.1090,  0.8662),
+gr_complex(-1.3868,  0.0000), gr_complex( 0.1090, -0.8662), gr_complex( 0.8140, -0.9396), gr_complex(-0.8155, -1.0218),
+gr_complex(-0.0249, -0.4773), gr_complex( 0.6663,  0.6571), gr_complex(-1.1300,  0.1820), gr_complex(-1.0818,  0.1470),
+gr_complex(-0.3110,  1.3392), gr_complex(-0.5011,  0.1935), gr_complex(-0.5353, -0.7214), gr_complex( 0.6173, -0.1253),
+gr_complex( 0.7297, -0.8197), gr_complex(-1.1650, -0.5789), gr_complex(-0.5077, -0.3488), gr_complex( 0.3277, -0.8728),
+gr_complex( 0.5547,  0.5547), gr_complex( 1.0583,  0.0363), gr_complex(-0.1995, -1.4259), gr_complex( 0.5207,  0.1326),
+gr_complex( 0.2172,  0.5195), gr_complex(-1.2142,  0.4205), gr_complex( 0.0088,  1.0207), gr_complex( 0.4734, -0.0362),
+gr_complex( 0.8657,  0.2298), gr_complex(-0.3401,  0.9423), gr_complex(-1.0218,  0.4897), gr_complex( 0.5309,  0.7784),
+gr_complex( 0.1874, -0.2475), gr_complex( 0.8594, -0.7348), gr_complex( 0.3528,  0.9865), gr_complex(-0.0455,  1.0679)
+
+};
