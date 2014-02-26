@@ -24,133 +24,41 @@ using namespace gr::ieee802_11;
 
 class ofdm_preamble_impl : public ofdm_preamble {
 
-static const int SYMBOL_LENGTH = 80;
-
 public:
-ofdm_preamble_impl(bool debug) : block("ofdm_preamble",
+ofdm_preamble_impl(bool debug) : tagged_stream_block("ofdm_preamble",
 			gr::io_signature::make(1, 1, sizeof(gr_complex)),
-			gr::io_signature::make(1, 1, sizeof(gr_complex))),
-			d_debug(debug),
-			d_state(IDLE) {
-
-	set_relative_rate(1);
-	set_output_multiple(SYMBOL_LENGTH);
+			gr::io_signature::make(1, 1, sizeof(gr_complex)),
+			"packet_len"),
+			d_debug(debug) {
 	set_tag_propagation_policy(block::TPP_DONT);
 }
 
 ~ofdm_preamble_impl(){
 }
 
-int general_work (int noutput_items, gr_vector_int& ninput_items,
+int calculate_output_stream_length(const gr_vector_int &ninput_items) {
+	return ninput_items[0] + 320;
+}
+
+int work (int noutput_items, gr_vector_int& ninput_items,
 		gr_vector_const_void_star& input_items,
 		gr_vector_void_star& output_items) {
-
-	int ninput = ninput_items[0] / SYMBOL_LENGTH;
-	//assert(ninput_items[0] % SYMBOL_LENGTH == 0);
-	int noutput = noutput_items / SYMBOL_LENGTH;
 
 	const gr_complex *in = (const gr_complex*)input_items[0];
 	gr_complex *out = (gr_complex*)output_items[0];
 
-	int written = 0;
-	int consumed = 0;
+	std::memcpy(out, PREAMBLE, 320 * sizeof(gr_complex));
+	std::memcpy(out + 320, in, ninput_items[0] * sizeof(gr_complex));
 
-	const uint64_t nread = this->nitems_read(0);
-	std::vector<gr::tag_t> tags;
-	pmt::pmt_t key = pmt::string_to_symbol("tx_sob");
-	pmt::pmt_t srcid = pmt::string_to_symbol(this->name());
 
-	dout << "OFDM PREAMBLE: input size: " << ninput_items[0] << "   output size: "
-	     << noutput_items << std::endl;
+	int produced = ninput_items[0] + 320;
+	const pmt::pmt_t value = pmt::PMT_T;
+	const pmt::pmt_t src = pmt::string_to_symbol(alias());
 
-	while(written < noutput) {
+	add_item_tag(0, nitems_written(0), pmt::mp("tx_sob"), value, src);
+	add_item_tag(0, nitems_written(0) + produced - 1, pmt::mp("tx_eob"), value, src);
 
-		// debug
-		dout << "OFDM PREAMBLE: iteration - consumed: " << consumed <<
-				"   written:" << written << std::endl;
-		//assert((consumed + 1) * SYMBOL_LENGTH <= ninput_items[0]);
-
-		switch(d_state) {
-
-		case IDLE:
-
-			if(consumed >= ninput) {
-				goto out;
-			}
-
-			dout << "OFDM PREAMBLE: start of new frame" << std::endl;
-
-			get_tags_in_range(tags, 0, nread + consumed * SYMBOL_LENGTH,
-								nread + (consumed + 1) * SYMBOL_LENGTH - 1,
-								pmt::string_to_symbol("ofdm_start"));
-
-			// looks like we changed to modulation scheme during the frame
-			if(tags.size() != 1) {
-				std::cout << "PREAMBLE: frame is longer than expected" << std::endl;
-				throw std::runtime_error("PREAMBLE: frame is too long");
-				break;
-			}
-			d_frame_left = pmt::to_uint64(tags[0].value);
-			d_preamble_left = 4;
-			d_state = PRE;
-
-			// add tag to indicate start of odfm frame
-			add_item_tag(0, this->nitems_written(0) + written * SYMBOL_LENGTH, key, pmt::PMT_T, srcid);
-
-			// FALL THROUGH !!!!!
-
-		case PRE:
-
-			dout << "OFDM PREAMBLE: copy preamble" << std::endl;
-
-			memcpy(out, PREAMBLE + (4 - d_preamble_left) * SYMBOL_LENGTH,
-					SYMBOL_LENGTH * sizeof(gr_complex));
-
-			out += SYMBOL_LENGTH;
-			written++;
-			d_preamble_left--;
-
-			if(!d_preamble_left) {
-				d_state = FRAME;
-			}
-
-			break;
-
-		case FRAME:
-			if(consumed >= ninput) {
-				goto out;
-			}
-
-			dout << "OFDM PREAMBLE: copy frame" << std::endl;
-
-			memcpy(out, in, SYMBOL_LENGTH * sizeof(gr_complex));
-
-			consumed++;
-			in += SYMBOL_LENGTH;
-			out += SYMBOL_LENGTH;
-			written++;
-			d_frame_left--;
-
-			if(!d_frame_left) {
-				d_state = IDLE;
-				insert_eob(nitems_written(0) + written * SYMBOL_LENGTH -1);
-				goto out;
-			}
-
-			break;
-
-		default:
-			assert(false);
-			break;
-		}
-	}
-
-out:
-
-	dout << "PREAMBLE: consumed " << consumed * SYMBOL_LENGTH;
-	dout << "    written " << written * SYMBOL_LENGTH << std::endl;
-	consume(0, consumed * SYMBOL_LENGTH);
-	return written * SYMBOL_LENGTH;
+	return produced;
 }
 
 void insert_eob(uint64_t item) {
@@ -159,27 +67,10 @@ void insert_eob(uint64_t item) {
 	const pmt::pmt_t eob_key = pmt::string_to_symbol("tx_eob");
 	const pmt::pmt_t value = pmt::PMT_T;
 	const pmt::pmt_t srcid = pmt::string_to_symbol(this->name());
-	add_item_tag(0, item, eob_key, value, srcid);
-}
-
-void
-forecast (int noutput_items, gr_vector_int &ninput_items_required)
-{
-	if(d_state == PRE) {
-		ninput_items_required[0] = 0;
-	} else {
-		ninput_items_required[0] = noutput_items;
-	}
-
-	dout << "forecast noutput_items: " << noutput_items << "  required: " << ninput_items_required[0] << std::endl;
 }
 
 private:
 	bool   d_debug;
-	size_t d_preamble_left;
-	size_t d_frame_left;
-	enum {IDLE, PRE, FRAME} d_state;
-
 	static gr_complex PREAMBLE[320];
 };
 

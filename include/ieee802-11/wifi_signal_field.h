@@ -14,25 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_PREAMBLE_H
-#define INCLUDED_IEEE802_11_OFDM_PREAMBLE_H
+
+#ifndef INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H
+#define INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H
 
 #include <ieee802-11/api.h>
-#include <gnuradio/tagged_stream_block.h>
+#include <gnuradio/digital/packet_header_default.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API ofdm_preamble : virtual public tagged_stream_block
+class IEEE802_11_API wifi_signal_field : virtual public digital::packet_header_default
 {
 public:
+	typedef boost::shared_ptr<wifi_signal_field> sptr;
+	static sptr make();
 
-	typedef boost::shared_ptr<ofdm_preamble> sptr;
-	static sptr make(bool debug = false);
-
+protected:
+	wifi_signal_field();
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_OFDM_PREAMBLE_H */
+#endif /* INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H */
+

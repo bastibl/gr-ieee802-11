@@ -29,7 +29,7 @@ static const int DATA_CARRIERS = 48;
 ofdm_mapper_impl(Encoding e, bool debug) :
 	block ("ofdm_mapper",
 			gr::io_signature::make(0, 0, 0),
-			gr::io_signature::make(1, 1, DATA_CARRIERS * sizeof(gr_complex))),
+			gr::io_signature::make(1, 1, sizeof(char))),
 			d_symbols_offset(0),
 			d_symbols(NULL),
 			d_debug(debug),
@@ -45,6 +45,7 @@ ofdm_mapper_impl(Encoding e, bool debug) :
 
 void print_message(const char *msg, size_t len) {
 
+
 	dout << std::hex << "OFDM MAPPER input symbols" << std::endl
 		<< "===========================" << std::endl;
 
@@ -55,25 +56,12 @@ void print_message(const char *msg, size_t len) {
 	dout << std::dec << std::endl;
 }
 
-void map_to_symbols(const char *bits, size_t len) {
-
-	dout << "OFDM MAPPER complex symbols" << std::endl
-		<< "===========================" << std::endl;
-
-	for(int i = 0; i < len; i++) {
-
-		// the signal field is bpsk encoded
-		d_symbols[i] = (i < 48) ? BPSK[bits[i]] : mapping[bits[i]];
-		dout << d_symbols[i] << " ";
-	}
-	dout << std::endl;
-}
 
 int general_work(int noutput, gr_vector_int& ninput_items,
 			gr_vector_const_void_star& input_items,
 			gr_vector_void_star& output_items ) {
 
-	gr_complex *out = (gr_complex*)output_items[0];
+	unsigned char *out = (unsigned char*)output_items[0];
 	dout << "OFDM MAPPER called offset: " << d_symbols_offset <<
 		"   length: " << d_symbols_len << std::endl;
 
@@ -92,11 +80,12 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			int psdu_length = pmt::blob_length(pmt::cdr(msg));
 			const char *psdu = static_cast<const char*>(pmt::blob_data(pmt::cdr(msg)));
 
-
 			// ############ INSERT MAC STUFF
 			tx_param tx(d_ofdm, psdu_length);
-			//tx.print_out();
-			//ofdm.print_out();
+			if(tx.n_sym > 120) {
+				std::cout << "packet too large" <<std::endl;
+				return 0;
+			}
 
 			//alloc memory for modulation steps
 			char *data_bits        = (char*)calloc(tx.n_data, sizeof(char));
@@ -104,7 +93,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			char *encoded_data     = (char*)calloc(tx.n_data * 2, sizeof(char));
 			char *punctured_data   = (char*)calloc(tx.n_encoded_bits, sizeof(char));
 			char *interleaved_data = (char*)calloc(tx.n_encoded_bits, sizeof(char));
-			char *symbols          = (char*)calloc((tx.n_encoded_bits / d_ofdm.n_bpsc) + 48, sizeof(char));
+			char *symbols          = (char*)calloc((tx.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
 
 			//generate the OFDM data field, adding service field and pad bits
 			generate_bits(psdu, data_bits, tx);
@@ -126,30 +115,28 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			interleave(punctured_data, interleaved_data, tx, d_ofdm);
 			//std::cout << "interleaved" << std::endl;
 
-			split_symbols(interleaved_data, symbols + 48, tx, d_ofdm);
-			//std::cout << "split" << std::endl;
-			generate_signal_field(symbols, tx, d_ofdm);
-			//std::cout << "signal" << std::endl;
+                        // one byte per symbol
+			split_symbols(interleaved_data, symbols, tx, d_ofdm);
 
-			d_symbols_len = (tx.n_sym + 1) * 48;
-			assert(d_symbols_len % 48 == 0);
+			d_symbols_len = tx.n_sym * 48;
 
-
-			// ############ INSERT MAC STUFF
-
-			d_symbols = static_cast<gr_complex*>(std::malloc(d_symbols_len * sizeof(gr_complex)));
+			d_symbols = (char*)calloc(d_symbols_len, 1);
+			std::memcpy(d_symbols, symbols, d_symbols_len);
 
 
-			print_message(static_cast<const char*>(symbols), d_symbols_len);
-			map_to_symbols(static_cast<const char*>(symbols), d_symbols_len);
+			// add tags
+			pmt::pmt_t key = pmt::string_to_symbol("packet_len");
+			pmt::pmt_t value = pmt::from_long(d_symbols_len);
+			pmt::pmt_t srcid = pmt::string_to_symbol(alias());
+			add_item_tag(0, nitems_written(0), key, value, srcid);
 
+			pmt::pmt_t psdu_bytes = pmt::from_long(psdu_length);
+			add_item_tag(0, nitems_written(0), pmt::mp("psdu_len"),
+					psdu_bytes, srcid);
 
-
-			// add tag to indicate start of odfm frame
-			const pmt::pmt_t key = pmt::string_to_symbol("ofdm_start");
-			const pmt::pmt_t value = pmt::from_uint64((d_symbols_len / DATA_CARRIERS));
-			const pmt::pmt_t srcid = pmt::string_to_symbol(this->name());
-			add_item_tag(0, this->nitems_written(0), key, value, srcid);
+                        pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
+                        add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
+                                        encoding, srcid);
 
 
 			free(data_bits);
@@ -163,24 +150,15 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 		}
 	}
 
-	int i = 0;
-	while(i < noutput) {
+	int i = std::min(noutput, d_symbols_len - d_symbols_offset);
+	std::memcpy(out, d_symbols + d_symbols_offset, i);
+	d_symbols_offset += i;
 
-		memcpy(out, d_symbols + d_symbols_offset, DATA_CARRIERS * sizeof(gr_complex));
-
-		i++;
-		d_symbols_offset += DATA_CARRIERS;
-		out += DATA_CARRIERS;
-
-		if(d_symbols_offset == d_symbols_len) {
-			d_symbols_offset = 0;
-			free(d_symbols);
-			break;
-		}
+	if(d_symbols_offset == d_symbols_len) {
+		d_symbols_offset = 0;
+		free(d_symbols);
 	}
 
-	dout << "OFDM MAPPER: output size: " <<  noutput <<
-			"   produced items: " << i << std::endl;
 	return i;
 }
 
@@ -190,43 +168,15 @@ void set_encoding(Encoding encoding) {
 	gr::thread::scoped_lock lock(d_mutex);
 
 	d_ofdm = ofdm_param(encoding);
-
-	switch (encoding) {
-	case BPSK_1_2:
-	case BPSK_3_4:
-		mapping = BPSK;
-		break;
-
-	case QPSK_1_2:
-	case QPSK_3_4:
-		mapping = QPSK;
-		break;
-
-	case QAM16_1_2:
-	case QAM16_3_4:
-		mapping = QAM16;
-		break;
-
-	case QAM64_2_3:
-	case QAM64_3_4:
-		mapping = QAM64;
-		break;
-
-	default:
-		throw std::invalid_argument("wrong encoding");
-		break;
-	}
 }
 
 private:
 	bool         d_debug;
-	gr_complex*  d_symbols;
+	char*        d_symbols;
 	int          d_symbols_offset;
 	int          d_symbols_len;
 	ofdm_param   d_ofdm;
 	gr::thread::mutex d_mutex;
-
-	const        gr_complex *mapping;
 };
 
 ofdm_mapper::sptr

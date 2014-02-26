@@ -101,6 +101,7 @@ include_directories(
 ########################################################################
 list(APPEND gr_ieee802_11_sources
     ${generated_sources}
+    chunks_to_symbols_impl.cc
     ether_encap_impl.cc
     ofdm_decode_mac.cc
     ofdm_decode_signal.cc
@@ -109,11 +110,11 @@ list(APPEND gr_ieee802_11_sources
     ofdm_mac.cc
     ofdm_mapper.cc
     ofdm_parse_mac.cc
-    ofdm_pilot.cc
     ofdm_preamble.cc
     ofdm_sync_long.cc
     ofdm_sync_short.cc
     utils.cc
+    wifi_signal_field_impl.cc
 )
 
 list(APPEND gr_ieee802_11_libs
@@ -122,6 +123,7 @@ list(APPEND gr_ieee802_11_libs
     ${GNURADIO_FFT_LIBRARIES}
     ${GNURADIO_PMT_LIBRARIES}
     ${GNURADIO_FILTER_LIBRARIES}
+    ${GNURADIO_DIGITAL_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
