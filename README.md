@@ -65,7 +65,7 @@ To actually install the blocks do
 
 ### OFDM PHY
 
-The physical layer is encapsulated in a hierarchical block to allow for a clearer transceiver structure in GNU Radio Companion. This hierarchical block is not included in the installation process. You have to open ```/examples/ofdm_phy_hier.grc``` with GNU Radio Companion and build it. This will install the block in ```~/.grc_gnuradio/```.
+The physical layer is encapsulated in a hierarchical block to allow for a clearer transceiver structure in GNU Radio Companion. This hierarchical block is not included in the installation process. You have to open ```/examples/wifi_phy_hier.grc``` with GNU Radio Companion and build it. This will install the block in ```~/.grc_gnuradio/```.
 
 
 ### Check message port connections
@@ -91,7 +91,7 @@ If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to
 
 # Checking you installation
 
-As a first step I recommend to test the ```ofdm_loopback.grc``` flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
+As a first step I recommend to test the ```wifi_loopback.grc``` flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
 
 ## Troubleshooting
 
@@ -119,7 +119,7 @@ The loopback flow graph should give you an idea of how simulations can be conduc
 
 ## Unidirectional communication
 
-As first over the air test I recommend to try ```ofdm_rx.grc``` and ```ofdm_tx.grc```. Just open the flow graphs in GNU Radio companion and execute them. If it does not work out of the box, try to play around with the gain. If everything works as intended you should see similar output as in the ```ofdm_loopback.grc``` example.
+As first over the air test I recommend to try ```wifi_rx.grc``` and ```wifi_tx.grc```. Just open the flow graphs in GNU Radio companion and execute them. If it does not work out of the box, try to play around with the gain. If everything works as intended you should see similar output as in the ```wifi_loopback.grc``` example.
 
 
 ## RX frames from a WiFi card
