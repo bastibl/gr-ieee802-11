@@ -134,10 +134,18 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			add_item_tag(0, nitems_written(0), pmt::mp("psdu_len"),
 					psdu_bytes, srcid);
 
-                        pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
-                        add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
-                                        encoding, srcid);
+			pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
+			add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
+					encoding, srcid);
 
+			pmt::pmt_t dict_items(pmt::dict_items(pmt::car(msg)));
+			while (!pmt::is_null(dict_items)) {
+				pmt::pmt_t this_item(pmt::car(dict_items));
+
+				add_item_tag(0, nitems_written(0), pmt::car(this_item),
+						pmt::cdr(this_item), srcid);
+				dict_items = pmt::cdr(dict_items);
+			}
 
 			free(data_bits);
 			free(scrambled_data);
