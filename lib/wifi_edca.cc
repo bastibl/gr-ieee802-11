@@ -38,22 +38,60 @@ wifi_edca_impl(std::vector<uint16_t> cw_min, std::vector<uint16_t>aifsn) :
 		m_cw_min(cw_min), m_aifsn(aifsn)
 		{
 
-	assert(cw_min.size() == aifsn.size());
+	if(cw_min.size() != aifsn.size()) {
+		throw std::invalid_argument("WiFi EDCA: cw_min and aifsn parameters have to have same length");
+	}
+
+	if(cw_min.size() == 0) {
+		throw std::invalid_argument("WiFi EDCA need cw_min and aifsn");
+	}
 
 	message_port_register_out(pmt::mp("mac out"));
 
-	for(int i = 0; i < cw_min.size(); i++) {
-		std::stringstream sstm;
-		sstm << "ac in" << i;
-		message_port_register_in(pmt::mp(sstm.str()));
-		set_msg_handler(pmt::mp(sstm.str()), boost::bind(&wifi_edca_impl::ac_in, this, _1, i));
+	if(cw_min.size() == 1) {
+		message_port_register_in(pmt::mp("ac_in"));
+		set_msg_handler(pmt::mp("ac_in"), boost::bind(&wifi_edca_impl::ac_in, this, _1, 0));
+	} else {
+		for(int i = 0; i < cw_min.size(); i++) {
+			std::stringstream sstm;
+			sstm << "ac in" << i;
+			message_port_register_in(pmt::mp(sstm.str()));
+			set_msg_handler(pmt::mp(sstm.str()), boost::bind(&wifi_edca_impl::ac_in, this, _1, i));
+		}
 	}
 
 }
 
 void ac_in (pmt::pmt_t msg, int i) {
 	std::cout << "ac " << i << std::endl;
-	message_port_pub(pmt::mp("mac out"), msg);
+
+	if(pmt::is_eof_object(msg)) {
+		message_port_pub(pmt::mp("mac out"), pmt::PMT_EOF);
+		detail().get()->set_done(true);
+
+	} else if(pmt::is_symbol(msg)) {
+
+		std::string  str;
+		str = pmt::symbol_to_string(msg);
+
+		pmt::pmt_t dict = pmt::make_dict();
+		dict = pmt::dict_add(dict, pmt::mp("cw_min"), pmt::from_long(m_cw_min[i]));
+		dict = pmt::dict_add(dict, pmt::mp("aifsn"), pmt::from_long(m_aifsn[i]));
+
+		pmt::pmt_t blob = pmt::make_blob(str.data(), str.length());
+		pmt::pmt_t pair = pmt::cons(dict, blob);
+
+		message_port_pub(pmt::mp("mac out"), pair);
+
+	} else if(pmt::is_pair(msg)) {
+		pmt::pmt_t dict = pmt::car(msg);
+		dict = pmt::dict_add(dict, pmt::mp("cw_min"), pmt::from_long(m_cw_min[i]));
+		dict = pmt::dict_add(dict, pmt::mp("aifsn"), pmt::from_long(m_aifsn[i]));
+		message_port_pub(pmt::mp("mac out"), pmt::cons(dict, pmt::cdr(msg)));
+
+	} else {
+		throw std::invalid_argument("WiFi EDCA expects PDUs or strings");
+	}
 }
 
 private:
