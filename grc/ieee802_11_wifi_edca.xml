@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<block>
+	<name>WiFi EDCA</name>
+	<key>ieee802_11_wifi_edca</key>
+	<category>IEEE802.11</category>
+	<import>import ieee802_11</import>
+	<make>ieee802_11.wifi_edca($cw_min, $aifsn)</make>
+
+	<param>
+		<name>CW min</name>
+		<key>cw_min</key>
+		<value>[15, 15, 7, 3]</value>
+		<type>int_vector</type>
+	</param>
+
+	<param>
+		<name>AIFSN [slots]</name>
+		<key>aifsn</key>
+		<value>[9, 6, 3, 2]</value>
+		<type>int_vector</type>
+	</param>
+
+	<check>len($cw_min) == len($aifsn)</check>
+
+	<sink>
+		<name>ac in</name>
+		<type>message</type>
+		<nports>len($cw_min)</nports>
+		<optional>1</optional>
+	</sink>
+
+	<source>
+		<name>mac out</name>
+		<type>message</type>
+	</source>
+</block>
