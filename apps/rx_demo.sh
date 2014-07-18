@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FILE="/tmp/ofdm.pcap"
-FLOWGRAPH="rx_demo.py"
+FLOWGRAPH="wifi_rx.py"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ### create fifo
