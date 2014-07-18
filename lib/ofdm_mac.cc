@@ -120,26 +120,11 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *
 	header.frame_control = 0x0008;
 	header.duration = 0x002e;
 
-	header.addr1[0] = d_dst_mac[0];
-	header.addr1[1] = d_dst_mac[1];
-	header.addr1[2] = d_dst_mac[2];
-	header.addr1[3] = d_dst_mac[3];
-	header.addr1[4] = d_dst_mac[4];
-	header.addr1[5] = d_dst_mac[5];
-
-	header.addr2[0] = d_src_mac[0];
-	header.addr2[1] = d_src_mac[1];
-	header.addr2[2] = d_src_mac[2];
-	header.addr2[3] = d_src_mac[3];
-	header.addr2[4] = d_src_mac[4];
-	header.addr2[5] = d_src_mac[5];
-
-	header.addr3[0] = d_bss_mac[0];
-	header.addr3[1] = d_bss_mac[1];
-	header.addr3[2] = d_bss_mac[2];
-	header.addr3[3] = d_bss_mac[3];
-	header.addr3[4] = d_bss_mac[4];
-	header.addr3[5] = d_bss_mac[5];
+	for(int i = 0; i < 6; i++) {
+		header.addr1[i] = d_dst_mac[i];
+		header.addr2[i] = d_src_mac[i];
+		header.addr3[i] = d_bss_mac[i];
+	}
 
 	header.seq_nr = 0;
 	for (int i = 0; i < 12; i++) {
