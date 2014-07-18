@@ -38,7 +38,7 @@ class ofdm_mac_impl : public ofdm_mac {
 
 public:
 
-ofdm_mac_impl() :
+ofdm_mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) :
 		block("ofdm_mac",
 			gr::io_signature::make(0, 0, 0),
 			gr::io_signature::make(0, 0, 0)),
@@ -52,6 +52,16 @@ ofdm_mac_impl() :
 
 	message_port_register_in(pmt::mp("phy in"));
 	set_msg_handler(pmt::mp("phy in"), boost::bind(&ofdm_mac_impl::phy_in, this, _1));
+
+	if(!check_mac(src_mac)) throw std::invalid_argument("wrong mac address size");
+	if(!check_mac(dst_mac)) throw std::invalid_argument("wrong mac address size");
+	if(!check_mac(bss_mac)) throw std::invalid_argument("wrong mac address size");
+
+	for(int i = 0; i < 6; i++) {
+		d_src_mac[i] = src_mac[i];
+		d_dst_mac[i] = dst_mac[i];
+		d_bss_mac[i] = bss_mac[i];
+	}
 }
 
 void phy_in (pmt::pmt_t msg) {
@@ -110,26 +120,26 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *
 	header.frame_control = 0x0008;
 	header.duration = 0x002e;
 
-	header.addr1[0] = 0x30;
-	header.addr1[1] = 0x14;
-	header.addr1[2] = 0x4a;
-	header.addr1[3] = 0xe6;
-	header.addr1[4] = 0x46;
-	header.addr1[5] = 0xe4;
+	header.addr1[0] = d_dst_mac[0];
+	header.addr1[1] = d_dst_mac[1];
+	header.addr1[2] = d_dst_mac[2];
+	header.addr1[3] = d_dst_mac[3];
+	header.addr1[4] = d_dst_mac[4];
+	header.addr1[5] = d_dst_mac[5];
 
-	header.addr2[0] = 0x12;
-	header.addr2[1] = 0x34;
-	header.addr2[2] = 0x56;
-	header.addr2[3] = 0x78;
-	header.addr2[4] = 0x90;
-	header.addr2[5] = 0xab;
+	header.addr2[0] = d_src_mac[0];
+	header.addr2[1] = d_src_mac[1];
+	header.addr2[2] = d_src_mac[2];
+	header.addr2[3] = d_src_mac[3];
+	header.addr2[4] = d_src_mac[4];
+	header.addr2[5] = d_src_mac[5];
 
-	header.addr3[0] = 0x42;
-	header.addr3[1] = 0x42;
-	header.addr3[2] = 0x42;
-	header.addr3[3] = 0x42;
-	header.addr3[4] = 0x42;
-	header.addr3[5] = 0x42;
+	header.addr3[0] = d_bss_mac[0];
+	header.addr3[1] = d_bss_mac[1];
+	header.addr3[2] = d_bss_mac[2];
+	header.addr3[3] = d_bss_mac[3];
+	header.addr3[4] = d_bss_mac[4];
+	header.addr3[5] = d_bss_mac[5];
 
 	header.seq_nr = 0;
 	for (int i = 0; i < 12; i++) {
@@ -156,15 +166,20 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *
 	memcpy(*psdu + msdu_size + 24, &fcs, sizeof(unsigned int));
 }
 
+bool check_mac(std::vector<uint8_t> mac) {
+	if(mac.size() != 6) return false;
+	return true;
+}
+
 private:
 	uint16_t d_seq_nr;
-	char d_mac1[6];
-	char d_mac2[6];
-	char d_mac3[6];
+	uint8_t d_src_mac[6];
+	uint8_t d_dst_mac[6];
+	uint8_t d_bss_mac[6];
 };
 
 ofdm_mac::sptr
-ofdm_mac::make() {
-	return gnuradio::get_initial_sptr(new ofdm_mac_impl());
+ofdm_mac::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) {
+	return gnuradio::get_initial_sptr(new ofdm_mac_impl(src_mac, dst_mac, bss_mac));
 }
 

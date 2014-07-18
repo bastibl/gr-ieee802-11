@@ -28,7 +28,9 @@ class IEEE802_11_API ofdm_mac : virtual public block
 public:
 
 	typedef boost::shared_ptr<ofdm_mac> sptr;
-	static sptr make();
+	static sptr make(std::vector<uint8_t> src_mac,
+			std::vector<uint8_t> dst_mac,
+			std::vector<uint8_t> bss_mac);
 };
 
 }  // namespace ieee802_11
