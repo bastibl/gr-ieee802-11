@@ -106,6 +106,19 @@ void app_in (pmt::pmt_t msg) {
 
 	dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
 
+	// check if csma is enabled
+	pmt::pmt_t pmt_cw = pmt::dict_ref(dict, pmt::mp("cw_min"), pmt::PMT_NIL);
+	if(pmt_cw != pmt::PMT_NIL) {
+		uint64_t cw = pmt::to_long(pmt_cw);
+		pmt::pmt_t backoffs = pmt::make_u64vector(2, 0);
+		pmt::u64vector_set(backoffs, 0, rand() % cw);
+		pmt::u64vector_set(backoffs, 1, rand() % cw);
+
+		dict = pmt::dict_add(dict, pmt::mp("backoffs"), backoffs);
+		dict = pmt::dict_add(dict, pmt::mp("csma"), pmt::PMT_T);
+	}
+
+
 	// blob
 	pmt::pmt_t mac = pmt::make_blob(psdu, psdu_length);
 
