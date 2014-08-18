@@ -157,6 +157,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 	if(d_symbols_offset == d_symbols_len) {
 		d_symbols_offset = 0;
 		free(d_symbols);
+		d_symbols = 0;
 	}
 
 	return i;
