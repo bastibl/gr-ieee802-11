@@ -83,6 +83,7 @@ set(GRC_BLOCKS_DIR      ${GR_PKG_DATA_DIR}/grc/blocks)
 set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
 find_package(Gnuradio)
 find_package(CppUnit)
+find_package(ITPP)
 
 if(NOT GNURADIO_RUNTIME_FOUND)
     message(FATAL_ERROR "GnuRadio Runtime required to compile ieee802-11")
@@ -90,6 +91,10 @@ endif()
 
 if(NOT CPPUNIT_FOUND)
     message(FATAL_ERROR "CppUnit required to compile ieee802-11")
+endif()
+
+if(NOT ITPP_FOUND)
+    message(FATAL_ERROR "ITPP required to compile ieee802-11")
 endif()
 
 ########################################################################
