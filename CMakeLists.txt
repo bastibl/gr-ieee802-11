@@ -104,6 +104,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${Boost_INCLUDE_DIRS}
     ${CPPUNIT_INCLUDE_DIRS}
+    ${ITPP_INCLUDE_DIR}
     ${GNURADIO_RUNTIME_INCLUDE_DIRS}
 )
 
