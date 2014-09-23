@@ -20,6 +20,8 @@ I use the new [logging feature](http://gnuradio.org/doc/doxygen/page_logger.html
 
 ### GNU Radio v3.7
 
+You need at least version 3.7.3.
+
 There are several ways to install GNU Radio. You can use
 
 - [pybombs](http://gnuradio.org/redmine/projects/pybombs/wiki)
