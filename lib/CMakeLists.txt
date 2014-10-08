@@ -81,21 +81,13 @@ macro(expand_cc_h_impl root)
   #install rules for the generated cc files
   list(APPEND generated_sources ${expanded_files_cc_impl})
 endmacro(expand_cc_h_impl)
+
 ########################################################################
 # Invoke macro to generate various sources
 ########################################################################
 expand_cc_h_impl(moving_average_XX cc ff)
-
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/../include
-    ${GR_BLOCKS_INCLUDE_DIRS}
-    ${GNURADIO_RUNTIME_INCLUDE_DIRS}
-    ${VOLK_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
-    ${ITPP_INCLUDE_DIR}
-)
+add_custom_target(ieee802_11_generated_sources DEPENDS ${generated_sources})
+add_dependencies(ieee802_11_generated_sources ieee802_11_generated_includes)
 
 ########################################################################
 # Setup library
@@ -120,16 +112,12 @@ list(APPEND gr_ieee802_11_sources
 
 list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
-    ${GNURADIO_RUNTIME_LIBRARIES}
-    ${GNURADIO_FFT_LIBRARIES}
-    ${GNURADIO_PMT_LIBRARIES}
-    ${GNURADIO_FILTER_LIBRARIES}
-    ${GNURADIO_DIGITAL_LIBRARIES}
+    ${GNURADIO_ALL_LIBRARIES}
     ${ITPP_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
-add_dependencies(gnuradio-ieee802_11 ieee802_11_generated_includes)
+add_dependencies(gnuradio-ieee802_11 ieee802_11_generated_sources)
 target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs})
 set_target_properties(gnuradio-ieee802_11 PROPERTIES DEFINE_SYMBOL "gnuradio_ieee802_11_EXPORTS")
 
