@@ -60,7 +60,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 	while((i < ninput_items[0]) && (o < noutput_items)) {
 
-		get_tags_in_range(tags, 0, nread + i * 48, nread + (i + 1) * 48 - 1,
+		get_tags_in_range(tags, 0, nread + i, nread + i + 1,
 			pmt::string_to_symbol("ofdm_start"));
 
 		if(tags.size()) {
