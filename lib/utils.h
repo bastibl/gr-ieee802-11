@@ -25,7 +25,7 @@
 
 #define dout d_debug && std::cout
 
-#ifdef HAVE_LOG4CPP
+#if defined(HAVE_LOG4CPP) && defined(ENABLE_GR_LOG)
 #define mylog(msg) do { if(d_log) { *d_logger << log4cpp::Priority::INFO << msg << log4cpp::eol; }} while(0);
 #else
 #define mylog(msg) do { d_log && std::cout << msg << std::endl; } while(0);

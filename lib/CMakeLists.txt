@@ -130,7 +130,7 @@ list(APPEND gr_ieee802_11_libs
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
 add_dependencies(gnuradio-ieee802_11 ieee802_11_generated_includes)
-target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs} log4cpp)
+target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs})
 set_target_properties(gnuradio-ieee802_11 PROPERTIES DEFINE_SYMBOL "gnuradio_ieee802_11_EXPORTS")
 
 ########################################################################
