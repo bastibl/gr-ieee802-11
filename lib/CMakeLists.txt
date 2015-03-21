@@ -114,6 +114,7 @@ list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
     ${GNURADIO_ALL_LIBRARIES}
     ${ITPP_LIBRARIES}
+    ${LOG4CPP_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
