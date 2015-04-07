@@ -1,4 +1,4 @@
-brief: An IEEE 802.11 a/g/p Transceiver
+brief: gr-ieee802-11
 author:
   - Bastian Bloessl <bloessl@ccs-labs.org>
 copyright_owner:
@@ -11,7 +11,7 @@ tags:
   - WiFi
   - OFDM
 website: http://www.ccs-labs.org/projects/wime/
-title: IEEE 802.11 a/g/p
+title: IEEE 802.11 a/g/p Transceiver
 icon: http://www.ccs-labs.org/projects/wime/wime.png
 ---
 This an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested it with the Ettus USRP N210 with XCVR2450 and CBX daughterboards. For interoperability tests I use mainly an Atheros (ath5k) WiFi card. The code can also be used for packet error rate simulations.
