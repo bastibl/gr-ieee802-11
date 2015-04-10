@@ -61,6 +61,7 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
 		60, 61, 62, 63};
 	qam64.set(cvec(QAM64_D, 64), ivec(qam64_bits, 64));
+	d_frame_complete = true;
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -82,6 +83,12 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			pmt::string_to_symbol("ofdm_start"));
 
 		if(tags.size()) {
+			if (d_frame_complete == false) {
+				dout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
+				dout << "Already copied " << copied << " out of " << tx.n_sym << " symbols of last frame" << std::endl;
+			}
+			d_frame_complete = false;
+
 			pmt::pmt_t tuple = tags[0].value;
 			int len_data = pmt::to_uint64(pmt::car(tuple));
 			int encoding = pmt::to_uint64(pmt::cdr(tuple));
@@ -89,19 +96,19 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			ofdm = ofdm_param((Encoding)encoding);
 			tx = tx_param(ofdm, len_data);
 
-			copied = 0;
-
-			// this frame is garbage
-			if(tx.n_sym > 100) {
-				// FIXME: make this nicer, this way garbage frames are skipped
-				copied = tx.n_sym + 1;
+			// sanity check, more than MAX_NUM_SYM may indicate garbage
+			if(tx.n_sym < MAX_NUM_SYM) {
+				copied = 0;
+				dout << "Decode MAC: frame start -- len " << len_data
+					<< "  symbols " << tx.n_sym << "  encoding "
+					<< encoding << std::endl;
+			} else {
+				dout << "Dropping frame with " << tx.n_sym << " symbols, maximum number of symbols is " << MAX_NUM_SYM << std::endl;
 			}
-			dout << "Decode MAC: frame start -- len " << len_data
-				<< "  symbols " << tx.n_sym << "  encoding "
-				<< encoding << std::endl;
 		}
 
 		if(copied < tx.n_sym) {
+			dout << "copy one symbol, copied " << copied << " out of " << tx.n_sym << std::endl;
 			std::memcpy(sym + (copied * 48), in, 48 * sizeof(gr_complex));
 			copied++;
 
@@ -110,6 +117,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 				decode();
 				in += 48;
 				i++;
+				d_frame_complete = true;
 				break;
 			}
 		}
@@ -300,12 +308,14 @@ private:
 	double deinter[1000 * 48];
 	char out_bits[40000];
 	char out_bytes[40000];
-        bvec decoded_bits;
+	bvec decoded_bits;
 	bool   d_debug;
 	bool   d_log;
+
 	tx_param tx;
 	ofdm_param ofdm;
 	int copied;
+	bool d_frame_complete;
 
 	Modulator<std::complex<double> > bpsk;
 	Modulator<std::complex<double> > qpsk;

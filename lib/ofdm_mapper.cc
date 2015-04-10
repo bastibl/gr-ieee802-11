@@ -82,8 +82,8 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 
 			// ############ INSERT MAC STUFF
 			tx_param tx(d_ofdm, psdu_length);
-			if(tx.n_sym > 120) {
-				std::cout << "packet too large" <<std::endl;
+			if(tx.n_sym > MAX_NUM_SYM) {
+				std::cout << "packet too large, maximum number of symbols is " << MAX_NUM_SYM << std::endl;
 				return 0;
 			}
 

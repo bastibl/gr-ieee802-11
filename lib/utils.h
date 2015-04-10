@@ -23,6 +23,8 @@
 #include <cinttypes>
 #include <iostream>
 
+#define MAX_NUM_SYM 520 // this should be enough to transmit 1500B user payload with BPSK 1/2
+
 #define dout d_debug && std::cout
 
 #if defined(HAVE_LOG4CPP) && defined(ENABLE_GR_LOG)
