@@ -62,6 +62,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 		gr_complex p = POLARITY[index];
 		index++;
+		index %= 127;
 
 		// FIXME: think about this... average over amplitude or power
 		double avg_mag = (abs(in[11]) + abs(in[25]) + abs(in[39]) + abs(in[53])) / 4;
