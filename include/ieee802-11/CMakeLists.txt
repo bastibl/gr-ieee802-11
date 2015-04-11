@@ -74,7 +74,6 @@ list(APPEND include_sources
     ofdm_decode_mac.h
     ofdm_decode_signal.h
     ofdm_equalize_symbols.h
-    ofdm_freq_est.h
     ofdm_mac.h
     ofdm_mapper.h
     ofdm_parse_mac.h

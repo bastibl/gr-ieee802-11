@@ -99,7 +99,6 @@ list(APPEND gr_ieee802_11_sources
     ofdm_decode_mac.cc
     ofdm_decode_signal.cc
     ofdm_equalize_symbols.cc
-    ofdm_freq_est.cc
     ofdm_mac.cc
     ofdm_mapper.cc
     ofdm_parse_mac.cc
