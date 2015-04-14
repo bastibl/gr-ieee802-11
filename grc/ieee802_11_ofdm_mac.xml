@@ -5,7 +5,7 @@
 	<key>ieee802_11_ofdm_mac</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_mac($src_mac, $dst_mac, $bss_mac)</make>
+	<make>ieee802_11.ofdm_mac($src_mac, $dst_mac, $bss_mac, $strip_header)</make>
 
 	<param>
 		<name>SRC MAC</name>
@@ -27,6 +27,22 @@
 		<value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
 		<type>int_vector</type>
 	</param>
+
+    <param>
+      <name>Strip header</name>
+      <key>strip_header</key>
+      <value>False</value>
+      <type>bool</type>
+
+      <option>
+        <name>Yes</name>
+        <key>True</key>
+      </option>
+      <option>
+        <name>No</name>
+        <key>False</key>
+      </option>
+    </param>  
 
 	<check>len($src_mac) == 6</check>
 	<check>len($dst_mac) == 6</check>

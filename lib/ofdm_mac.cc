@@ -38,11 +38,12 @@ class ofdm_mac_impl : public ofdm_mac {
 
 public:
 
-ofdm_mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) :
+ofdm_mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool strip_header) :
 		block("ofdm_mac",
 			gr::io_signature::make(0, 0, 0),
 			gr::io_signature::make(0, 0, 0)),
-		d_seq_nr(0) {
+		d_seq_nr(0),
+		d_strip_header(strip_header) {
 
 	message_port_register_out(pmt::mp("phy out"));
 	message_port_register_out(pmt::mp("app out"));
@@ -65,6 +66,19 @@ ofdm_mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::v
 }
 
 void phy_in (pmt::pmt_t msg) {
+	if (d_strip_header) {
+		// this must be a pair
+		if (!pmt::is_blob(pmt::cdr(msg)))
+			throw std::runtime_error("PMT must be blob");
+
+		// strip MAC header and only leave PHY blob
+		pmt::pmt_t blob(pmt::cdr(msg));
+		const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
+		pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
+
+		// update original msg, note that the fcs is still there
+		pmt::set_cdr(msg, msdu);
+	}
 	message_port_pub(pmt::mp("app out"), msg);
 }
 
@@ -161,10 +175,11 @@ private:
 	uint8_t d_src_mac[6];
 	uint8_t d_dst_mac[6];
 	uint8_t d_bss_mac[6];
+	bool d_strip_header;
 };
 
 ofdm_mac::sptr
-ofdm_mac::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac) {
-	return gnuradio::get_initial_sptr(new ofdm_mac_impl(src_mac, dst_mac, bss_mac));
+ofdm_mac::make(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector<uint8_t> bss_mac, bool strip_header) {
+	return gnuradio::get_initial_sptr(new ofdm_mac_impl(src_mac, dst_mac, bss_mac, strip_header));
 }
 
