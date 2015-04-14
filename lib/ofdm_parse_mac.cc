@@ -23,6 +23,8 @@
 
 using namespace gr::ieee802_11;
 
+#define FER_ALPHA 0.2f
+
 class ofdm_parse_mac_impl : public ofdm_parse_mac {
 
 public:
@@ -36,6 +38,10 @@ ofdm_parse_mac_impl(bool log, bool debug) :
 
     message_port_register_in(pmt::mp("in"));
     set_msg_handler(pmt::mp("in"), boost::bind(&ofdm_parse_mac_impl::parse, this, _1));
+
+    message_port_register_out(pmt::mp("fer"));
+    d_last_fer = 0.0f;
+    d_last_seq_no = 0;
 }
 
 ~ofdm_parse_mac_impl() {
@@ -251,13 +257,36 @@ void parse_data(char *buf, int length) {
 	}
 	dout << std::endl;
 
-	dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
+	int seq_no = int(h->seq_nr >> 4);
+	dout << "seq nr: " << seq_no << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
 	dout << "mac 2: ";
 	print_mac_address(h->addr2, true);
 	dout << "mac 3: ";
 	print_mac_address(h->addr3, true);
+
+	int lost_frames = seq_no - d_last_seq_no - 1;
+	dout << "d_last_seq_no: " << d_last_seq_no << std::endl;
+	dout << "lost frames: " << lost_frames << std::endl;
+
+	// calculate instantaneous error rate
+	float curr_fer = 0.0f;
+	if (lost_frames > 0)
+		curr_fer = 1 - (1 / (static_cast<float>(lost_frames) + 1));
+	dout << "instantaneous fer: " << curr_fer << std::endl;
+
+	// update FER estimate
+	float fer = (1.0f - FER_ALPHA) * d_last_fer + FER_ALPHA * curr_fer;
+	dout << "rolling fer: " << fer << std::endl;
+
+	// keep track of values
+	d_last_seq_no = seq_no;
+	d_last_fer = fer;
+
+	// publish FER estimate
+	pmt::pmt_t pdu = pmt::make_f32vector(1, fer * 100);
+	message_port_pub(pmt::mp("fer"), pmt::cons( pmt::PMT_NIL, pdu ));
 }
 
 void parse_control(char *buf, int length) {
@@ -341,7 +370,8 @@ void print_ascii(char* buf, int length) {
 private:
 	bool d_log;
 	bool d_debug;
-
+	float d_last_fer;
+	int d_last_seq_no;
 };
 
 ofdm_parse_mac::sptr
