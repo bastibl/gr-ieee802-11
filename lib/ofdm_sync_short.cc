@@ -22,7 +22,7 @@
 
 using namespace gr::ieee802_11;
 
-static const int MIN_GAP = 800;
+static const int MIN_GAP = 480;
 
 class ofdm_sync_short_impl : public ofdm_sync_short {
 
