@@ -22,6 +22,8 @@
 
 using namespace gr::ieee802_11;
 
+static const int MIN_GAP = 800;
+
 class ofdm_sync_short_impl : public ofdm_sync_short {
 
 public:
@@ -86,20 +88,39 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 	case COPY: {
 
-		int to_copy = std::min(d_copy_left, std::min(noutput, ninput));
-		std::memcpy(out, in, to_copy * sizeof(gr_complex));
+		int o = 0;
+		while( (o < ninput) && (o < noutput) && d_copy_left) {
+			if(in2[o] > d_threshold) {
+				if(d_plateau < MIN_PLATEAU) {
+					d_plateau++;
 
-		d_copy_left -= to_copy;
+				// there's another frame
+				} else if((MAX_SAMPLES - d_copy_left) > MIN_GAP) {
+					d_copy_left = MAX_SAMPLES;
+					d_plateau = 0;
+					insert_tag(nitems_written(0) + o);
+					dout << "SHORT Frame!" << std::endl;
+					break;
+				}
+
+			} else {
+				d_plateau = 0;
+			}
+
+			out[o] = in[o];
+			o++;
+			d_copy_left--;
+		}
 
 		if(!d_copy_left) {
 			d_state = SEARCH;
 		}
 
-		dout << "SHORT copied " << to_copy << std::endl;
+		dout << "SHORT copied " << o << std::endl;
 
-		consume(0, to_copy);
-		consume(1, to_copy);
-		return to_copy;
+		consume(0, o);
+		consume(1, o);
+		return o;
 	}
 	}
 
