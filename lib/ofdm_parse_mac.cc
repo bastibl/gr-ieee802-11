@@ -258,12 +258,12 @@ void parse_data(char *buf, int length) {
 	dout << "mac 3: ";
 	print_mac_address(h->addr3, true);
 
-	int lost_frames = seq_no - d_last_seq_no - 1;
-	dout << "d_last_seq_no: " << d_last_seq_no << std::endl;
-	dout << "lost frames: " << lost_frames << std::endl;
+	float lost_frames = seq_no - d_last_seq_no - 1;
+	if(lost_frames  < 0)
+		lost_frames += 1 << 12;
 
 	// calculate frame error rate
-	float fer = 1 - (1 / (static_cast<float>(lost_frames) + 1));
+	float fer = lost_frames / (lost_frames + 1);
 	dout << "instantaneous fer: " << fer << std::endl;
 
 	// keep track of values
