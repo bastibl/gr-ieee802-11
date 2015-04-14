@@ -309,9 +309,9 @@ private:
 	char out_bits[40000];
 	char out_bytes[40000];
 	bvec decoded_bits;
-	bool   d_debug;
-	bool   d_log;
 
+	bool d_debug;
+	bool d_log;
 	tx_param tx;
 	ofdm_param ofdm;
 	int copied;

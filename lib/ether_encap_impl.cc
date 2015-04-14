@@ -60,7 +60,7 @@ ether_encap_impl::from_wifi(pmt::pmt_t msg) {
 		return;
 	}
 
-	// this is more than neeed
+	// this is more than needed
 	char *buf = static_cast<char*>(std::malloc(data_len + sizeof(ethernet_header)));
 	ethernet_header *ehdr = reinterpret_cast<ethernet_header*>(buf);
 
