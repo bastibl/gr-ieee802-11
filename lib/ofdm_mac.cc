@@ -74,9 +74,7 @@ void phy_in (pmt::pmt_t msg) {
 	const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
 	pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24 - 4);
 
-	// update msg
-	pmt::set_cdr(msg, msdu);
-	message_port_pub(pmt::mp("app out"), msg);
+	message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
 }
 
 void app_in (pmt::pmt_t msg) {
