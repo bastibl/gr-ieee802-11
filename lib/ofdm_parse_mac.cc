@@ -31,7 +31,7 @@ ofdm_parse_mac_impl(bool log, bool debug) :
 		block("ofdm_parse_mac",
 				gr::io_signature::make(0, 0, 0),
 				gr::io_signature::make(0, 0, 0)),
-		d_log(log), d_last_seq_no(0),
+		d_log(log), d_last_seq_no(-1),
 		d_debug(debug) {
 
 	message_port_register_in(pmt::mp("in"));
