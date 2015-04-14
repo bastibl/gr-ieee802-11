@@ -23,7 +23,8 @@
 #include <cinttypes>
 #include <iostream>
 
-#define MAX_NUM_SYM 520 // this should be enough to transmit 1500B user payload with BPSK 1/2
+const int MAX_SYM = 520; // enough for 1500 byte BPSK 1/2
+const int MAX_BITS = 1530 * 8;
 
 #define dout d_debug && std::cout
 

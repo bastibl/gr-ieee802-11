@@ -34,8 +34,9 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 			gr::io_signature::make(0, 0, 0)),
 			d_log(log),
 			d_debug(debug),
-			ofdm(BPSK_1_2),
-			tx(ofdm, 0) {
+			d_ofdm(BPSK_1_2),
+			d_tx(d_ofdm, 0),
+			d_frame_complete(true) {
 
 	message_port_register_out(pmt::mp("out"));
 
@@ -61,7 +62,6 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
 		60, 61, 62, 63};
 	qam64.set(cvec(QAM64_D, 64), ivec(qam64_bits, 64));
-	d_frame_complete = true;
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -85,7 +85,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		if(tags.size()) {
 			if (d_frame_complete == false) {
 				dout << "Warning: starting to receive new frame before old frame was complete" << std::endl;
-				dout << "Already copied " << copied << " out of " << tx.n_sym << " symbols of last frame" << std::endl;
+				dout << "Already copied " << copied << " out of " << d_tx.n_sym << " symbols of last frame" << std::endl;
 			}
 			d_frame_complete = false;
 
@@ -93,26 +93,28 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			int len_data = pmt::to_uint64(pmt::car(tuple));
 			int encoding = pmt::to_uint64(pmt::cdr(tuple));
 
-			ofdm = ofdm_param((Encoding)encoding);
-			tx = tx_param(ofdm, len_data);
+			ofdm_param ofdm = ofdm_param((Encoding)encoding);
+			tx_param tx = tx_param(ofdm, len_data);
 
-			// sanity check, more than MAX_NUM_SYM may indicate garbage
-			if(tx.n_sym < MAX_NUM_SYM) {
+			// sanity check, more than MAX_SYM may indicate garbage
+			if(tx.n_sym <= MAX_SYM && tx.n_encoded_bits <= MAX_BITS) {
+				d_ofdm = ofdm;
+				d_tx = tx;
 				copied = 0;
 				dout << "Decode MAC: frame start -- len " << len_data
 					<< "  symbols " << tx.n_sym << "  encoding "
 					<< encoding << std::endl;
 			} else {
-				dout << "Dropping frame with " << tx.n_sym << " symbols, maximum number of symbols is " << MAX_NUM_SYM << std::endl;
+				dout << "Dropping frame which is too large (symbols or bits)" << std::endl;
 			}
 		}
 
-		if(copied < tx.n_sym) {
-			dout << "copy one symbol, copied " << copied << " out of " << tx.n_sym << std::endl;
+		if(copied < d_tx.n_sym) {
+			dout << "copy one symbol, copied " << copied << " out of " << d_tx.n_sym << std::endl;
 			std::memcpy(sym + (copied * 48), in, 48 * sizeof(gr_complex));
 			copied++;
 
-			if(copied == tx.n_sym) {
+			if(copied == d_tx.n_sym) {
 				dout << "received complete frame - decoding" << std::endl;
 				decode();
 				in += 48;
@@ -139,18 +141,18 @@ void decode() {
 
 	// skip service field
 	boost::crc_32_type result;
-	result.process_bytes(out_bytes + 2, tx.psdu_size);
+	result.process_bytes(out_bytes + 2, d_tx.psdu_size);
 	if(result.checksum() != 558161692) {
 		dout << "checksum wrong -- dropping" << std::endl;
 		return;
 	}
 
 	mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%")
-			% ofdm.encoding % tx.psdu_size % tx.n_sym);
+			% d_ofdm.encoding % d_tx.psdu_size % d_tx.n_sym);
 
 	// create PDU
-	pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, tx.psdu_size - 4);
-	pmt::pmt_t enc = pmt::from_uint64(ofdm.encoding);
+	pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_tx.psdu_size - 4);
+	pmt::pmt_t enc = pmt::from_uint64(d_ofdm.encoding);
 	pmt::pmt_t dict = pmt::make_dict();
 	dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
 	message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
@@ -159,12 +161,12 @@ void decode() {
 void demodulate() {
 
 	cvec symbols;
-	symbols.set_length(tx.n_sym * 48);
-	for(int i = 0; i < tx.n_sym * 48; i++) {
+	symbols.set_length(d_tx.n_sym * 48);
+	for(int i = 0; i < d_tx.n_sym * 48; i++) {
 		symbols[i] = std::complex<double>(sym[i]);
 	}
 
-	switch(ofdm.encoding) {
+	switch(d_ofdm.encoding) {
 	case BPSK_1_2:
 	case BPSK_3_4:
 
@@ -193,10 +195,10 @@ void demodulate() {
 
 void deinterleave() {
 
-	int n_cbps = ofdm.n_cbps;
+	int n_cbps = d_ofdm.n_cbps;
 	int first[n_cbps];
 	int second[n_cbps];
-	int s = std::max(ofdm.n_bpsc / 2, 1);
+	int s = std::max(d_ofdm.n_bpsc / 2, 1);
 
 	for(int j = 0; j < n_cbps; j++) {
 		first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
@@ -206,7 +208,7 @@ void deinterleave() {
 		second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
 	}
 
-	for(int i = 0; i < tx.n_sym; i++) {
+	for(int i = 0; i < d_tx.n_sym; i++) {
 		for(int k = 0; k < n_cbps; k++) {
 			deinter[i * n_cbps + second[first[k]]] = bits[i * n_cbps + k];
 		}
@@ -221,7 +223,7 @@ void decode_conv() {
 	code.set_generator_polynomials(generator, 7);
 
 	bmat puncture_matrix;
-	switch(ofdm.encoding) {
+	switch(d_ofdm.encoding) {
 	case BPSK_1_2:
 	case QPSK_1_2:
 	case QAM16_1_2:
@@ -241,12 +243,12 @@ void decode_conv() {
 	code.set_truncation_length(30);
 
 	dout << "coding rate " << code.get_rate() << std::endl;
-	dout << tx.n_encoded_bits << std::endl;
+	dout << d_tx.n_encoded_bits << std::endl;
 
-	vec rx_signal(deinter, tx.n_encoded_bits);
+	vec rx_signal(deinter, d_tx.n_encoded_bits);
 
 	code.reset();
-	decoded_bits.set_length(tx.n_encoded_bits);
+	decoded_bits.set_length(d_tx.n_encoded_bits);
 	code.decode_tail(rx_signal, decoded_bits);
 
 	//dout << "length decoded " << decoded_bits.size() << std::endl;
@@ -312,8 +314,8 @@ private:
 
 	bool d_debug;
 	bool d_log;
-	tx_param tx;
-	ofdm_param ofdm;
+	tx_param d_tx;
+	ofdm_param d_ofdm;
 	int copied;
 	bool d_frame_complete;
 
