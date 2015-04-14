@@ -91,10 +91,6 @@ void parse(pmt::pmt_t msg) {
 			break;
 	}
 
-	if(data_len < 32) {
-		return;
-	}
-
 	char *frame = (char*)pmt::blob_data(msg);
 
 	// DATA
