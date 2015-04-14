@@ -69,10 +69,12 @@ void phy_in (pmt::pmt_t msg) {
 	if (!pmt::is_blob(pmt::cdr(msg)))
 		throw std::runtime_error("PMT must be blob");
 
-	// strip MAC header and CRC
+	// strip MAC header
+	// TODO: check for frame type to determine header size
 	pmt::pmt_t blob(pmt::cdr(msg));
 	const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
-	pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24 - 4);
+	std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
+	pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
 
 	message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
 }
