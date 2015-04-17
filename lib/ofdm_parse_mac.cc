@@ -270,7 +270,7 @@ void parse_data(char *buf, int length) {
 	d_last_seq_no = seq_no;
 
 	// publish FER estimate
-	pmt::pmt_t pdu = pmt::make_f32vector(1, fer * 100);
+	pmt::pmt_t pdu = pmt::make_f32vector(lost_frames + 1, fer * 100);
 	message_port_pub(pmt::mp("fer"), pmt::cons( pmt::PMT_NIL, pdu ));
 }
 
