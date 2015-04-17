@@ -23,26 +23,25 @@
 using namespace gr::ieee802_11;
 
 static const int MIN_GAP = 480;
+static const int MAX_SAMPLES = 540 * 80;
 
 class ofdm_sync_short_impl : public ofdm_sync_short {
 
 public:
-ofdm_sync_short_impl(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool log, bool debug) : block("ofdm_sync_short",
-			gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(float)),
+ofdm_sync_short_impl(double threshold, unsigned int min_plateau, bool log, bool debug) :
+		block("ofdm_sync_short",
+			gr::io_signature::make3(3, 3, sizeof(gr_complex), sizeof(gr_complex), sizeof(float)),
 			gr::io_signature::make(1, 1, sizeof(gr_complex))),
-			d_log(log),
-			d_debug(debug),
-			d_state(SEARCH),
-			d_plateau(0),
-			MAX_SAMPLES(max_samples),
-			MIN_PLATEAU(min_plateau),
-			d_threshold(threshold) {
+		d_log(log),
+		d_debug(debug),
+		d_state(SEARCH),
+		d_plateau(0),
+		d_freq_offset(0),
+		d_copied(0),
+		MIN_PLATEAU(min_plateau),
+		d_threshold(threshold) {
 
 	set_tag_propagation_policy(block::TPP_DONT);
-}
-
-~ofdm_sync_short_impl(){
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -50,11 +49,12 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		gr_vector_void_star& output_items) {
 
 	const gr_complex *in = (const gr_complex*)input_items[0];
-	const float *in2 = (const float*)input_items[1];
+	const gr_complex *in_abs = (const gr_complex*)input_items[1];
+	const float *in_cor = (const float*)input_items[2];
 	gr_complex *out = (gr_complex*)output_items[0];
 
 	int noutput = noutput_items;
-	int ninput = std::min(ninput_items[0], ninput_items[1]);
+	int ninput = std::min(std::min(ninput_items[0], ninput_items[1]), ninput_items[2]);
 
 	// dout << "SHORT noutput : " << noutput << " ninput: " << ninput_items[0] << std::endl;
 
@@ -64,13 +64,14 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		int i;
 
 		for(i = 0; i < ninput; i++) {
-			if(in2[i] > d_threshold) {
+			if(in_cor[i] > d_threshold) {
 				if(d_plateau < MIN_PLATEAU) {
 					d_plateau++;
 
 				} else {
 					d_state = COPY;
-					d_copy_left = MAX_SAMPLES;
+					d_copied = 0;
+					d_freq_offset = arg(in_abs[i]) / 16;
 					d_plateau = 0;
 					insert_tag(nitems_written(0));
 					dout << "SHORT Frame!" << std::endl;
@@ -81,23 +82,23 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			}
 		}
 
-		consume(0, i);
-		consume(1, i);
+		consume_each(i);
 		return 0;
 	}
 
 	case COPY: {
 
 		int o = 0;
-		while( (o < ninput) && (o < noutput) && d_copy_left) {
-			if(in2[o] > d_threshold) {
+		while( o < ninput && o < noutput && d_copied < MAX_SAMPLES) {
+			if(in_cor[o] > d_threshold) {
 				if(d_plateau < MIN_PLATEAU) {
 					d_plateau++;
 
 				// there's another frame
-				} else if((MAX_SAMPLES - d_copy_left) > MIN_GAP) {
-					d_copy_left = MAX_SAMPLES;
+				} else if(d_copied > MIN_GAP) {
+					d_copied = 0;
 					d_plateau = 0;
+					d_freq_offset = arg(in_abs[o]) / 16;
 					insert_tag(nitems_written(0) + o);
 					dout << "SHORT Frame!" << std::endl;
 					break;
@@ -107,19 +108,18 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 				d_plateau = 0;
 			}
 
-			out[o] = in[o];
+			out[o] = in[o] * exp(gr_complex(0, -d_freq_offset * d_copied));
 			o++;
-			d_copy_left--;
+			d_copied++;
 		}
 
-		if(!d_copy_left) {
+		if(d_copied == MAX_SAMPLES) {
 			d_state = SEARCH;
 		}
 
 		dout << "SHORT copied " << o << std::endl;
 
-		consume(0, o);
-		consume(1, o);
+		consume_each(o);
 		return o;
 	}
 	}
@@ -139,18 +139,16 @@ void insert_tag(uint64_t item) {
 
 private:
 	enum {SEARCH, COPY} d_state;
-	int d_copy_left;
+	int d_copied;
 	int d_plateau;
+	float d_freq_offset;
 	const double d_threshold;
 	const bool d_log;
 	const bool d_debug;
-	const unsigned int MAX_SAMPLES;
 	const unsigned int MIN_PLATEAU;
 };
 
 ofdm_sync_short::sptr
-ofdm_sync_short::make(double threshold, unsigned int max_samples,
-		unsigned int min_plateau, bool log, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_sync_short_impl(threshold,
-			max_samples, min_plateau, log, debug));
+ofdm_sync_short::make(double threshold, unsigned int min_plateau, bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_sync_short_impl(threshold, min_plateau, log, debug));
 }
