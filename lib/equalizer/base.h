@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013, 2015 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,32 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
-#define INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H
 
-#include <ieee802-11/api.h>
-#include <gnuradio/block.h>
+#ifndef INCLUDED_IEEE802_11_EQUALIZER_BASE_H
+#define INCLUDED_IEEE802_11_EQUALIZER_BASE_H
 
-enum Equalizer {
-	LMS          = 0,
-	LINEAR_COMB  = 1,
-};
+#include <gnuradio/gr_complex.h>
 
 namespace gr {
 namespace ieee802_11 {
+namespace equalizer {
 
-class IEEE802_11_API ofdm_equalize_symbols : virtual public block
-{
+class base {
 public:
-
-	typedef boost::shared_ptr<ofdm_equalize_symbols> sptr;
-	static sptr make(Equalizer algo, bool debug = false);
-	virtual void set_algorithm(Equalizer algo) = 0;
-
+	virtual ~base() {};
+	virtual void equalize(const gr_complex *in, gr_complex *out, int n) = 0;
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} /* namespace channel_estimation */
+} /* namespace ieee802_11 */
+} /* namespace gr */
 
-#endif /* INCLUDED_IEEE802_11_OFDM_EQUALIZE_SYMBOLS_H*/
-
+#endif /* INCLUDED_IEEE802_11_EQUALIZER_BASE_H */

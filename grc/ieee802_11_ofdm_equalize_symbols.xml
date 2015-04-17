@@ -5,7 +5,24 @@
 	<key>ieee802_11_ofdm_equalize_symbols</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_equalize_symbols($debug)</make>
+	<make>ieee802_11.ofdm_equalize_symbols($algo, $debug)</make>
+	<callback>set_algorithm($algo)</callback>
+
+	<param>
+		<name>Algorithm</name>
+		<key>algo</key>
+		<value>ieee802_11.LINEAR_COMB</value>
+		<type>int</type>
+
+		<option>
+			<name>LMS</name>
+			<key>ieee802_11.LMS</key>
+		</option>
+		<option>
+			<name>linear comb</name>
+			<key>ieee802_11.LINEAR_COMB</key>
+		</option>
+	</param>
 
 	<param>
 		<name>Debug</name>

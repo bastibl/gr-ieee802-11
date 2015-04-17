@@ -94,6 +94,8 @@ add_dependencies(ieee802_11_generated_sources ieee802_11_generated_includes)
 ########################################################################
 list(APPEND gr_ieee802_11_sources
     ${generated_sources}
+    equalizer/linear_comb.cc
+    equalizer/lms.cc
     chunks_to_symbols_impl.cc
     ether_encap_impl.cc
     ofdm_decode_mac.cc
