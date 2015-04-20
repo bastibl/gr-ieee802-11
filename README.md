@@ -64,6 +64,10 @@ To actually install the blocks do
     sudo make install
     sudo ldconfig
 
+### Adjust Maximum Shared Memory
+Since the transmitter is using the Tagged Stream blocks it has to store a complete frame in the buffer before processing it. The default maximum shared memory might not be enough on most Linux systems. It can be increased with
+
+    sudo sysctl -w kernel.shmmax=2147483648
 
 ### OFDM PHY
 

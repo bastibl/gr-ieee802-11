@@ -94,12 +94,13 @@ add_dependencies(ieee802_11_generated_sources ieee802_11_generated_includes)
 ########################################################################
 list(APPEND gr_ieee802_11_sources
     ${generated_sources}
+    equalizer/linear_comb.cc
+    equalizer/lms.cc
     chunks_to_symbols_impl.cc
     ether_encap_impl.cc
     ofdm_decode_mac.cc
     ofdm_decode_signal.cc
     ofdm_equalize_symbols.cc
-    ofdm_freq_est.cc
     ofdm_mac.cc
     ofdm_mapper.cc
     ofdm_parse_mac.cc
@@ -115,6 +116,7 @@ list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
     ${GNURADIO_ALL_LIBRARIES}
     ${ITPP_LIBRARIES}
+    ${LOG4CPP_LIBRARIES}
 )
 
 add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})

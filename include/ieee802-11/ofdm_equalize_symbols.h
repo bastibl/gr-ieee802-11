@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2015 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,11 @@
 #include <ieee802-11/api.h>
 #include <gnuradio/block.h>
 
+enum Equalizer {
+	LMS          = 0,
+	LINEAR_COMB  = 1,
+};
+
 namespace gr {
 namespace ieee802_11 {
 
@@ -28,7 +33,8 @@ class IEEE802_11_API ofdm_equalize_symbols : virtual public block
 public:
 
 	typedef boost::shared_ptr<ofdm_equalize_symbols> sptr;
-	static sptr make(bool debug = false);
+	static sptr make(Equalizer algo, bool debug = false);
+	virtual void set_algorithm(Equalizer algo) = 0;
 
 };
 

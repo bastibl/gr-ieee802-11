@@ -31,7 +31,6 @@
 #include "ieee802-11/ofdm_decode_mac.h"
 #include "ieee802-11/ofdm_decode_signal.h"
 #include "ieee802-11/ofdm_equalize_symbols.h"
-#include "ieee802-11/ofdm_freq_est.h"
 #include "ieee802-11/ofdm_mac.h"
 #include "ieee802-11/ofdm_mapper.h"
 #include "ieee802-11/ofdm_parse_mac.h"
@@ -51,7 +50,6 @@
 %include "ieee802-11/ofdm_decode_mac.h"
 %include "ieee802-11/ofdm_decode_signal.h"
 %include "ieee802-11/ofdm_equalize_symbols.h"
-%include "ieee802-11/ofdm_freq_est.h"
 %include "ieee802-11/ofdm_mac.h"
 %include "ieee802-11/ofdm_mapper.h"
 %include "ieee802-11/ofdm_parse_mac.h"
@@ -68,7 +66,6 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_ff);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_signal);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_equalize_symbols);
-GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_freq_est);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mapper);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_parse_mac);

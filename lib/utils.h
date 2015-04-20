@@ -23,6 +23,9 @@
 #include <cinttypes>
 #include <iostream>
 
+const int MAX_SYM = 520; // enough for 1500 byte BPSK 1/2
+const int MAX_BITS = 1550 * 8 * 2;
+
 #define dout d_debug && std::cout
 
 #if defined(HAVE_LOG4CPP) && defined(ENABLE_GR_LOG)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,25 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_SYNC_SHORT_H
-#define INCLUDED_IEEE802_11_OFDM_SYNC_SHORT_H
 
-#include <ieee802-11/api.h>
-#include <gnuradio/block.h>
+#ifndef INCLUDED_IEEE802_11_EQUALIZER_LINEAR_COMB_H
+#define INCLUDED_IEEE802_11_EQUALIZER_LINEAR_COMB_H
+
+#include "base.h"
 
 namespace gr {
 namespace ieee802_11 {
+namespace equalizer {
 
-class IEEE802_11_API ofdm_sync_short : virtual public block
-{
+class linear_comb: public base {
 public:
-
-	typedef boost::shared_ptr<ofdm_sync_short> sptr;
-	static sptr make(double threshold, unsigned int min_plateau, bool log = false, bool debug = false);
-
+	virtual void equalize(const gr_complex *in, gr_complex *out, int n);
+private:
+	static const gr_complex POLARITY[127];
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} /* namespace channel_estimation */
+} /* namespace ieee802_11 */
+} /* namespace gr */
 
-#endif /* INCLUDED_IEEE802_11_OFDM_SYNC_SHORT_H */
+#endif /* INCLUDED_IEEE802_11_EQUALIZER_LINEAR_COMB_H */
+

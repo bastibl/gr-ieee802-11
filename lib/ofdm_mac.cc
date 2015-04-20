@@ -65,7 +65,18 @@ ofdm_mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::v
 }
 
 void phy_in (pmt::pmt_t msg) {
-	message_port_pub(pmt::mp("app out"), msg);
+	// this must be a pair
+	if (!pmt::is_blob(pmt::cdr(msg)))
+		throw std::runtime_error("PMT must be blob");
+
+	// strip MAC header
+	// TODO: check for frame type to determine header size
+	pmt::pmt_t blob(pmt::cdr(msg));
+	const char *mpdu = reinterpret_cast<const char *>(pmt::blob_data(blob));
+	std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
+	pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
+
+	message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
 }
 
 void app_in (pmt::pmt_t msg) {
@@ -99,10 +110,13 @@ void app_in (pmt::pmt_t msg) {
                 return;
 	}
 
+	if(msg_len > 1500) {
+		throw std::invalid_argument("Frame too large (> 1500)");
+	}
+
 	// make MAC frame
 	int    psdu_length;
-	char   *psdu;
-	generate_mac_data_frame(msdu, msg_len, &psdu, &psdu_length);
+	generate_mac_data_frame(msdu, msg_len, &psdu_length);
 
 	dict = pmt::dict_add(dict, pmt::mp("crc_included"), pmt::PMT_T);
 
@@ -120,20 +134,18 @@ void app_in (pmt::pmt_t msg) {
 
 
 	// blob
-	pmt::pmt_t mac = pmt::make_blob(psdu, psdu_length);
+	pmt::pmt_t mac = pmt::make_blob(d_psdu, psdu_length);
 
 	// pdu
 	message_port_pub(pmt::mp("phy out"), pmt::cons(dict, mac));
-
-	free(psdu);
 }
 
-void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *psdu_size) {
+void generate_mac_data_frame(const char *msdu, int msdu_size, int *psdu_size) {
 
 	// mac header
 	mac_header header;
 	header.frame_control = 0x0008;
-	header.duration = 0x002e;
+	header.duration = 0x0000;
 
 	for(int i = 0; i < 6; i++) {
 		header.addr1[i] = d_dst_mac[i];
@@ -152,18 +164,17 @@ void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *
 
 	//header size is 24, plus 4 for FCS means 28 bytes
 	*psdu_size = 28 + msdu_size;
-	*psdu = (char *) calloc(*psdu_size, sizeof(char));
 
 	//copy mac header into psdu
-	std::memcpy(*psdu, &header, 24);
+	std::memcpy(d_psdu, &header, 24);
 	//copy msdu into psdu
-	memcpy(*psdu + 24, msdu, msdu_size);
+	memcpy(d_psdu + 24, msdu, msdu_size);
 	//compute and store fcs
 	boost::crc_32_type result;
-	result.process_bytes(*psdu, msdu_size + 24);
+	result.process_bytes(d_psdu, msdu_size + 24);
 
-	unsigned int fcs = result.checksum();
-	memcpy(*psdu + msdu_size + 24, &fcs, sizeof(unsigned int));
+	uint32_t fcs = result.checksum();
+	memcpy(d_psdu + msdu_size + 24, &fcs, sizeof(uint32_t));
 }
 
 bool check_mac(std::vector<uint8_t> mac) {
@@ -176,6 +187,7 @@ private:
 	uint8_t d_src_mac[6];
 	uint8_t d_dst_mac[6];
 	uint8_t d_bss_mac[6];
+	uint8_t d_psdu[1528];
 };
 
 ofdm_mac::sptr

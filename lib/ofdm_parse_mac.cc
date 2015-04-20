@@ -31,11 +31,13 @@ ofdm_parse_mac_impl(bool log, bool debug) :
 		block("ofdm_parse_mac",
 				gr::io_signature::make(0, 0, 0),
 				gr::io_signature::make(0, 0, 0)),
-		d_log(log),
+		d_log(log), d_last_seq_no(-1),
 		d_debug(debug) {
 
-    message_port_register_in(pmt::mp("in"));
-    set_msg_handler(pmt::mp("in"), boost::bind(&ofdm_parse_mac_impl::parse, this, _1));
+	message_port_register_in(pmt::mp("in"));
+	set_msg_handler(pmt::mp("in"), boost::bind(&ofdm_parse_mac_impl::parse, this, _1));
+
+	message_port_register_out(pmt::mp("fer"));
 }
 
 ~ofdm_parse_mac_impl() {
@@ -87,10 +89,6 @@ void parse(pmt::pmt_t msg) {
 		default:
 			dout << " (unknown)" << std::endl;
 			break;
-	}
-
-	if(data_len < 32) {
-		return;
 	}
 
 	char *frame = (char*)pmt::blob_data(msg);
@@ -251,13 +249,29 @@ void parse_data(char *buf, int length) {
 	}
 	dout << std::endl;
 
-	dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
+	int seq_no = int(h->seq_nr >> 4);
+	dout << "seq nr: " << seq_no << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
 	dout << "mac 2: ";
 	print_mac_address(h->addr2, true);
 	dout << "mac 3: ";
 	print_mac_address(h->addr3, true);
+
+	float lost_frames = seq_no - d_last_seq_no - 1;
+	if(lost_frames  < 0)
+		lost_frames += 1 << 12;
+
+	// calculate frame error rate
+	float fer = lost_frames / (lost_frames + 1);
+	dout << "instantaneous fer: " << fer << std::endl;
+
+	// keep track of values
+	d_last_seq_no = seq_no;
+
+	// publish FER estimate
+	pmt::pmt_t pdu = pmt::make_f32vector(lost_frames + 1, fer * 100);
+	message_port_pub(pmt::mp("fer"), pmt::cons( pmt::PMT_NIL, pdu ));
 }
 
 void parse_control(char *buf, int length) {
@@ -341,7 +355,7 @@ void print_ascii(char* buf, int length) {
 private:
 	bool d_log;
 	bool d_debug;
-
+	int d_last_seq_no;
 };
 
 ofdm_parse_mac::sptr

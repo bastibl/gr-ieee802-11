@@ -17,6 +17,9 @@
 #include <ieee802-11/ofdm_equalize_symbols.h>
 
 #include "utils.h"
+#include "equalizer/base.h"
+#include "equalizer/linear_comb.h"
+#include "equalizer/lms.h"
 #include <gnuradio/io_signature.h>
 
 using namespace gr::ieee802_11;
@@ -25,12 +28,14 @@ using namespace gr::ieee802_11;
 class ofdm_equalize_symbols_impl : public ofdm_equalize_symbols {
 
 public:
-ofdm_equalize_symbols_impl(bool debug) : block("ofdm_equalize_symbols",
+ofdm_equalize_symbols_impl(Equalizer algo, bool debug) : block("ofdm_equalize_symbols",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
-			d_debug(debug) {
+			d_debug(debug), d_equalizer(NULL) {
 
 	set_relative_rate(1);
+	set_tag_propagation_policy(block::TPP_DONT);
+	set_algorithm(algo);
 }
 
 ~ofdm_equalize_symbols_impl(){
@@ -40,86 +45,76 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		gr_vector_const_void_star& input_items,
 		gr_vector_void_star& output_items) {
 
+	gr::thread::scoped_lock lock(d_mutex);
+
 	const gr_complex *in = (const gr_complex*)input_items[0];
 	gr_complex *out = (gr_complex*)output_items[0];
 
-	int noutput = noutput_items;
 	int i = 0;
-
-	std::vector<gr::tag_t> tags;
-	const uint64_t nread = nitems_read(0);
+	int o = 0;
 
 	dout << "SYMBOLS: input " << ninput_items[0] << "  output " << noutput_items << std::endl;
 
-	while((i < ninput_items[0]) && (i < noutput)) {
+	while((i < ninput_items[0]) && (o < noutput_items)) {
 
-		get_tags_in_range(tags, 0, nread + i, nread + i + 1,
-			pmt::string_to_symbol("ofdm_start"));
+		get_tags_in_window(tags, 0, i, i + 1, pmt::string_to_symbol("ofdm_start"));
 
+		// new WiFi frame
 		if(tags.size()) {
-			index = 0;
+			d_nsym = 0;
 		}
 
-		gr_complex p = POLARITY[index];
-		index++;
-
-		// FIXME: think about this... average over amplitude or power
-		double avg_mag = (abs(in[11]) + abs(in[25]) + abs(in[39]) + abs(in[53])) / 4;
-
-
-		double p1 = arg( p * in[11]);
-		double p2 = arg( p * in[25] * conj(p * in[11])) + p1;
-		double p3 = arg( p * in[39] * conj(p * in[25])) + p2;
-		double p4 = arg(-p * in[53] * conj(p * in[39])) + p3;
-
-		double my = (p1 + p2 + p3 + p4) / 4;
-		double mx = (11.0 + 25 + 39 + 53) / 4;
-
-		double var = (((11.0 * 11.0) + (25.0 * 25.0) + (39.0 * 39.0) + (53.0 * 53.0)) / 4) - (mx * mx);
-		double cov =  (( (p1 * 11) + (p2 * 25) + (p3 * 39) + (p4 * 53) ) / 4) - (mx * my);
-		double beta = cov / var;
-		double alpha = my - beta * mx;
-
-		int o = 0;
-		for(int n = 0; n < 64; n++) {
-			if( (n == 11) || (n == 25) || (n == 32) || (n == 39) || (n == 53) || (n < 6) || ( n > 58)) {
-				continue;
-			} else {
-				// FIXME: think about this... square or not
-				out[o] = in[n] * exp(gr_complex(0, -n * beta - alpha)) * gr_complex(1 / avg_mag, 0);
-				o++;
-			}
+		// first data symbol (= signal field)
+		if(d_nsym == 2) {
+			add_item_tag(0, nitems_written(0) + o,
+				pmt::string_to_symbol("ofdm_start"),
+				pmt::PMT_T,
+				pmt::string_to_symbol(name()));
 		}
 
+		d_equalizer->equalize(in + (i * 64), out + (o * 48), d_nsym);
+
+		if(d_nsym > 1) {
+			o++;
+		}
 		i++;
-		in += 64;
-		out += 48;
+		d_nsym++;
 	}
 
-	dout << "SYMBOLS: produced / consumed " << i << std::endl;
+	dout << "SYMBOLS: consumed " << i << "  produced " << o << std::endl;
 
 	consume(0, i);
-	return i;
+	return o;
+}
+
+void set_algorithm(Equalizer algo) {
+	gr::thread::scoped_lock lock(d_mutex);
+	delete d_equalizer;
+
+	switch(algo) {
+	case LMS:
+		dout << "LMS" << std::endl;
+		d_equalizer = new equalizer::lms();
+		break;
+
+	case LINEAR_COMB:
+		dout << "Linear Comb" << std::endl;
+		d_equalizer = new equalizer::linear_comb();
+		break;
+	}
 }
 
 private:
-	int          index;
+	int          d_nsym;
 	const bool   d_debug;
-	static const gr_complex POLARITY[127];
+	equalizer::base *d_equalizer;
+	std::vector<gr::tag_t> tags;
+	gr::thread::mutex d_mutex;
 };
 
-const gr_complex ofdm_equalize_symbols_impl::POLARITY[127] = {
-		 1, 1, 1, 1,-1,-1,-1, 1,-1,-1,-1,-1, 1, 1,-1, 1,
-		-1,-1, 1, 1,-1, 1, 1,-1, 1, 1, 1, 1, 1, 1,-1, 1,
-		 1, 1,-1, 1, 1,-1,-1, 1, 1, 1,-1, 1,-1,-1,-1, 1,
-		-1, 1,-1,-1, 1,-1,-1, 1, 1, 1, 1, 1,-1,-1, 1, 1,
-		-1,-1, 1,-1, 1,-1, 1, 1,-1,-1,-1, 1, 1,-1,-1,-1,
-		-1, 1,-1,-1, 1,-1, 1, 1, 1, 1,-1, 1,-1, 1,-1, 1,
-		-1,-1,-1,-1,-1, 1,-1, 1, 1,-1, 1,-1, 1, 1, 1,-1,
-		-1, 1,-1,-1,-1, 1, 1, 1,-1,-1,-1,-1,-1,-1,-1 };
 
 ofdm_equalize_symbols::sptr
-ofdm_equalize_symbols::make(bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_equalize_symbols_impl(debug));
+ofdm_equalize_symbols::make(Equalizer algo, bool debug) {
+	return gnuradio::get_initial_sptr(new ofdm_equalize_symbols_impl(algo, debug));
 }
 

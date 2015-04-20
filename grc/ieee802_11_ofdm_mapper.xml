@@ -11,8 +11,41 @@
 	<param>
 		<name>Encoding</name>
 		<key>encoding</key>
-		<value>0</value>
+		<value>ieee802_11.BPSK_1_2</value>
 		<type>int</type>
+
+		<option>
+			<name>BPSK 1/2</name>
+			<key>ieee802_11.BPSK_1_2</key>
+		</option>
+		<option>
+			<name>BPSK 3/4</name>
+			<key>ieee802_11.BPSK_3_4</key>
+		</option>
+		<option>
+			<name>QPSK 1/2</name>
+			<key>ieee802_11.QPSK_1_2</key>
+		</option>
+		<option>
+			<name>QPSK 3/4</name>
+			<key>ieee802_11.QPSK_3_4</key>
+		</option>
+		<option>
+			<name>16QAM 1/2</name>
+			<key>ieee802_11.16QAM_1_2</key>
+		</option>
+		<option>
+			<name>16QAM 3/4</name>
+			<key>ieee802_11.16QAM_3_4</key>
+		</option>
+		<option>
+			<name>64QAM 2/3</name>
+			<key>ieee802_11.64QAM_2_3</key>
+		</option>
+		<option>
+			<name>64QAM 3/4</name>
+			<key>ieee802_11.64QAM_3_4</key>
+		</option>
 	</param>
 
 	<param>
