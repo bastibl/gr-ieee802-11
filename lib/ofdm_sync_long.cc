@@ -66,7 +66,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 	int ninput = std::min(std::min(ninput_items[0], ninput_items[1]), 8192);
 
-	const unsigned int nread = nitems_read(0);
+	const uint64_t nread = nitems_read(0);
 	get_tags_in_range(d_tags, 0, nread, nread + ninput);
 	if (d_tags.size()) {
 		std::sort(d_tags.begin(), d_tags.end(), gr::tag_t::offset_compare);
@@ -104,6 +104,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 			if(d_offset == SYNC_LENGTH) {
 				search_frame_start();
 				d_offset = 0;
+				d_count = 0;
 				d_state = COPY;
 
 				break;
@@ -131,18 +132,13 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 			i++;
 			d_offset++;
-			if(d_offset == 1) {
-				dout << "produced " << d_count << "  " << d_count / 64.0 << std::endl;
-				d_count = 0;
-			}
 		}
 
 		break;
 
 	case RESET: {
-		int h = 0;
 		while(o < noutput) {
-			if(((d_count + h) % 64) == 0) {
+			if(((d_count + o) % 64) == 0) {
 				d_offset = 0;
 				d_state = SYNC;
 				break;
@@ -150,7 +146,6 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 				out[o] = 0;
 				o++;
 			}
-			h++;
 		}
 
 		break;
