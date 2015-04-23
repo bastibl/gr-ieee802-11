@@ -104,7 +104,6 @@ list(APPEND gr_ieee802_11_sources
     ofdm_mac.cc
     ofdm_mapper.cc
     ofdm_parse_mac.cc
-    ofdm_preamble.cc
     ofdm_sync_long.cc
     ofdm_sync_short.cc
     utils.cc

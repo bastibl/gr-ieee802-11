@@ -34,7 +34,6 @@
 #include "ieee802-11/ofdm_mac.h"
 #include "ieee802-11/ofdm_mapper.h"
 #include "ieee802-11/ofdm_parse_mac.h"
-#include "ieee802-11/ofdm_preamble.h"
 #include "ieee802-11/ofdm_sync_long.h"
 #include "ieee802-11/ofdm_sync_short.h"
 #include "ieee802-11/wifi_signal_field.h"
@@ -52,7 +51,6 @@
 %include "ieee802-11/ofdm_mac.h"
 %include "ieee802-11/ofdm_mapper.h"
 %include "ieee802-11/ofdm_parse_mac.h"
-%include "ieee802-11/ofdm_preamble.h"
 %include "ieee802-11/ofdm_sync_long.h"
 %include "ieee802-11/ofdm_sync_short.h"
 %include "ieee802-11/wifi_signal_field.h"
@@ -67,7 +65,6 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_equalize_symbols);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_mapper);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_parse_mac);
-GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_preamble);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_long);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_sync_short);
 
