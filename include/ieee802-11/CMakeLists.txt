@@ -77,7 +77,6 @@ list(APPEND include_sources
     ofdm_mac.h
     ofdm_mapper.h
     ofdm_parse_mac.h
-    ofdm_preamble.h
     ofdm_sync_long.h
     ofdm_sync_short.h
     wifi_edca.h
