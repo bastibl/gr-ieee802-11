@@ -74,7 +74,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 			if(print_signal()) {
 
-				add_item_tag(0, nitems_written(0) + o * 48,
+				add_item_tag(0, nitems_written(0) + o,
 					pmt::string_to_symbol("ofdm_start"),
 					pmt::cons(pmt::from_uint64(d_len),
 						pmt::from_uint64(d_encoding)),
