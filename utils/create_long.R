@@ -16,6 +16,8 @@ sym <- c(1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -
 freq <- c(rep(0, 6), sym, rep(0, 5))
 
 pre <- fft(fft.shift(freq), inverse=T) / sqrt(52)
+pre <- Conj(pre)
+pre <- rev(pre)
 
 
 for(i in seq(1, 64, 4)) {
