@@ -84,6 +84,7 @@ set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
 find_package(Gnuradio)
 find_package(CppUnit)
 find_package(ITPP)
+find_package(log4cpp)
 
 if(NOT GNURADIO_RUNTIME_FOUND)
     message(FATAL_ERROR "GnuRadio Runtime required to compile ieee802-11")
@@ -96,6 +97,13 @@ endif()
 if(NOT ITPP_FOUND)
     message(FATAL_ERROR "ITPP required to compile ieee802-11")
 endif()
+
+if (LOG4CPP_FOUND)
+    message(STATUS "Found LOG4CPP: ${LOG4CPP_LIBRARIES}")
+    add_definitions("-DGR_IEEE80211_LOG4CPP")
+else ()
+    message(STATUS "LOG4CPP not found (not required).")
+endif ()
 
 ########################################################################
 # On Apple only, set install name and use rpath correctly, if not already set
@@ -128,14 +136,12 @@ include_directories(
     ${CPPUNIT_INCLUDE_DIRS}
     ${ITPP_INCLUDE_DIR}
     ${GNURADIO_RUNTIME_INCLUDE_DIRS}
-    ${LOG4CPP_INCLUDE_DIRS}
 )
 
 link_directories(
     ${Boost_LIBRARY_DIRS}
     ${CPPUNIT_LIBRARY_DIRS}
     ${GNURADIO_RUNTIME_LIBRARY_DIRS}
-    ${LOG4CPP_LIBRARY_DIRS}
 )
 
 ########################################################################

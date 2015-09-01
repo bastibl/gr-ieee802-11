@@ -28,8 +28,8 @@ const int MAX_BITS = 1550 * 8 * 2;
 
 #define dout d_debug && std::cout
 
-#if defined(HAVE_LOG4CPP) && defined(ENABLE_GR_LOG)
-#define mylog(msg) do { if(d_log) { *d_logger << log4cpp::Priority::INFO << msg << log4cpp::eol; }} while(0);
+#if defined(HAVE_LOG4CPP) && defined(ENABLE_GR_LOG) && defined(GR_IEEE80211_LOG4CPP)
+#define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg) }} while(0);
 #else
 #define mylog(msg) do { d_log && std::cout << msg << std::endl; } while(0);
 #endif
