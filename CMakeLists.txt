@@ -84,7 +84,7 @@ set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
 find_package(Gnuradio)
 find_package(CppUnit)
 find_package(ITPP)
-find_package(log4cpp)
+find_package(Log4cpp)
 
 if(NOT GNURADIO_RUNTIME_FOUND)
     message(FATAL_ERROR "GnuRadio Runtime required to compile ieee802-11")
