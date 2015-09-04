@@ -139,9 +139,9 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			add_item_tag(0, nitems_written(0), pmt::mp("psdu_len"),
 					psdu_bytes, srcid);
 
-                        pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
-                        add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
-                                        encoding, srcid);
+			pmt::pmt_t encoding = pmt::from_long(d_ofdm.encoding);
+			add_item_tag(0, nitems_written(0), pmt::mp("encoding"),
+					encoding, srcid);
 
 
 			free(data_bits);
