@@ -99,8 +99,13 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			generate_bits(psdu, data_bits, tx);
 			//print_hex_array(data_bits, tx.n_data);
 
-			// first step, scrambling
-			scramble(data_bits, scrambled_data, tx, 23);
+			// scrambling
+			static uint8_t scrambler = 1;
+			scramble(data_bits, scrambled_data, tx, scrambler++);
+			if(scrambler > 127) {
+				scrambler = 1;
+			}
+
 			//print_hex_array(scrambled_data, tx.n_data);
 			// reset tail bits
 			reset_tail_bits(scrambled_data, tx);
