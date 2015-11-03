@@ -42,7 +42,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>wifi_loopback</value>
+      <value>wifi_loopback_noGUI</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -62,7 +62,7 @@
     </param>
     <param>
       <key>run_options</key>
-      <value>prompt</value>
+      <value>run</value>
     </param>
     <param>
       <key>run</key>
@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 11)</value>
+      <value>(272, 59)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -124,15 +124,15 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/ofdm.bin</value>
+      <value>/tmp/ofdm_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 187)</value>
+      <value>(64, 331)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -140,7 +140,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_file_sink_0</value>
+      <value>blocks_file_sink_0_0</value>
     </param>
     <param>
       <key>type</key>
@@ -153,53 +153,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_message_strobe</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(48, 131)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_message_strobe_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>msg</key>
-      <value>pmt.intern("".join("x" for i in range(pdu_length)))</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>period</key>
-      <value>interval</value>
     </param>
   </block>
   <block>
@@ -277,11 +230,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 545)</value>
+      <value>(296, 313)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -298,100 +251,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_null_sink</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(480, 633)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_null_sink_1</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_pdu_to_tagged_stream</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(136, 635)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_pdu_to_tagged_stream_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>tag</key>
-      <value>packet_len</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -427,7 +286,7 @@ Else: 0</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>c</value>
     </param>
     <param>
       <key>type</key>
@@ -533,7 +392,7 @@ Else: 0</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>e</value>
     </param>
     <param>
       <key>type</key>
@@ -604,6 +463,65 @@ Else: 0</value>
     </param>
   </block>
   <block>
+    <key>foo_periodic_msg_source</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(64, 131)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>foo_periodic_msg_source_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>msg</key>
+      <value>pmt.intern("Hello World!")</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>num</key>
+      <value>nmessages</value>
+    </param>
+    <param>
+      <key>interval</key>
+      <value>interval</value>
+    </param>
+    <param>
+      <key>quit</key>
+      <value>True</value>
+    </param>
+  </block>
+  <block>
     <key>foo_wireshark_connector</key>
     <param>
       <key>alias</key>
@@ -623,15 +541,15 @@ Else: 0</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 195)</value>
+      <value>(96, 259)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -685,7 +603,7 @@ Max: 0.1</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>o</value>
     </param>
     <param>
       <key>type</key>
@@ -724,7 +642,7 @@ Max: 0.1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 139)</value>
+      <value>(416, 163)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -745,53 +663,6 @@ Max: 0.1</value>
     <param>
       <key>src_mac</key>
       <value>[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_ofdm_parse_mac</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(112, 259)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_ofdm_parse_mac_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -860,7 +731,7 @@ Max: 1000</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>i</value>
     </param>
     <param>
       <key>type</key>
@@ -897,7 +768,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>id</key>
-      <value>pdu_length</value>
+      <value>nmessages</value>
     </param>
     <param>
       <key>label</key>
@@ -905,7 +776,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>n</value>
     </param>
     <param>
       <key>type</key>
@@ -913,7 +784,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>value</key>
-      <value>500</value>
+      <value>50</value>
     </param>
   </block>
   <block>
@@ -951,7 +822,7 @@ Max: 30</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>s</value>
     </param>
     <param>
       <key>type</key>
@@ -1010,20 +881,8 @@ Max: 30</value>
     </param>
   </block>
   <connection>
-    <source_block_id>blocks_message_strobe_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
-    <source_key>strobe</source_key>
-    <sink_key>app in</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
     <sink_block_id>channels_channel_model_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_pdu_to_tagged_stream_0</source_block_id>
-    <sink_block_id>blocks_null_sink_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1040,8 +899,20 @@ Max: 30</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>foo_periodic_msg_source_0</source_block_id>
+    <sink_block_id>foo_wireshark_connector_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>foo_periodic_msg_source_0</source_block_id>
+    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>app in</sink_key>
+  </connection>
+  <connection>
     <source_block_id>foo_wireshark_connector_0</source_block_id>
-    <sink_block_id>blocks_file_sink_0</sink_block_id>
+    <sink_block_id>blocks_file_sink_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1052,12 +923,6 @@ Max: 30</value>
     <sink_key>mac_in</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_parse_mac_0</source_block_id>
-    <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
-    <source_key>fer</source_key>
-    <sink_key>pdus</sink_key>
-  </connection>
-  <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
     <sink_block_id>blocks_null_sink_0</sink_block_id>
     <source_key>1</source_key>
@@ -1065,7 +930,7 @@ Max: 30</value>
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_parse_mac_0</sink_block_id>
+    <sink_block_id>foo_wireshark_connector_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>in</sink_key>
   </connection>
