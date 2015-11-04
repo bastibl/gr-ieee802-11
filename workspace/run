@@ -2,4 +2,5 @@
 for s in 5.0 10.0 15.0 20.0
 do
 make n=10 c=1 s=$s o=0 e=0 i=500
-done 
+done
+./parse.py 
