@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/ofdm_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap</value>
+      <value>result/ofdm_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap</value>
     </param>
     <param>
       <key>_coordinate</key>
