@@ -230,7 +230,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 313)</value>
+      <value>(272, 313)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -455,11 +455,11 @@ Else: 0</value>
     </param>
     <param>
       <key>pad_front</key>
-      <value>500</value>
+      <value>1000</value>
     </param>
     <param>
       <key>pad_tail</key>
-      <value>0</value>
+      <value>1000</value>
     </param>
   </block>
   <block>
