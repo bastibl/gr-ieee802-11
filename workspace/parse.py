@@ -53,4 +53,5 @@ plt.xlabel("SNR")
 plt.title("Delivery rate vs. SNR for different encoding schemes")
 plt.legend()
 plt.show()
+plt.savefig(os.path.join(path,"plot.png"))
 
