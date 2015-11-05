@@ -1,61 +1,56 @@
 #!/usr/bin/python
 
-import glob, os, re
+import glob, os, re, sys
 import matplotlib.pyplot as plt
 
-x= []
-y= []
-tmp = []
+log_info = []
 table = {}
 
-path = "result/"
+enc_table = ["BPSK 1/2", "BPSK 3/4", "QPSK 1/2",
+			 "QPSK 3/4", "16QAM 1/2", "16QAM 3/4", 
+			 "64QAM 2/3", "64QAM 3/4"]
+
+path = sys.argv[1]
 
 for filename in glob.glob(os.path.join(path, "*.log")):
-	pat = re.search(r"s([-+]?\d+.\d+)", filename)
-	pat2 = re.search(r"n(\d+)", filename)
-	pat3 = re.search(r"e(\d+)", filename)
+	snr_arg = re.search(r"s([-+]?\d+.\d+)", filename)  	# SNR
+	nfiles_arg = re.search(r"n(\d+)", filename)			# Nfiles
+	enc_arg = re.search(r"e(\d+)", filename)			# Encoding
  
-	if pat and pat2 and pat3:
-		
-		receive = sum(1 for line in open(filename))
-		total = pat2.group(1)
-		encode = pat3.group(1)
+	if snr_arg and nfiles_arg and enc_arg:
+		total = nfiles_arg.group(1)		
+		pdrate = sum(1 for line in open(filename))/float(total)
+		encode = int(enc_arg.group(1))
 
-		tmp.append((float(pat.group(1)), receive/float(total), encode))
+		log_info.append((float(snr_arg.group(1)), pdrate, encode))
 
+	else:
+		print "Missing a log file--exiting!"
+		sys.exit()
 
-for a,b,c in tmp:
-	if c not in table:
-		table[c] = [] 
-	table[c].append((a,b)) 
+print log_info
+
+for snr,pdr,enc in log_info:
+	if enc not in table:
+		table[enc] = [] 
+	table[enc].append((snr,pdr)) 
 
 print table
 
-for c in table:
-	tmp = []
-	for a,b in table[c]:
-		tmp.append((a,b))	
+for enc in sorted(table.keys()):
+	tmp = table[enc]	
 
-	tmp = sorted(tmp, key=lambda tmp: tmp[0])
+	table[enc] = sorted(tmp, key=lambda tmp: tmp[0])
 #	print tmp
-	x = []
-	y = []
-	for a,b in tmp:
-		x.append(a)
-		y.append(b)
-	print x
-	print y
-	plt.plot(x,y, label = "encode " + str(c))
-#	plt.text(x[-1], y[-1], "encode " + str(c))
-#for a,b in tmp:
-#	x.append(a)
-#	y.append(b)
-#print x
-#print y
+	x = [snr for snr,pdr in table[enc]]
+	y = [pdr for snr,pdr in table[enc]]
+
+	print enc, x, y
+	plt.plot(x, y, marker='o', label="%s" % enc_table[enc])
+
 plt.ylabel("PDR")
 plt.xlabel("SNR")
-#plt.plot(x, y)
-#plt.plot(x)
+plt.title("Delivery rate vs. SNR for different encoding schemes")
 plt.legend()
 plt.show()
 
