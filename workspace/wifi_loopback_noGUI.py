@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Wifi Loopback Nogui
-# Generated: Thu Nov  5 12:54:44 2015
+# Generated: Fri Nov  6 18:30:18 2015
 ##################################################
 
 import os
@@ -26,7 +26,7 @@ import pmt
 
 class wifi_loopback_noGUI(gr.top_block):
 
-    def __init__(self, chan_est=1, encoding=0, freq_offset=0, interval=500, nmessages=50, resultdir="0", snr=10):
+    def __init__(self, chan_est=1, encoding=0, freq_offset=0, interval=500, nmessages=50, ntrials=0, resultdir="0", snr=10):
         gr.top_block.__init__(self, "Wifi Loopback Nogui")
 
         ##################################################
@@ -37,6 +37,7 @@ class wifi_loopback_noGUI(gr.top_block):
         self.freq_offset = freq_offset
         self.interval = interval
         self.nmessages = nmessages
+        self.ntrials = ntrials
         self.resultdir = resultdir
         self.snr = snr
 
@@ -67,7 +68,7 @@ class wifi_loopback_noGUI(gr.top_block):
         )
         self.blocks_null_sink_0 = blocks.null_sink(gr.sizeof_gr_complex*1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
-        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, "" + resultdir + "/ofdm_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap", False)
+        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, "" + resultdir + "/ofdm_t" + str(ntrials) + "_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap", False)
         self.blocks_file_sink_0_0.set_unbuffered(True)
 
         ##################################################
@@ -97,7 +98,7 @@ class wifi_loopback_noGUI(gr.top_block):
     def set_encoding(self, encoding):
         self.encoding = encoding
         self.wifi_phy_hier_0.set_encoding(self.encoding)
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_freq_offset(self):
         return self.freq_offset
@@ -111,21 +112,28 @@ class wifi_loopback_noGUI(gr.top_block):
 
     def set_interval(self, interval):
         self.interval = interval
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_nmessages(self):
         return self.nmessages
 
     def set_nmessages(self, nmessages):
         self.nmessages = nmessages
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+
+    def get_ntrials(self):
+        return self.ntrials
+
+    def set_ntrials(self, ntrials):
+        self.ntrials = ntrials
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_resultdir(self):
         return self.resultdir
 
     def set_resultdir(self, resultdir):
         self.resultdir = resultdir
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_snr(self):
         return self.snr
@@ -133,7 +141,7 @@ class wifi_loopback_noGUI(gr.top_block):
     def set_snr(self, snr):
         self.snr = snr
         self.blocks_multiply_const_vxx_0.set_k(((10**(self.snr/10.0))**.5, ))
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_out_buf_size(self):
         return self.out_buf_size
@@ -160,6 +168,9 @@ def argument_parser():
         "-n", "--nmessages", dest="nmessages", type="intx", default=50,
         help="Set nmessages [default=%default]")
     parser.add_option(
+        "-t", "--ntrials", dest="ntrials", type="intx", default=0,
+        help="Set ntrials [default=%default]")
+    parser.add_option(
         "-r", "--resultdir", dest="resultdir", type="string", default="0",
         help="Set resultdir [default=%default]")
     parser.add_option(
@@ -172,7 +183,7 @@ def main(top_block_cls=wifi_loopback_noGUI, options=None):
     if options is None:
         options, _ = argument_parser().parse_args()
 
-    tb = top_block_cls(chan_est=options.chan_est, encoding=options.encoding, freq_offset=options.freq_offset, interval=options.interval, nmessages=options.nmessages, resultdir=options.resultdir, snr=options.snr)
+    tb = top_block_cls(chan_est=options.chan_est, encoding=options.encoding, freq_offset=options.freq_offset, interval=options.interval, nmessages=options.nmessages, ntrials=options.ntrials, resultdir=options.resultdir, snr=options.snr)
     tb.start()
     tb.wait()
 

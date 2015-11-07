@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import glob, os, re, sys
+import numpy as np
 import matplotlib.pyplot as plt
 
 log_info = []
@@ -11,42 +12,57 @@ enc_table = ["BPSK 1/2", "BPSK 3/4", "QPSK 1/2",
 			 "64QAM 2/3", "64QAM 3/4"]
 
 path = sys.argv[1]
+ntrials = int(sys.argv[2])
+
+snr_list = []
 
 for filename in glob.glob(os.path.join(path, "*.log")):
 	snr_arg = re.search(r"s([-+]?\d+.\d+)", filename)  	# SNR
 	nfiles_arg = re.search(r"n(\d+)", filename)			# Nfiles
 	enc_arg = re.search(r"e(\d+)", filename)			# Encoding
- 
-	if snr_arg and nfiles_arg and enc_arg:
-		total = nfiles_arg.group(1)		
-		pdrate = sum(1 for line in open(filename))/float(total)
-		encode = int(enc_arg.group(1))
+ 	trial_arg = re.search(r"t(\d+)", filename)			# trial number
 
-		log_info.append((float(snr_arg.group(1)), pdrate, encode))
+	try:
+		assert snr_arg and nfiles_arg and enc_arg and trial_arg
+	except AssertionError:
+		print "Log filename parse failed; exiting!"
+		sys.exit()		
 
-	else:
-		print "Missing a log file--exiting!"
-		sys.exit()
+	total = nfiles_arg.group(1)		
+	pdrate = sum(1 for line in open(filename))/float(total)
+	encode = int(enc_arg.group(1))
+	snr = float(snr_arg.group(1))
 
-print log_info
+	if snr not in snr_list:
+		snr_list.append(snr)
 
-for snr,pdr,enc in log_info:
-	if enc not in table:
-		table[enc] = [] 
-	table[enc].append((snr,pdr)) 
+	if encode not in table:
+		table[encode] = {}
+	if snr not in table[encode]:
+		table[encode][snr] = []
+	table[encode][snr].append(pdrate)  # could sum here but want to check
+										# we got enough datapoints
 
-print table
+for enc in table.keys(): 
+	for snr in table[enc].keys():
+		print table[enc][snr]
+		try:
+			assert len(table[enc][snr]) == ntrials
+		except AssertionError: 
+			print "You don't have enough datapoints; exiting!" 
+			sys.exit()
 
-for enc in sorted(table.keys()):
-	tmp = table[enc]	
+snr_list.sort()
 
-	table[enc] = sorted(tmp, key=lambda tmp: tmp[0])
-#	print tmp
-	x = [snr for snr,pdr in table[enc]]
-	y = [pdr for snr,pdr in table[enc]]
+for enc in sorted(table.keys()):  # sort so legend labels are in order
+	y = [sum(table[enc][snr])/float(ntrials) for snr in snr_list]
 
-	print enc, x, y
-	plt.plot(x, y, marker='o', label="%s" % enc_table[enc])
+	print [table[enc][snr] for snr in snr_list]
+	yerr = [np.std(table[enc][snr]) for snr in snr_list]
+
+	print enc, snr_list, y
+	print yerr
+	plt.errorbar(snr_list, y, yerr=yerr, marker='o', label="%s" % enc_table[enc])
 
 plt.ylabel("PDR")
 plt.xlabel("SNR")

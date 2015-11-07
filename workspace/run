@@ -1,4 +1,7 @@
 #!/bin/bash
+
+ntrials=3
+
 if [ $1 ]
 then
 	result_dir=$1
@@ -11,12 +14,18 @@ mkdir -p $result_dir
 rm -rf $result_dir/*
 
 echo ">>> Storing results in ./$result_dir."
+echo
 
-for e in {0..3}
+for e in {0..0}
 do
-	for s in `seq 1.0 2 16.0`
+	for s in `seq 1.0 2 10.0`
 	do
-	make result=$result_dir n=10 c=1 s=$s o=0 e=$e i=200
+		for t in `seq 1 1 $ntrials`
+		do
+			echo
+			echo ">>> >>> Running trial $t of $ntrials."
+			make result=$result_dir t=$t n=10 c=1 s=$s o=0 e=$e i=200
+		done
 	done
 done 
-./parse.py $result_dir
+./parse.py $result_dir $ntrials

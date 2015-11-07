@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 11)</value>
+      <value>(96, 83)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>" + resultdir + "/ofdm_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap</value>
+      <value>" + resultdir + "/ofdm_t" + str(ntrials) + "_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -486,7 +486,7 @@ Else: 0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 131)</value>
+      <value>(64, 147)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -785,6 +785,49 @@ Max: 1500</value>
     <param>
       <key>value</key>
       <value>50</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(208, 11)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ntrials</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value>t</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>intx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
     </param>
   </block>
   <block>
