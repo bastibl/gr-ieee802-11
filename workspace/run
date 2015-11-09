@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ntrials=3
+ntrials=5
 
 if [ $1 ]
 then
@@ -16,15 +16,15 @@ rm -rf $result_dir/*
 echo ">>> Storing results in ./$result_dir."
 echo
 
-for e in {0..0}
+for e in {0..3}
 do
-	for s in `seq 1.0 2 10.0`
+	for s in `seq 1.0 2 16.0`
 	do
 		for t in `seq 1 1 $ntrials`
 		do
 			echo
 			echo ">>> >>> Running trial $t of $ntrials."
-			make result=$result_dir t=$t n=10 c=1 s=$s o=0 e=$e i=200
+			make result=$result_dir t=$t n=20 c=1 s=$s o=0 e=$e i=100
 		done
 	done
 done 
