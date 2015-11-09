@@ -1,9 +1,0 @@
-  1   0.000000 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  2   0.304127 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  3   0.403453 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  4   0.806563 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  5   0.905965 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  6   1.005886 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  7   1.308172 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  8   1.613390 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
-  9   1.714953 23:23:23:23:23:23 -> 42:42:42:42:42:42 LLC 53 I, N(R)=54, N(S)=54; DSAP 0x48 Individual, SSAP 0x64 Response
