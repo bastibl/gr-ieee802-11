@@ -3,6 +3,8 @@
 import glob, os, re, sys
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy as sp
+import scipy.stats as ss
 
 log_info = []
 table = {}
@@ -15,6 +17,14 @@ path = sys.argv[1]
 ntrials = int(sys.argv[2])
 
 snr_list = []
+
+def mean_confidence_interval(data, confidence=0.95):
+	a = 1.0 * np.array(data)
+	n = len(a)
+	m, se = np.mean(a), ss.sem(a)
+	h = se * ss.t._ppf((1 + confidence)/2., n-1)
+	return m, h
+
 
 for filename in glob.glob(os.path.join(path, "*.log")):
 	snr_arg = re.search(r"s([-+]?\d+.\d+)", filename)  	# SNR
@@ -40,29 +50,26 @@ for filename in glob.glob(os.path.join(path, "*.log")):
 		table[encode] = {}
 	if snr not in table[encode]:
 		table[encode][snr] = []
-	table[encode][snr].append(pdrate)  # could sum here but want to check
-										# we got enough datapoints
-
-for enc in table.keys(): 
-	for snr in table[enc].keys():
-		print table[enc][snr]
-		try:
-			assert len(table[enc][snr]) == ntrials
-		except AssertionError: 
-			print "You don't have enough datapoints; exiting!" 
-			sys.exit()
+	table[encode][snr].append(pdrate)  
 
 snr_list.sort()
 
 for enc in sorted(table.keys()):  # sort so legend labels are in order
-	y = [sum(table[enc][snr])/float(ntrials) for snr in snr_list]
+	# Check first that we got all datapoints for each trial
+	for snr in table[enc].keys():
+		try:
+			assert len(table[enc][snr]) == ntrials
+		except AssertionError:
+			print "You don't have enough datapoints; exiting!"
+			sys.exit()
 
-	print [table[enc][snr] for snr in snr_list]
-	yerr = [np.std(table[enc][snr]) for snr in snr_list]
+	y = [mean_confidence_interval(table[enc][snr]) for snr in snr_list]
 
-	print enc, snr_list, y
-	print yerr
-	plt.errorbar(snr_list, y, yerr=yerr, marker='o', label="%s" % enc_table[enc])
+	# print enc_table[enc], snr_list, y
+	plt.errorbar(snr_list, [m for m,h in y], 
+		yerr=[h for m,h in y], 
+		marker='o', 
+		label="%s" % enc_table[enc])
 
 plt.ylabel("PDR")
 plt.xlabel("SNR")

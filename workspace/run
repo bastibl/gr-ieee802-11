@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ntrials=5
+ntrials=20
 
 if [ $1 ]
 then
@@ -18,7 +18,7 @@ echo
 
 for e in {0..3}
 do
-	for s in `seq 1.0 2 16.0`
+	for s in `seq 1.0 2 9.0`
 	do
 		for t in `seq 1 1 $ntrials`
 		do
