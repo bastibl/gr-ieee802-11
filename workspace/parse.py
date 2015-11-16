@@ -27,21 +27,19 @@ def mean_confidence_interval(data, confidence=0.95):
 
 
 for filename in glob.glob(os.path.join(path, "*.log")):
-	snr_arg = re.search(r"s([-+]?\d+.\d+)", filename)  	# SNR
-	nfiles_arg = re.search(r"n(\d+)", filename)			# Nfiles
-	enc_arg = re.search(r"e(\d+)", filename)			# Encoding
- 	trial_arg = re.search(r"t(\d+)", filename)			# trial number
+	params = filename.split("/")[1].split("_")
+	print params
 
 	try:
-		assert snr_arg and nfiles_arg and enc_arg and trial_arg
+		trial = int(params[1])
+		npkts = int(params[2])
+		snr = float(params[3])
+		encode = int(params[4])
 	except AssertionError:
 		print "Log filename parse failed; exiting!"
 		sys.exit()		
 
-	total = nfiles_arg.group(1)		
-	pdrate = sum(1 for line in open(filename))/float(total)
-	encode = int(enc_arg.group(1))
-	snr = float(snr_arg.group(1))
+	pdrate = sum(1 for line in open(filename))/float(npkts)
 
 	if snr not in snr_list:
 		snr_list.append(snr)

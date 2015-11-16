@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Wifi Loopback Nogui
-# Generated: Fri Nov  6 18:30:18 2015
+# Generated: Sun Nov 15 22:48:19 2015
 ##################################################
 
 import os
@@ -68,7 +68,7 @@ class wifi_loopback_noGUI(gr.top_block):
         )
         self.blocks_null_sink_0 = blocks.null_sink(gr.sizeof_gr_complex*1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
-        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, "" + resultdir + "/ofdm_t" + str(ntrials) + "_n" + str(nmessages) + "_s" + str(snr) + "_e" + str(encoding) + "_i" + str(interval) + ".pcap", False)
+        self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, "" + resultdir + "/ofdm_" + str(ntrials) + "_" + str(nmessages) + "_" + str(snr) + "_" + str(encoding) + "_" + str(interval) + ".pcap", False)
         self.blocks_file_sink_0_0.set_unbuffered(True)
 
         ##################################################
@@ -97,8 +97,8 @@ class wifi_loopback_noGUI(gr.top_block):
 
     def set_encoding(self, encoding):
         self.encoding = encoding
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
         self.wifi_phy_hier_0.set_encoding(self.encoding)
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
 
     def get_freq_offset(self):
         return self.freq_offset
@@ -112,28 +112,28 @@ class wifi_loopback_noGUI(gr.top_block):
 
     def set_interval(self, interval):
         self.interval = interval
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
 
     def get_nmessages(self):
         return self.nmessages
 
     def set_nmessages(self, nmessages):
         self.nmessages = nmessages
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
 
     def get_ntrials(self):
         return self.ntrials
 
     def set_ntrials(self, ntrials):
         self.ntrials = ntrials
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
 
     def get_resultdir(self):
         return self.resultdir
 
     def set_resultdir(self, resultdir):
         self.resultdir = resultdir
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
 
     def get_snr(self):
         return self.snr
@@ -141,7 +141,7 @@ class wifi_loopback_noGUI(gr.top_block):
     def set_snr(self, snr):
         self.snr = snr
         self.blocks_multiply_const_vxx_0.set_k(((10**(self.snr/10.0))**.5, ))
-        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_t" + str(self.ntrials) + "_n" + str(self.nmessages) + "_s" + str(self.snr) + "_e" + str(self.encoding) + "_i" + str(self.interval) + ".pcap")
+        self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
 
     def get_out_buf_size(self):
         return self.out_buf_size
