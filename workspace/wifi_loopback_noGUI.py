@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Wifi Loopback Nogui
-# Generated: Sun Nov 15 22:48:19 2015
+# Generated: Sat Nov 21 10:57:29 2015
 ##################################################
 
 import os
@@ -67,7 +67,7 @@ class wifi_loopback_noGUI(gr.top_block):
         	block_tags=False
         )
         self.blocks_null_sink_0 = blocks.null_sink(gr.sizeof_gr_complex*1)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc(((10**(snr/10.0))**.5, ))
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((((10**(snr/10.0))**0.5)/(2**0.5), ))
         self.blocks_file_sink_0_0 = blocks.file_sink(gr.sizeof_char*1, "" + resultdir + "/ofdm_" + str(ntrials) + "_" + str(nmessages) + "_" + str(snr) + "_" + str(encoding) + "_" + str(interval) + ".pcap", False)
         self.blocks_file_sink_0_0.set_unbuffered(True)
 
@@ -140,8 +140,8 @@ class wifi_loopback_noGUI(gr.top_block):
 
     def set_snr(self, snr):
         self.snr = snr
-        self.blocks_multiply_const_vxx_0.set_k(((10**(self.snr/10.0))**.5, ))
         self.blocks_file_sink_0_0.open("" + self.resultdir + "/ofdm_" + str(self.ntrials) + "_" + str(self.nmessages) + "_" + str(self.snr) + "_" + str(self.encoding) + "_" + str(self.interval) + ".pcap")
+        self.blocks_multiply_const_vxx_0.set_k((((10**(self.snr/10.0))**0.5)/(2**0.5), ))
 
     def get_out_buf_size(self):
         return self.out_buf_size

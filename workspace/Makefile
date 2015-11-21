@@ -7,8 +7,8 @@ endif
 
 trials := 10
 packets := 50
-min_snr := -5
-max_snr := 15
+min_snr := -2
+max_snr := 25
 snr_steps := 1
 interval := 100
 

@@ -72,7 +72,7 @@ for enc in sorted(table.keys()):  # sort so legend labels are in order
 plt.ylabel("PDR")
 plt.xlabel("SNR")
 plt.title("Delivery rate vs. SNR for different encoding schemes")
-plt.legend()
+plt.legend(loc="upper left")
 plt.savefig(os.path.join(path,"plot.png"))
 plt.show()
 
