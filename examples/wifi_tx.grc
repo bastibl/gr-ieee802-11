@@ -9,8 +9,8 @@
       <value></value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
+      <key>window_size</key>
+      <value>1280, 1024</value>
     </param>
     <param>
       <key>category</key>
@@ -49,8 +49,16 @@
       <value>0</value>
     </param>
     <param>
+      <key>qt_qss_theme</key>
+      <value></value>
+    </param>
+    <param>
       <key>realtime_scheduling</key>
       <value></value>
+    </param>
+    <param>
+      <key>run_command</key>
+      <value>{python} -u {filename}</value>
     </param>
     <param>
       <key>run_options</key>
@@ -67,10 +75,6 @@
     <param>
       <key>title</key>
       <value></value>
-    </param>
-    <param>
-      <key>window_size</key>
-      <value>1280, 1024</value>
     </param>
   </block>
   <block>
@@ -1639,10 +1643,6 @@
       <value>fc32</value>
     </param>
     <param>
-      <key>len_tag_name</key>
-      <value>packet_len</value>
-    </param>
-    <param>
       <key>clock_source0</key>
       <value></value>
     </param>
@@ -1751,6 +1751,10 @@
       <value>samp_rate</value>
     </param>
     <param>
+      <key>hide_cmd_port</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>stream_args</key>
       <value></value>
     </param>
@@ -1761,6 +1765,10 @@
     <param>
       <key>sync</key>
       <value>pc_clock</value>
+    </param>
+    <param>
+      <key>len_tag_name</key>
+      <value>packet_len</value>
     </param>
     <param>
       <key>otw</key>
@@ -1815,7 +1823,7 @@
     </param>
     <param>
       <key>sensitivity</key>
-      <value>0.60</value>
+      <value>0.56</value>
     </param>
   </block>
   <connection>

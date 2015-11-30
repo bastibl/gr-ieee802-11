@@ -9,8 +9,8 @@
       <value></value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
+      <key>window_size</key>
+      <value>1280, 1024</value>
     </param>
     <param>
       <key>category</key>
@@ -49,8 +49,16 @@
       <value>0</value>
     </param>
     <param>
+      <key>qt_qss_theme</key>
+      <value></value>
+    </param>
+    <param>
       <key>realtime_scheduling</key>
       <value></value>
+    </param>
+    <param>
+      <key>run_command</key>
+      <value>{python} -u {filename}</value>
     </param>
     <param>
       <key>run_options</key>
@@ -67,10 +75,6 @@
     <param>
       <key>title</key>
       <value>WiFi PHY Hier</value>
-    </param>
-    <param>
-      <key>window_size</key>
-      <value>1280, 1024</value>
     </param>
   </block>
   <block>
@@ -1691,7 +1695,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0.60</value>
+      <value>0.56</value>
     </param>
   </block>
   <block>
@@ -1930,7 +1934,7 @@
     <source_block_id>ieee802_11_ofdm_decode_mac_0</source_block_id>
     <sink_block_id>pad_sink_2</sink_block_id>
     <source_key>out</source_key>
-    <sink_key>0</sink_key>
+    <sink_key>in</sink_key>
   </connection>
   <connection>
     <source_block_id>ieee802_11_ofdm_decode_signal_0</source_block_id>
@@ -1983,7 +1987,7 @@
   <connection>
     <source_block_id>pad_source_1</source_block_id>
     <sink_block_id>ieee802_11_ofdm_mapper_0</sink_block_id>
-    <source_key>0</source_key>
+    <source_key>out</source_key>
     <sink_key>in</sink_key>
   </connection>
   <connection>

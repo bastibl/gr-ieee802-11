@@ -9,8 +9,8 @@
       <value></value>
     </param>
     <param>
-      <key>alias</key>
-      <value></value>
+      <key>window_size</key>
+      <value>1280, 1024</value>
     </param>
     <param>
       <key>category</key>
@@ -49,8 +49,16 @@
       <value>0</value>
     </param>
     <param>
+      <key>qt_qss_theme</key>
+      <value></value>
+    </param>
+    <param>
       <key>realtime_scheduling</key>
       <value></value>
+    </param>
+    <param>
+      <key>run_command</key>
+      <value>{python} -u {filename}</value>
     </param>
     <param>
       <key>run_options</key>
@@ -67,10 +75,6 @@
     <param>
       <key>title</key>
       <value></value>
-    </param>
-    <param>
-      <key>window_size</key>
-      <value>1280, 1024</value>
     </param>
   </block>
   <block>
@@ -1557,10 +1561,6 @@
       <value>fc32</value>
     </param>
     <param>
-      <key>len_tag_name</key>
-      <value>packet_len</value>
-    </param>
-    <param>
       <key>clock_source0</key>
       <value></value>
     </param>
@@ -1669,6 +1669,10 @@
       <value>samp_rate</value>
     </param>
     <param>
+      <key>hide_cmd_port</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>stream_args</key>
       <value></value>
     </param>
@@ -1679,6 +1683,10 @@
     <param>
       <key>sync</key>
       <value>pc_clock</value>
+    </param>
+    <param>
+      <key>len_tag_name</key>
+      <value>packet_len</value>
     </param>
     <param>
       <key>otw</key>
@@ -1704,6 +1712,14 @@
       <value>uhd.tune_request(freq, rf_freq = freq - lo_offset, rf_freq_policy=uhd.tune_request.POLICY_MANUAL)</value>
     </param>
     <param>
+      <key>dc_offs_enb0</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb0</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain0</key>
       <value>False</value>
     </param>
@@ -1722,6 +1738,14 @@
     <param>
       <key>center_freq10</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb10</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb10</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain10</key>
@@ -1744,6 +1768,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb11</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb11</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain11</key>
       <value>False</value>
     </param>
@@ -1762,6 +1794,14 @@
     <param>
       <key>center_freq12</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb12</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb12</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain12</key>
@@ -1784,6 +1824,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb13</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb13</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain13</key>
       <value>False</value>
     </param>
@@ -1802,6 +1850,14 @@
     <param>
       <key>center_freq14</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb14</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb14</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain14</key>
@@ -1824,6 +1880,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb15</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb15</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain15</key>
       <value>False</value>
     </param>
@@ -1842,6 +1906,14 @@
     <param>
       <key>center_freq16</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb16</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb16</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain16</key>
@@ -1864,6 +1936,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb17</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb17</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain17</key>
       <value>False</value>
     </param>
@@ -1882,6 +1962,14 @@
     <param>
       <key>center_freq18</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb18</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb18</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain18</key>
@@ -1904,6 +1992,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb19</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb19</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain19</key>
       <value>False</value>
     </param>
@@ -1922,6 +2018,14 @@
     <param>
       <key>center_freq1</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb1</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb1</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain1</key>
@@ -1944,6 +2048,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb20</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb20</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain20</key>
       <value>False</value>
     </param>
@@ -1962,6 +2074,14 @@
     <param>
       <key>center_freq21</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb21</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb21</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain21</key>
@@ -1984,6 +2104,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb22</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb22</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain22</key>
       <value>False</value>
     </param>
@@ -2002,6 +2130,14 @@
     <param>
       <key>center_freq23</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb23</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb23</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain23</key>
@@ -2024,6 +2160,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb24</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb24</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain24</key>
       <value>False</value>
     </param>
@@ -2042,6 +2186,14 @@
     <param>
       <key>center_freq25</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb25</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb25</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain25</key>
@@ -2064,6 +2216,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb26</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb26</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain26</key>
       <value>False</value>
     </param>
@@ -2082,6 +2242,14 @@
     <param>
       <key>center_freq27</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb27</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb27</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain27</key>
@@ -2104,6 +2272,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb28</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb28</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain28</key>
       <value>False</value>
     </param>
@@ -2122,6 +2298,14 @@
     <param>
       <key>center_freq29</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb29</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb29</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain29</key>
@@ -2144,6 +2328,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb2</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb2</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain2</key>
       <value>False</value>
     </param>
@@ -2162,6 +2354,14 @@
     <param>
       <key>center_freq30</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb30</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb30</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain30</key>
@@ -2184,6 +2384,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb31</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb31</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain31</key>
       <value>False</value>
     </param>
@@ -2202,6 +2410,14 @@
     <param>
       <key>center_freq3</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb3</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb3</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain3</key>
@@ -2224,6 +2440,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb4</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb4</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain4</key>
       <value>False</value>
     </param>
@@ -2242,6 +2466,14 @@
     <param>
       <key>center_freq5</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb5</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb5</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain5</key>
@@ -2264,6 +2496,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb6</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb6</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain6</key>
       <value>False</value>
     </param>
@@ -2282,6 +2522,14 @@
     <param>
       <key>center_freq7</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb7</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb7</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain7</key>
@@ -2304,6 +2552,14 @@
       <value>0</value>
     </param>
     <param>
+      <key>dc_offs_enb8</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb8</key>
+      <value>""</value>
+    </param>
+    <param>
       <key>norm_gain8</key>
       <value>False</value>
     </param>
@@ -2322,6 +2578,14 @@
     <param>
       <key>center_freq9</key>
       <value>0</value>
+    </param>
+    <param>
+      <key>dc_offs_enb9</key>
+      <value>""</value>
+    </param>
+    <param>
+      <key>iq_imbal_enb9</key>
+      <value>""</value>
     </param>
     <param>
       <key>norm_gain9</key>
@@ -2488,6 +2752,10 @@
       <value>samp_rate</value>
     </param>
     <param>
+      <key>hide_cmd_port</key>
+      <value>False</value>
+    </param>
+    <param>
       <key>stream_args</key>
       <value></value>
     </param>
@@ -2552,7 +2820,7 @@
     </param>
     <param>
       <key>sensitivity</key>
-      <value>0.60</value>
+      <value>0.56</value>
     </param>
   </block>
   <block>
