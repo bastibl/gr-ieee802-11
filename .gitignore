@@ -1,1 +1,7 @@
-workspace/*/
+build
+examples/*.py
+.cproject
+.project
+.pydevproject
+.settings
+*.pyc
