@@ -1,57 +1,29 @@
-ifdef DIR
-result_dir = $(DIR)
-else 
-DIR := $(shell date '+%m_%d__%H_%M_%S')
-result_dir := result_$(DIR)
-endif
+SHELL=/bin/bash
 
-trials := 10
-packets := 50
-min_snr := -2
-max_snr := 25
-snr_steps := 1
-interval := 100
+MESSAGES=100
 
-# logfile name: loop_(trials)_(npackets)_(snr)_(encoding)_interval 
-LOGFILES=$(shell /bin/bash -c "echo $(result_dir)/loop_{1..$(trials)}_$(packets)_{$(min_snr)..$(max_snr)..$(snr_steps)}.0_{0..7}_$(interval).log")
-PCAPFILES=$(shell /bin/bash -c "echo $(result_dir)/ofdm_{1..$(trials)}_$(packets)_{$(min_snr)..$(max_snr)..$(snr_steps)}.0_{0..7}_$(interval).pcap")
+PCAPFILES=$(shell python -c 'import itertools; import numpy as np; print(" ".join(["results/sim_%d_%d_%.1f_.pcap" % x for x in itertools.product(range(20), range(8), np.arange(0, 30,.5))]))')
 
-all: $(result_dir)/plot.png
+all: pdr.pdf
 
-# Will parse logfiles and create a plot
-$(result_dir)/plot.png: $(LOGFILES)
-	./parse.py $(result_dir) $(trials)
+pdr.pdf: plot.py results/all.csv
+	python -c 'execfile("./plot.py")'
 
-%.pcap:
+sim.py: sim.grc
+	grcc -d . sim.grc
+
+results/all.csv: $(PCAPFILES)
+	./parse.sh
+
+%.pcap: sim.py
 	@echo $@
-	$(eval PARAMS=$(shell python -c "print \"$@\".split(\"/\")[1]"))
-	@echo PARAMS=$(PARAMS)
-	$(eval TRIAL=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[1]"))
-	$(eval NPKTS=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[2]"))
-	$(eval SNR=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[3]"))
-	$(eval ENC=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[4]"))
-	$(eval INTVL=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[5][:-5]"))
-	@echo TRIAL=$(TRIAL)
-	@echo NPKTS=$(NPKTS)
+	mkdir -p results
+	$(eval REPETITION=$(shell python -c "print \"$@\".split(\"_\")[1]"))
+	$(eval ENCODING=$(shell python -c "print \"$@\".split(\"_\")[2]"))
+	$(eval SNR=$(shell python -c "print \"$@\".split(\"_\")[3]"))
+	@echo REPETITION=$(REPETITION)
+	@echo ENCODING=$(ENCODING)
 	@echo SNR=$(SNR)
-	@echo ENC=$(ENC)
-	@echo INTVL=$(INTVL)
-	$(shell mkdir -p $(result_dir))
-	./wifi_loopback_noGUI.py -t $(TRIAL) -n $(NPKTS) -c 1 -s $(SNR) -o 0 -e $(ENC) -i $(INTVL) -r $(result_dir)
+	./sim.py --messages=$(MESSAGES) --encoding=$(ENCODING) --snr=$(SNR) --repetition=$(REPETITION)
 	sleep 1
 
-%.log: $(PCAPFILES)
-	@echo $@
-	$(eval PARAMS=$(shell python -c "print \"$@\".split(\"/\")[1]"))
-	@echo PARAMS=$(PARAMS)
-	$(eval TRIAL=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[1]"))
-	$(eval NPKTS=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[2]"))
-	$(eval SNR=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[3]"))
-	$(eval ENC=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[4]"))
-	$(eval INTVL=$(shell python -c "print \"$(PARAMS)\".split(\"_\")[5][:-4]"))
-	@echo TRIAL=$(TRIAL)
-	@echo NPKTS=$(NPKTS)
-	@echo SNR=$(SNR)
-	@echo ENC=$(ENC)
-	@echo INTVL=$(INTVL)
-	tshark -r $(result_dir)/ofdm_$(TRIAL)_$(NPKTS)_$(SNR)_$(ENC)_$(INTVL).pcap > $@
