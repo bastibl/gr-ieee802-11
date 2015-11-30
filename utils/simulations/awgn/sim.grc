@@ -42,7 +42,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>wifi_loopback_noGUI</value>
+      <value>sim</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -89,7 +89,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(96, 83)</value>
+      <value>(88, 67)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -128,15 +128,15 @@
     </param>
     <param>
       <key>file</key>
-      <value>" + resultdir + "/ofdm_" + str(ntrials) + "_" + str(nmessages) + "_" + str(snr) + "_" + str(encoding) + "_" + str(interval) + ".pcap</value>
+      <value>" + os.path.dirname(os.path.realpath(__file__)) + "/results/sim_%d_%d_%.1f_.pcap" % (repetition, encoding, snr) + "</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 331)</value>
+      <value>(40, 269)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -167,7 +167,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>((10**(snr/10.0))**0.5)/(2**0.5)</value>
+      <value>(10**(snr/10.0))**.5</value>
     </param>
     <param>
       <key>affinity</key>
@@ -179,7 +179,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 427)</value>
+      <value>(512, 414)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -230,7 +230,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 313)</value>
+      <value>(360, 310)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -250,50 +250,6 @@
     </param>
     <param>
       <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>Default: 1
-Else: 0</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(480, 11)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>chan_est</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value></value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value>c</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>intx</value>
-    </param>
-    <param>
-      <key>value</key>
       <value>1</value>
     </param>
   </block>
@@ -325,11 +281,11 @@ Else: 0</value>
     </param>
     <param>
       <key>freq_offset</key>
-      <value>freq_offset</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 395)</value>
+      <value>(672, 395)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -349,11 +305,11 @@ Else: 0</value>
     </param>
     <param>
       <key>noise_voltage</key>
-      <value>.5**.5</value>
+      <value>1</value>
     </param>
     <param>
       <key>seed</key>
-      <value>0</value>
+      <value>repetition</value>
     </param>
     <param>
       <key>taps</key>
@@ -368,7 +324,8 @@ Else: 0</value>
     </param>
     <param>
       <key>comment</key>
-      <value>0, 1, ..., 6, 7</value>
+      <value>0, 1, ..., 6, 7
+corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -376,7 +333,7 @@ Else: 0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(760, 11)</value>
+      <value>(776, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -435,7 +392,7 @@ Else: 0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 395)</value>
+      <value>(360, 395)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -486,7 +443,7 @@ Else: 0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 147)</value>
+      <value>(264, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -502,7 +459,7 @@ Else: 0</value>
     </param>
     <param>
       <key>msg</key>
-      <value>pmt.intern("Hello World!")</value>
+      <value>pmt.intern("".join([chr(random.randint(0,255)) for x in (lambda: (random.seed(repetition) == None) and range(pdu_len-24))()]))</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -510,7 +467,7 @@ Else: 0</value>
     </param>
     <param>
       <key>num</key>
-      <value>nmessages</value>
+      <value>messages</value>
     </param>
     <param>
       <key>interval</key>
@@ -545,7 +502,7 @@ Else: 0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(96, 259)</value>
+      <value>(200, 275)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -566,52 +523,6 @@ Else: 0</value>
     <param>
       <key>tech</key>
       <value>127</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>A float.
-Default: 0
-Min: -0.1
-Max: 0.1</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(664, 11)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>freq_offset</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value></value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value>o</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -642,7 +553,7 @@ Max: 0.1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 163)</value>
+      <value>(496, 158)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -681,7 +592,7 @@ Max: 0.1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 83)</value>
+      <value>(8, 104)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -697,17 +608,14 @@ Max: 0.1</value>
     </param>
   </block>
   <block>
-    <key>parameter</key>
+    <key>import</key>
     <param>
       <key>alias</key>
       <value></value>
     </param>
     <param>
       <key>comment</key>
-      <value>PDU Interval (ms). 
-Default: 100
-Min: 10
-Max: 1000</value>
+      <value></value>
     </param>
     <param>
       <key>_enabled</key>
@@ -715,7 +623,38 @@ Max: 1000</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 11)</value>
+      <value>(8, 64)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>import_1</value>
+    </param>
+    <param>
+      <key>import</key>
+      <value>import random</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value>message generation interval (in ms)</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(600, 13)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -731,7 +670,7 @@ Max: 1000</value>
     </param>
     <param>
       <key>short_id</key>
-      <value>i</value>
+      <value></value>
     </param>
     <param>
       <key>type</key>
@@ -739,7 +678,7 @@ Max: 1000</value>
     </param>
     <param>
       <key>value</key>
-      <value>500</value>
+      <value>200</value>
     </param>
   </block>
   <block>
@@ -750,9 +689,7 @@ Max: 1000</value>
     </param>
     <param>
       <key>comment</key>
-      <value>An integer.
-Min: 0
-Max: 1500</value>
+      <value>Number of messages to generate</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -760,7 +697,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 11)</value>
+      <value>(336, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -768,7 +705,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>id</key>
-      <value>nmessages</value>
+      <value>messages</value>
     </param>
     <param>
       <key>label</key>
@@ -784,7 +721,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>value</key>
-      <value>50</value>
+      <value>10</value>
     </param>
   </block>
   <block>
@@ -795,7 +732,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>Packet size (in byte)</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -803,7 +740,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(208, 11)</value>
+      <value>(776, 125)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -811,7 +748,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>id</key>
-      <value>ntrials</value>
+      <value>pdu_len</value>
     </param>
     <param>
       <key>label</key>
@@ -819,7 +756,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>short_id</key>
-      <value>t</value>
+      <value></value>
     </param>
     <param>
       <key>type</key>
@@ -827,7 +764,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>435</value>
     </param>
   </block>
   <block>
@@ -838,7 +775,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>Current repetition of experiment.</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -846,7 +783,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 11)</value>
+      <value>(176, 13)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -854,7 +791,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>id</key>
-      <value>resultdir</value>
+      <value>repetition</value>
     </param>
     <param>
       <key>label</key>
@@ -862,15 +799,15 @@ Max: 1500</value>
     </param>
     <param>
       <key>short_id</key>
-      <value>r</value>
+      <value></value>
     </param>
     <param>
       <key>type</key>
-      <value>string</value>
+      <value>intx</value>
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>23</value>
     </param>
   </block>
   <block>
@@ -881,10 +818,7 @@ Max: 1500</value>
     </param>
     <param>
       <key>comment</key>
-      <value>A float. 
-Default: 10
-Min: -15
-Max: 30</value>
+      <value>Signal to Noise Ratio</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -892,7 +826,7 @@ Max: 30</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(576, 11)</value>
+      <value>(480, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -939,7 +873,7 @@ Max: 30</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 281)</value>
+      <value>(496, 278)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -959,11 +893,15 @@ Max: 30</value>
     </param>
     <param>
       <key>chan_est</key>
-      <value>chan_est</value>
+      <value>0</value>
     </param>
     <param>
       <key>encoding</key>
       <value>encoding</value>
+    </param>
+    <param>
+      <key>sensitivity</key>
+      <value>0.56</value>
     </param>
   </block>
   <connection>
