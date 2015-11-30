@@ -1,5 +1,7 @@
 build
 examples/*.py
+utils/simulations/awgn/results/*
+utils/simulations/awgn/sim.py
 .cproject
 .project
 .pydevproject
