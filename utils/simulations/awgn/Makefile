@@ -25,5 +25,4 @@ results/all.csv: $(PCAPFILES)
 	@echo ENCODING=$(ENCODING)
 	@echo SNR=$(SNR)
 	./sim.py --messages=$(MESSAGES) --encoding=$(ENCODING) --snr=$(SNR) --repetition=$(REPETITION)
-	sleep 1
 
