@@ -13,11 +13,10 @@ pdr.encoding.cat.categories = [
         "16-QAM 1/2", "16-QAM 3/4",
         "64-QAM 2/3", "64-QAM 3/4"]
 
-
 a = pdr.groupby(['encoding', 'snr'])
 
 b = a.agg({'received': np.mean}).reset_index()
 c = b.pivot(index='snr', columns='encoding', values='received')
 c.plot()
-plt.show()
+plt.savefig('pdr.pdf')
 
