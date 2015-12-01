@@ -7,7 +7,7 @@ PCAPFILES=$(shell python -c 'import itertools; import numpy as np; print(" ".joi
 all: pdr.pdf
 
 pdr.pdf: plot.py results/all.csv
-	python -c 'execfile("./plot.py")'
+	python ./plot.py
 
 sim.py: sim.grc
 	grcc -d . sim.grc
