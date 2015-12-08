@@ -78,33 +78,6 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(8, 67)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>antenna</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>'J1'</value>
-    </param>
-  </block>
-  <block>
     <key>variable_chooser</key>
     <param>
       <key>choices</key>
@@ -964,7 +937,7 @@
     </param>
     <param>
       <key>ant0</key>
-      <value>antenna</value>
+      <value></value>
     </param>
     <param>
       <key>bw0</key>
@@ -1628,7 +1601,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 438)</value>
+      <value>(272, 455)</value>
     </param>
     <param>
       <key>_rotation</key>
