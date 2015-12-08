@@ -41,6 +41,10 @@
       <value>wx_gui</value>
     </param>
     <param>
+      <key>hier_block_src_path</key>
+      <value>.:</value>
+    </param>
+    <param>
       <key>id</key>
       <value>wifi_transceiver</value>
     </param>
@@ -97,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 14)</value>
+      <value>(728, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -152,7 +156,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(256, 14)</value>
+      <value>(360, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -207,7 +211,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(128, 14)</value>
+      <value>(176, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -262,7 +266,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 11)</value>
+      <value>(912, 7)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -321,7 +325,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(744, 11)</value>
+      <value>(1040, 7)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -380,7 +384,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 14)</value>
+      <value>(536, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -435,7 +439,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 11)</value>
+      <value>(1152, 7)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -502,7 +506,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 269)</value>
+      <value>(32, 325)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -549,7 +553,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(304, 501)</value>
+      <value>(424, 600)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -600,7 +604,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 125)</value>
+      <value>(616, 157)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -659,7 +663,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(240, 611)</value>
+      <value>(368, 719)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -710,7 +714,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(168, 275)</value>
+      <value>(208, 333)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -757,7 +761,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 197)</value>
+      <value>(616, 240)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -804,7 +808,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 285)</value>
+      <value>(616, 384)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -851,7 +855,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(168, 363)</value>
+      <value>(224, 429)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1546,7 +1550,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(360, 595)</value>
+      <value>(528, 695)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2621,7 +2625,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(560, 600)</value>
+      <value>(744, 702)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2792,7 +2796,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 437)</value>
+      <value>(648, 504)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2847,7 +2851,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 451)</value>
+      <value>(176, 527)</value>
     </param>
     <param>
       <key>_rotation</key>
