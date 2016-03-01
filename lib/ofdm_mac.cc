@@ -83,6 +83,7 @@ void app_in (pmt::pmt_t msg) {
 
 	size_t       msg_len;
 	const char   *msdu;
+	std::string  str;
 
 	if(pmt::is_eof_object(msg)) {
 		message_port_pub(pmt::mp("phy out"), pmt::PMT_EOF);
@@ -91,7 +92,6 @@ void app_in (pmt::pmt_t msg) {
 
 	} else if(pmt::is_symbol(msg)) {
 
-		std::string  str;
 		str = pmt::symbol_to_string(msg);
 		msg_len = str.length();
 		msdu = str.data();
