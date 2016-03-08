@@ -153,6 +153,7 @@ TBD
 
 # Troubleshooting
 
+- Please check compile and installation logs. They might contain interesting information.
 - Did you calibrate your daughterboard?
 - Did you run volk_profile?
 - Did you try different gain settings?

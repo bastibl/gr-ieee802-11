@@ -21,6 +21,7 @@
 find_package(SWIG)
 find_package(PythonLibs 2)
 if(NOT SWIG_FOUND OR NOT PYTHONLIBS_FOUND)
+    message(FATAL_ERROR "Python or Swig not found (or version not supported).")
     return()
 endif()
 include(GrSwig)
