@@ -40,28 +40,6 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 
 	message_port_register_out(pmt::mp("out"));
 
-	// bpsk
-	int bpsk_bits[] = {0, 1};
-	bpsk.set(cvec(BPSK_D, 2), ivec(bpsk_bits, 2));
-
-	// qpsk
-	int qpsk_bits[] = {0, 1, 2, 3};
-	qpsk.set(cvec(QPSK_D, 4), ivec(qpsk_bits, 4));
-
-	// qam16
-	int qam16_bits[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-	qam16.set(cvec(QAM16_D, 16), ivec(qam16_bits, 16));
-
-	// qam64
-	int qam64_bits[] = {
-		 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
-		10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-		20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-		30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
-		40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-		60, 61, 62, 63};
-	qam64.set(cvec(QAM64_D, 64), ivec(qam64_bits, 64));
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -158,6 +136,79 @@ void decode() {
 	message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
 }
 
+/***** Auxiliary functions used for demodulation *****/
+// BPSK
+bvec demodulate_bpsk(const cvec &signal) const
+{
+
+  bvec out(signal.size());
+  out.set_size(signal.size(), false);
+
+  for (int i = 0; i < signal.length(); i++) {
+    out(i) = bin(signal(i).real() > 0);
+  }
+
+  return out;
+}
+
+// QPSK
+bvec demodulate_qpsk(const cvec &signal) const
+{
+
+  int k = 2;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(signal(i).imag() > 0);
+  }
+
+  return out;
+}
+
+// 16QAM
+bvec demodulate_16qam(const cvec &signal) const
+{
+
+  int k = 4;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(std::abs(signal(i).real()) < 0.63245);
+  	out(k*i + 2) = bin(signal(i).imag() > 0);
+  	out(k*i + 3) = bin(std::abs(signal(i).imag()) < 0.63245);
+  }
+
+  return out;
+}
+
+// 64QAM
+bvec demodulate_64qam(const cvec &signal) const
+{
+
+  int k = 6;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(std::abs(signal(i).real()) < 0.6172);
+  	out(k*i + 2) = bin(std::abs(signal(i).real()) < 0.9258 && std::abs(signal(i).real()) > 0.3086);
+  	out(k*i + 3) = bin(signal(i).imag() > 0);
+  	out(k*i + 4) = bin(std::abs(signal(i).imag()) < 0.6172);
+  	out(k*i + 5) = bin(std::abs(signal(i).imag()) < 0.9258 && std::abs(signal(i).imag()) > 0.3086);
+  }
+
+  return out;
+}
+
+
 void demodulate() {
 
 	cvec symbols;
@@ -169,23 +220,21 @@ void demodulate() {
 	switch(d_ofdm.encoding) {
 	case BPSK_1_2:
 	case BPSK_3_4:
-
-		bits = to_vec(bpsk.demodulate_bits(symbols));
+		bits = to_vec(demodulate_bpsk(symbols));
 		break;
 
 	case QPSK_1_2:
 	case QPSK_3_4:
-
-		bits = to_vec(qpsk.demodulate_bits(symbols));
+		bits = to_vec(demodulate_qpsk(symbols));
 		break;
 
 	case QAM16_1_2:
 	case QAM16_3_4:
-		bits = to_vec(qam16.demodulate_bits(symbols));
+		bits = to_vec(demodulate_16qam(symbols));
 		break;
 	case QAM64_2_3:
 	case QAM64_3_4:
-		bits = to_vec(qam64.demodulate_bits(symbols));
+		bits = to_vec(demodulate_64qam(symbols));
 		break;
 	}
 
@@ -318,11 +367,6 @@ private:
 	ofdm_param d_ofdm;
 	int copied;
 	bool d_frame_complete;
-
-	Modulator<std::complex<double> > bpsk;
-	Modulator<std::complex<double> > qpsk;
-	Modulator<std::complex<double> > qam16;
-	Modulator<std::complex<double> > qam64;
 };
 
 ofdm_decode_mac::sptr
