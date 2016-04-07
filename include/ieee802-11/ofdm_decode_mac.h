@@ -30,6 +30,13 @@ public:
 	typedef boost::shared_ptr<ofdm_decode_mac> sptr;
 	static sptr make(bool log = false, bool debug = false);
 
+private:
+	
+	// Puncturing vectors
+    static const unsigned char d_puncture_1_2[];
+    static const unsigned char d_puncture_2_3[];
+    static const unsigned char d_puncture_3_4[];
+
 };
 
 }  // namespace ieee802_11
