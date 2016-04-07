@@ -28,6 +28,7 @@
 #include "ieee802-11/ether_encap.h"
 #include "ieee802-11/moving_average_cc.h"
 #include "ieee802-11/moving_average_ff.h"
+#include "ieee802-11/ofdm_carrier_allocator_802_11.h"
 #include "ieee802-11/ofdm_decode_mac.h"
 #include "ieee802-11/ofdm_decode_signal.h"
 #include "ieee802-11/ofdm_equalize_symbols.h"
@@ -45,6 +46,7 @@
 %include "ieee802-11/ether_encap.h"
 %include "ieee802-11/moving_average_cc.h"
 %include "ieee802-11/moving_average_ff.h"
+%include "ieee802-11/ofdm_carrier_allocator_802_11.h"
 %include "ieee802-11/ofdm_decode_mac.h"
 %include "ieee802-11/ofdm_decode_signal.h"
 %include "ieee802-11/ofdm_equalize_symbols.h"
@@ -59,6 +61,7 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, chunks_to_symbols);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ether_encap);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_cc);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, moving_average_ff);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_carrier_allocator_802_11);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_decode_signal);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ofdm_equalize_symbols);
