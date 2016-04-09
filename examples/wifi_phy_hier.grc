@@ -1233,7 +1233,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>0</value>
+      <value>out_buf_size</value>
     </param>
     <param>
       <key>occupied_carriers</key>

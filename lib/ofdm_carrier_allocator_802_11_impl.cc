@@ -163,6 +163,8 @@ namespace gr {
       int curr_set = 0;
       int symbols_to_allocate = d_occupied_carriers[0].size();
       int symbols_allocated = 0;
+      int index = 0;
+
       for (int i = 0; i < ninput_items[0]; i++) {
 	if (symbols_allocated == 0) {
 	  // Copy all tags associated with these input symbols onto this OFDM symbol
@@ -180,14 +182,31 @@ namespace gr {
 	  }
 	  n_ofdm_symbols++;
 	}
-	out[(n_ofdm_symbols-1) * d_fft_len + d_occupied_carriers[curr_set][symbols_allocated]] = in[i];
+  index = (n_ofdm_symbols-1) * d_fft_len + d_occupied_carriers[curr_set][symbols_allocated];
+ 
+	//Assign lower half of the 12 null carriers to complete the 64 fft.
+	if (symbols_allocated == 0)
+	{
+		memset((void *) (out + (index-6)), 0x00, sizeof(gr_complex) * 6);
+	};
+	out[index] = in[i];
 	symbols_allocated++;
 	if (symbols_allocated == symbols_to_allocate) {
+	  //Assign upper half of the 12 null carriers to complete the 64 fft.
+	  memset((void *) (out + (index+1)), 0x00, sizeof(gr_complex) * 6);
 	  curr_set = (curr_set + 1) % d_occupied_carriers.size();
 	  symbols_to_allocate = d_occupied_carriers[curr_set].size();
 	  symbols_allocated = 0;
 	}
       }
+    
+    // Defensive: it could be that the last
+	// symbols were not allocated due to insufficient
+	// input items. Fix null carriers in this case.
+    if (symbols_allocated > 0)
+    	memset((void *) (out + (index+1)), 0x00, sizeof(gr_complex) * (6 + (symbols_to_allocate - symbols_allocated)));
+
+
       // Copy pilot symbols
       for (int i = 0; i < n_ofdm_symbols; i++) {
 	for (unsigned k = 0; k < d_pilot_carriers[i % d_pilot_carriers.size()].size(); k++) {
