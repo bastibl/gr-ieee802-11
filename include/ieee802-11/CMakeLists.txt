@@ -80,10 +80,11 @@ list(APPEND include_sources
     ofdm_sync_long.h
     ofdm_sync_short.h
     wifi_signal_field.h
+	ofdm_carrier_allocator_802_11.h
 )
 
 install(
 	FILES ${include_sources}
-    ofdm_carrier_allocator_802_11.h	DESTINATION ${GR_INCLUDE_DIR}/gnuradio/ieee802_11
+    DESTINATION ${GR_INCLUDE_DIR}/gnuradio/ieee802_11
 	COMPONENT "ieee802_11_devel"
 )
