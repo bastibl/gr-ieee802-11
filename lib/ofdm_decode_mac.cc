@@ -23,6 +23,17 @@
 #include <itpp/itcomm.h>
 #include <iomanip>
 
+
+static __m128i metric0[4] __attribute__ ((aligned(16)));
+static __m128i metric1[4] __attribute__ ((aligned(16)));
+static __m128i path0[4] __attribute__ ((aligned(16)));
+static __m128i path1[4] __attribute__ ((aligned(16)));
+struct viterbi_state state0[64];
+struct viterbi_state state1[64];
+static int d_init = 0;
+
+int decoded_count;
+
 using namespace gr::ieee802_11;
 using namespace itpp;
 
@@ -40,28 +51,6 @@ ofdm_decode_mac_impl(bool log, bool debug) : block("ofdm_decode_mac",
 
 	message_port_register_out(pmt::mp("out"));
 
-	// bpsk
-	int bpsk_bits[] = {0, 1};
-	bpsk.set(cvec(BPSK_D, 2), ivec(bpsk_bits, 2));
-
-	// qpsk
-	int qpsk_bits[] = {0, 1, 2, 3};
-	qpsk.set(cvec(QPSK_D, 4), ivec(qpsk_bits, 4));
-
-	// qam16
-	int qam16_bits[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-	qam16.set(cvec(QAM16_D, 16), ivec(qam16_bits, 16));
-
-	// qam64
-	int qam64_bits[] = {
-		 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
-		10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-		20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-		30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
-		40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-		50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-		60, 61, 62, 63};
-	qam64.set(cvec(QAM64_D, 64), ivec(qam64_bits, 64));
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -158,6 +147,79 @@ void decode() {
 	message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
 }
 
+/***** Auxiliary functions used for demodulation *****/
+// BPSK
+bvec demodulate_bpsk(const cvec &signal) const
+{
+
+  bvec out(signal.size());
+  out.set_size(signal.size(), false);
+
+  for (int i = 0; i < signal.length(); i++) {
+    out(i) = bin(signal(i).real() > 0);
+  }
+
+  return out;
+}
+
+// QPSK
+bvec demodulate_qpsk(const cvec &signal) const
+{
+
+  int k = 2;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(signal(i).imag() > 0);
+  }
+
+  return out;
+}
+
+// 16QAM
+bvec demodulate_16qam(const cvec &signal) const
+{
+
+  int k = 4;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(std::abs(signal(i).real()) < 0.63245);
+  	out(k*i + 2) = bin(signal(i).imag() > 0);
+  	out(k*i + 3) = bin(std::abs(signal(i).imag()) < 0.63245);
+  }
+
+  return out;
+}
+
+// 64QAM
+bvec demodulate_64qam(const cvec &signal) const
+{
+
+  int k = 6;
+
+  bvec out(k * signal.size());
+  out.set_size(k * signal.size(), false);
+
+  for (int i = 0; i < signal.size(); i++) {
+  	out(k*i) = bin(signal(i).real() > 0);
+  	out(k*i + 1) = bin(std::abs(signal(i).real()) < 0.6172);
+  	out(k*i + 2) = bin(std::abs(signal(i).real()) < 0.9258 && std::abs(signal(i).real()) > 0.3086);
+  	out(k*i + 3) = bin(signal(i).imag() > 0);
+  	out(k*i + 4) = bin(std::abs(signal(i).imag()) < 0.6172);
+  	out(k*i + 5) = bin(std::abs(signal(i).imag()) < 0.9258 && std::abs(signal(i).imag()) > 0.3086);
+  }
+
+  return out;
+}
+
+
 void demodulate() {
 
 	cvec symbols;
@@ -169,28 +231,23 @@ void demodulate() {
 	switch(d_ofdm.encoding) {
 	case BPSK_1_2:
 	case BPSK_3_4:
-
-		bits = to_vec(bpsk.demodulate_bits(symbols));
+		bits = to_vec(demodulate_bpsk(symbols));
 		break;
 
 	case QPSK_1_2:
 	case QPSK_3_4:
-
-		bits = to_vec(qpsk.demodulate_bits(symbols));
+		bits = to_vec(demodulate_qpsk(symbols));
 		break;
 
 	case QAM16_1_2:
 	case QAM16_3_4:
-		bits = to_vec(qam16.demodulate_bits(symbols));
+		bits = to_vec(demodulate_16qam(symbols));
 		break;
 	case QAM64_2_3:
 	case QAM64_3_4:
-		bits = to_vec(qam64.demodulate_bits(symbols));
+		bits = to_vec(demodulate_64qam(symbols));
 		break;
 	}
-
-	// I hate the guy who wrote itpp
-	bits = bits * (-2) + 1;
 }
 
 void deinterleave() {
@@ -208,70 +265,173 @@ void deinterleave() {
 		second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
 	}
 
+	int count = 0;
 	for(int i = 0; i < d_tx.n_sym; i++) {
 		for(int k = 0; k < n_cbps; k++) {
-			deinter[i * n_cbps + second[first[k]]] = bits[i * n_cbps + k];
+			if (bits[i * n_cbps + k] > 0)
+			{
+				d_tmp_inbits[i * n_cbps + second[first[k]]] = 0x01;
+			}
+			else
+			{
+				d_tmp_inbits[i * n_cbps + second[first[k]]] = 0x00;
+			}
 		}
 	}
+
+	// Set the appropiate coding rate for
+	// the convolutional decoder.
+	set_coding_rate();
+
+	if (d_ntraceback == 5)
+	{
+		count = d_tx.n_sym * n_cbps;
+		d_inbits = d_tmp_inbits;
+	}
+	else
+	{
+		d_inbits = d_inbits_punctured;
+		count = 0;
+		for(int i = 0; i < d_tx.n_sym; i++) {
+			for(int k = 0; k < n_cbps; k++) {
+				while (d_puncture[count % (2 * d_k)] == 0)
+				{
+					d_inbits[count] = 2;
+					count++;
+				}
+
+	           // Insert received bits
+	           d_inbits[count] = d_tmp_inbits[i * n_cbps + k];
+	           count++;
+
+	           while (d_puncture[count % (2 * d_k)] == 0)
+				{
+					d_inbits[count] = 2;
+					count++;
+				}
+			}
+		}
+	}
+
+	for (int i = count; i < NeededBits(); i++)
+		d_inbits[i] = 0x00;
 }
 
-void decode_conv() {
-	Punctured_Convolutional_Code code;
-	ivec generator(2);
-	generator(0)=0133;
-	generator(1)=0171;
-	code.set_generator_polynomials(generator, 7);
+int NeededBits()
+{
+	int return_value;
+	if (d_ntraceback == 5)
+		return_value = d_tx.n_encoded_bits / 2;
+	else if (d_ntraceback == 9)
+	{
+		return_value = (d_tx.n_encoded_bits / 3) * 2;
+	}
+	else // si d_ntraceback == 10
+	{
+		return_value = (d_tx.n_encoded_bits / 4) * 3;
+	}
+	return return_value;
+}
 
-	bmat puncture_matrix;
+void decode_conv_viterbi() {
+
+  d_viterbi_chunks_init(state0);
+  d_viterbi_chunks_init_sse2(metric0, path0);
+
+  int out_count = 0;
+  decoded_count = 0;
+
+  int in_count = 0;
+  int neededBits = NeededBits();
+  while(decoded_count < neededBits)
+        {
+          if ((in_count % 4) == 0) //0 or 3
+          {
+            d_viterbi_butterfly2_sse2(&d_inbits[in_count & 0xfffffffc], metric0, metric1, path0, path1);
+
+            if ((in_count > 0) && (in_count % 16) == 8) // 8 or 11
+            {
+              unsigned char c;
+
+              d_viterbi_get_output_sse2(metric0, path0, d_ntraceback, &c);
+
+              if (d_init == 0)
+              {
+                if (out_count >= d_ntraceback)
+                {
+                	for (int i= 0; i < 8; i++)
+                	{
+                		out_bytes_viterbi[(out_count - d_ntraceback) * 8 + i] = (c >> (7 - i)) & 0x1;
+                		decoded_count++;
+                	}
+                }
+              }
+              else
+              {
+              	out_bytes_viterbi[out_count] = c;
+                  for (int i= 0; i < 8; i++)
+                  {
+                  	out_bytes_viterbi[out_count * 8 + i] = (c >> (7 - i)) & 0x1;
+                  	decoded_count++;
+                  }
+              }
+              out_count++;
+            }
+          }
+          in_count++;
+        }
+}
+
+void set_coding_rate()
+{
 	switch(d_ofdm.encoding) {
 	case BPSK_1_2:
 	case QPSK_1_2:
 	case QAM16_1_2:
-		puncture_matrix = "1 1; 1 1";
+		// Code rate 1/2
+		d_ntraceback = 5;
+		d_puncture = d_puncture_1_2;
+		d_k = 1;
+		break;
+	case QAM64_2_3:
+		// Code rate 2/3
+		d_ntraceback = 9;
+		d_puncture = d_puncture_2_3;
+		d_k = 2;
 		break;
 	case BPSK_3_4:
 	case QPSK_3_4:
 	case QAM16_3_4:
 	case QAM64_3_4:
-		puncture_matrix = "1 1 0; 1 0 1;";
-		break;
-	case QAM64_2_3:
-		puncture_matrix = "1 1 1 1 1 1; 1 0 1 0 1 0;";
+		// Code rate 3/4
+		d_ntraceback = 10;
+		d_puncture = d_puncture_3_4;
+		d_k = 3;
 		break;
 	}
-	code.set_puncture_matrix(puncture_matrix);
-	code.set_truncation_length(30);
+}
 
-	dout << "coding rate " << code.get_rate() << std::endl;
-	dout << d_tx.n_encoded_bits << std::endl;
-
-	vec rx_signal(deinter, d_tx.n_encoded_bits);
-
-	code.reset();
-	decoded_bits.set_length(d_tx.n_encoded_bits);
-	code.decode_tail(rx_signal, decoded_bits);
-
-	//dout << "length decoded " << decoded_bits.size() << std::endl;
-	//std::cout << decoded_bits << std::endl;
+void decode_conv() {
+	decode_conv_viterbi();
 }
 
 void descramble () {
 	int state = 0;
 	for(int i = 0; i < 7; i++) {
-		if(decoded_bits(i)) {
+		if(out_bytes_viterbi[i]) {
 			state |= 1 << (6 - i);
 		}
 	}
 
 	int feedback;
 
-	for(int i = 7; i < decoded_bits.size(); i++) {
+	for(int i = 7; i < decoded_count; i++) {
 		feedback = ((!!(state & 64))) ^ (!!(state & 8));
-		out_bits[i] = feedback ^ (int)decoded_bits(i);
+		out_bits[i] = feedback ^ (out_bytes_viterbi[i] & 0x1);
 		state = ((state << 1) & 0x7e) | feedback;
 	}
 
-	for(int i = 0; i < decoded_bits.size(); i++) {
+	for(int i = 0; i < decoded_count; i++) {
 		int bit = i % 8;
 		int byte = i / 8;
 		if(bit == 0) {
@@ -307,10 +467,23 @@ void print_output() {
 private:
 	gr_complex sym[1000 * 48 * 100];
 	vec bits;
-	double deinter[1000 * 48];
+	unsigned char* d_inbits;
+	unsigned char d_inbits_punctured[1000 * 48];
+	unsigned char d_tmp_inbits[1000 * 48];
 	char out_bits[40000];
 	char out_bytes[40000];
+	char out_bytes_viterbi[40000 * 8];
 	bvec decoded_bits;
+
+	int d_ntraceback;
+	
+	// number of input bits in the convolutional encoder.
+	int d_k;
+	
+	const unsigned char * d_puncture;
+	const unsigned char d_puncture_1_2[2] = {1, 1};
+	const unsigned char d_puncture_2_3[4] = {1, 1, 1, 0};
+	const unsigned char d_puncture_3_4[6] = {1, 1, 1, 0, 0, 1};
 
 	bool d_debug;
 	bool d_log;
@@ -318,11 +491,6 @@ private:
 	ofdm_param d_ofdm;
 	int copied;
 	bool d_frame_complete;
-
-	Modulator<std::complex<double> > bpsk;
-	Modulator<std::complex<double> > qpsk;
-	Modulator<std::complex<double> > qam16;
-	Modulator<std::complex<double> > qam64;
 };
 
 ofdm_decode_mac::sptr

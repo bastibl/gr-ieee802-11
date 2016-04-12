@@ -108,6 +108,7 @@ list(APPEND gr_ieee802_11_sources
     ofdm_sync_short.cc
     utils.cc
     wifi_signal_field_impl.cc
+	ofdm_carrier_allocator_802_11_impl.cc
 )
 
 list(APPEND gr_ieee802_11_libs
