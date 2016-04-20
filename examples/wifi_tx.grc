@@ -883,7 +883,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_mac</key>
+    <key>ieee802_11_mac</key>
     <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 255]</value>
@@ -918,7 +918,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_mac_0</value>
+      <value>ieee802_11_mac_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1805,7 +1805,7 @@
   </block>
   <connection>
     <source_block_id>blocks_message_strobe_0_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
+    <sink_block_id>ieee802_11_mac_0</sink_block_id>
     <source_key>strobe</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -1823,7 +1823,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_socket_pdu_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
+    <sink_block_id>ieee802_11_mac_0</sink_block_id>
     <source_key>pdus</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -1834,7 +1834,7 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_mac_0</source_block_id>
+    <source_block_id>ieee802_11_mac_0</source_block_id>
     <sink_block_id>wifi_phy_hier_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
@@ -1847,7 +1847,7 @@
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
+    <sink_block_id>ieee802_11_mac_0</sink_block_id>
     <source_key>mac_out</source_key>
     <sink_key>phy in</sink_key>
   </connection>

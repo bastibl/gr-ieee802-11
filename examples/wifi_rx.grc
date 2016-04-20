@@ -724,7 +724,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/ofdm.pcap</value>
+      <value>/tmp/wifi.pcap</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1156,7 +1156,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_decode_mac</key>
+    <key>ieee802_11_decode_mac</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1187,7 +1187,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_decode_mac_0</value>
+      <value>ieee802_11_decode_mac_0</value>
     </param>
     <param>
       <key>log</key>
@@ -1203,7 +1203,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_decode_signal</key>
+    <key>ieee802_11_decode_signal</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1234,7 +1234,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_decode_signal_0</value>
+      <value>ieee802_11_decode_signal_0</value>
     </param>
     <param>
       <key>log</key>
@@ -1250,7 +1250,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_equalize_symbols</key>
+    <key>ieee802_11_equalize_symbols</key>
     <param>
       <key>algo</key>
       <value>chan_est</value>
@@ -1285,7 +1285,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_equalize_symbols_0</value>
+      <value>ieee802_11_equalize_symbols_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1297,7 +1297,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_parse_mac</key>
+    <key>ieee802_11_parse_mac</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1328,7 +1328,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_parse_mac_0</value>
+      <value>ieee802_11_parse_mac_0</value>
     </param>
     <param>
       <key>log</key>
@@ -1344,7 +1344,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_sync_long</key>
+    <key>ieee802_11_sync_long</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1375,7 +1375,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_sync_long_0</value>
+      <value>ieee802_11_sync_long_0</value>
     </param>
     <param>
       <key>log</key>
@@ -1395,7 +1395,7 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_sync_short</key>
+    <key>ieee802_11_sync_short</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1426,7 +1426,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_sync_short_0</value>
+      <value>ieee802_11_sync_short_0</value>
     </param>
     <param>
       <key>log</key>
@@ -2864,7 +2864,7 @@
   </connection>
   <connection>
     <source_block_id>blocks_delay_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_long_0</sink_block_id>
+    <sink_block_id>ieee802_11_sync_long_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
   </connection>
@@ -2876,13 +2876,13 @@
   </connection>
   <connection>
     <source_block_id>blocks_delay_0_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_short_0</sink_block_id>
+    <sink_block_id>ieee802_11_sync_short_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_divide_xx_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_short_0</sink_block_id>
+    <sink_block_id>ieee802_11_sync_short_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>2</sink_key>
   </connection>
@@ -2918,7 +2918,7 @@
   </connection>
   <connection>
     <source_block_id>fft_vxx_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_equalize_symbols_0</sink_block_id>
+    <sink_block_id>ieee802_11_equalize_symbols_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2936,7 +2936,7 @@
   </connection>
   <connection>
     <source_block_id>ieee802_11_moving_average_xx_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_short_0</sink_block_id>
+    <sink_block_id>ieee802_11_sync_short_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
   </connection>
@@ -2947,56 +2947,56 @@
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_decode_mac_0</source_block_id>
+    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
     <sink_block_id>foo_wireshark_connector_0</sink_block_id>
     <source_key>out</source_key>
     <sink_key>in</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_decode_mac_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_parse_mac_0</sink_block_id>
+    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
+    <sink_block_id>ieee802_11_parse_mac_0</sink_block_id>
     <source_key>out</source_key>
     <sink_key>in</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_decode_signal_0</source_block_id>
+    <source_block_id>ieee802_11_decode_signal_0</source_block_id>
     <sink_block_id>blocks_vector_to_stream_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_decode_signal_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_decode_mac_0</sink_block_id>
+    <source_block_id>ieee802_11_decode_signal_0</source_block_id>
+    <sink_block_id>ieee802_11_decode_mac_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_equalize_symbols_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_decode_signal_0</sink_block_id>
+    <source_block_id>ieee802_11_equalize_symbols_0</source_block_id>
+    <sink_block_id>ieee802_11_decode_signal_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_parse_mac_0</source_block_id>
+    <source_block_id>ieee802_11_parse_mac_0</source_block_id>
     <sink_block_id>blocks_pdu_to_tagged_stream_0</sink_block_id>
     <source_key>fer</source_key>
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_sync_long_0</source_block_id>
+    <source_block_id>ieee802_11_sync_long_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_sync_short_0</source_block_id>
+    <source_block_id>ieee802_11_sync_short_0</source_block_id>
     <sink_block_id>blocks_delay_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_sync_short_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_sync_long_0</sink_block_id>
+    <source_block_id>ieee802_11_sync_short_0</source_block_id>
+    <sink_block_id>ieee802_11_sync_long_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
