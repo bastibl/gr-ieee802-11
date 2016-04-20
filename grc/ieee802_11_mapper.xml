@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>OFDM Mapper</name>
-	<key>ieee802_11_ofdm_mapper</key>
+	<name>WiFi Mapper</name>
+	<key>ieee802_11_mapper</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_mapper($encoding, $debug)</make>
+	<make>ieee802_11.mapper($encoding, $debug)</make>
 	<callback>set_encoding($encoding)</callback>
 
 	<param>

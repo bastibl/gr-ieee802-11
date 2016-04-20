@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/ofdm_parse_mac.h>
+#include <ieee802-11/parse_mac.h>
 #include "utils.h"
 
 #include <gnuradio/io_signature.h>
@@ -23,24 +23,24 @@
 
 using namespace gr::ieee802_11;
 
-class ofdm_parse_mac_impl : public ofdm_parse_mac {
+class parse_mac_impl : public parse_mac {
 
 public:
 
-ofdm_parse_mac_impl(bool log, bool debug) :
-		block("ofdm_parse_mac",
+parse_mac_impl(bool log, bool debug) :
+		block("parse_mac",
 				gr::io_signature::make(0, 0, 0),
 				gr::io_signature::make(0, 0, 0)),
 		d_log(log), d_last_seq_no(-1),
 		d_debug(debug) {
 
 	message_port_register_in(pmt::mp("in"));
-	set_msg_handler(pmt::mp("in"), boost::bind(&ofdm_parse_mac_impl::parse, this, _1));
+	set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
 
 	message_port_register_out(pmt::mp("fer"));
 }
 
-~ofdm_parse_mac_impl() {
+~parse_mac_impl() {
 
 }
 
@@ -358,9 +358,9 @@ private:
 	int d_last_seq_no;
 };
 
-ofdm_parse_mac::sptr
-ofdm_parse_mac::make(bool log, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_parse_mac_impl(log, debug));
+parse_mac::sptr
+parse_mac::make(bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new parse_mac_impl(log, debug));
 }
 
 

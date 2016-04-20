@@ -14,17 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_UTILS_H
-#define INCLUDED_IEEE802_11_OFDM_UTILS_H
+#ifndef INCLUDED_IEEE802_11_UTILS_H
+#define INCLUDED_IEEE802_11_UTILS_H
 
 #include <ieee802-11/api.h>
-#include <ieee802-11/ofdm_mapper.h>
+#include <ieee802-11/mapper.h>
 #include <gnuradio/config.h>
 #include <cinttypes>
 #include <iostream>
-
-// Needed for the SSE2 Viterbi decoder
-#include <xmmintrin.h>
 
 const int MAX_SYM = 520; // enough for 1500 byte BPSK 1/2
 const int MAX_BITS = 1550 * 8 * 2;
@@ -54,7 +51,7 @@ struct mac_header {
 }__attribute__((packed));
 
 /**
- * OFDM parameters
+ * WIFI parameters
  */
 class ofdm_param {
 public:
@@ -77,9 +74,9 @@ public:
 /**
  * packet specific parameters
  */
-class tx_param {
+class frame_param {
 public:
-	tx_param(ofdm_param &ofdm, int psdu_length);
+	frame_param(ofdm_param &ofdm, int psdu_length);
 	// PSDU size in bytes
 	int psdu_size;
 	// number of OFDM symbols (17-11)
@@ -108,81 +105,19 @@ public:
 void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *psdu_size, char seq);
 
 
-void scramble(const char *input, char *out, tx_param &tx, char initial_state);
+void scramble(const char *input, char *out, frame_param &frame, char initial_state);
 
-void reset_tail_bits(char *scrambled_data, tx_param &tx);
+void reset_tail_bits(char *scrambled_data, frame_param &frame);
 
-void convolutional_encoding(const char *input, char *out, tx_param &tx);
+void convolutional_encoding(const char *input, char *out, frame_param &frame);
 
-void puncturing(const char *input, char *out, tx_param &tx, ofdm_param &ofdm);
+void puncturing(const char *input, char *out, frame_param &frame, ofdm_param &ofdm);
 
-void interleave(const char *input, char *out, tx_param &tx, ofdm_param &ofdm, bool reverse = false);
-void interleave(const double *input, double *out, tx_param &tx, ofdm_param &ofdm, bool reverse = false);
+void interleave(const char *input, char *out, frame_param &frame, ofdm_param &ofdm, bool reverse = false);
+void interleave(const double *input, double *out, frame_param &frame, ofdm_param &ofdm, bool reverse = false);
 
-void split_symbols(const char *input, char *out, tx_param &tx, ofdm_param &ofdm);
+void split_symbols(const char *input, char *out, frame_param &frame, ofdm_param &ofdm);
 
-void generate_bits(const char *psdu, char *data_bits, tx_param &tx);
+void generate_bits(const char *psdu, char *data_bits, frame_param &frame);
 
-/* New functions for the SSE2 Convolutional Decoder */
-
-/* This Viterbi decoder was taken from the gr-dvbt module of 
- * GNU Radio. It is an SSE2 version of the Viterbi Decoder 
- * created by Phil Karn. The SSE2 version was made by Bogdan 
- * Diaconescu. For more info see: gr-dvbt/lib/d_viterbi.h
- */
-
-
-struct viterbi_state {
-  unsigned long path;	/* Decoded path to this state */
-  long metric;		/* Cumulative metric to this state */
-
-  /* vector implementation */
-  __m128i pp;		/* Decoded path to this state */
-  __m128i mm;		/* Cumulative metric to this state */
-};
-
-int d_gen_met(int mettab[2][256],	/* Metric table */
-	    int amp,		/* Signal amplitude */
-	    double esn0,	/* Es/N0 ratio in dB */
-	    double bias, 	/* Metric bias */
-	    int scale);		/* Scale factor */
-
-unsigned char
-d_encode(unsigned char *symbols, unsigned char *data,
-       unsigned int nbytes,unsigned char encstate);
-
-void
-d_viterbi_chunks_init(struct viterbi_state* state);
-
-void
-d_viterbi_chunks_init_sse2(__m128i *mm0, __m128i *pp0);
-
-void
-d_viterbi_butterfly2(unsigned char *symbols, int mettab[2][256], struct viterbi_state *state0, struct viterbi_state *state1);
-
-void
-d_viterbi_butterfly2_sse2(unsigned char *symbols, __m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
-
-void
-d_viterbi_butterfly_sse2(unsigned char *symbols, __m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
-
-unsigned char
-d_viterbi_get_output(struct viterbi_state *state, unsigned char *outbuf);
-
-unsigned char
-d_viterbi_get_output_sse2(__m128i *mm0, __m128i *pp0, int ntraceback, unsigned char *outbuf);
-
-
-int 
-d_viterbi(unsigned long *metric,	/* Final path metric (returned value) */
-	unsigned char *data,	/* Decoded output data */
-	unsigned char *symbols,	/* Raw deinterleaved input symbols */
-	unsigned int nbits,	/* Number of output bits */
-	int mettab[2][256]	/* Metric table, [sent sym][rx symbol] */
-);
-
-
-/* End of added functions */
-
-
-#endif /* INCLUDED_IEEE802_11_OFDM_UTILS_H */
+#endif /* INCLUDED_IEEE802_11_UTILS_H */

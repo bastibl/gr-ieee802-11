@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/ofdm_equalize_symbols.h>
+#include <ieee802-11/equalize_symbols.h>
 
 #include "utils.h"
 #include "equalizer/base.h"
@@ -25,10 +25,10 @@
 using namespace gr::ieee802_11;
 
 
-class ofdm_equalize_symbols_impl : public ofdm_equalize_symbols {
+class equalize_symbols_impl : public equalize_symbols {
 
 public:
-ofdm_equalize_symbols_impl(Equalizer algo, bool debug) : block("ofdm_equalize_symbols",
+equalize_symbols_impl(Equalizer algo, bool debug) : block("equalize_symbols",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_debug(debug), d_equalizer(NULL) {
@@ -38,7 +38,7 @@ ofdm_equalize_symbols_impl(Equalizer algo, bool debug) : block("ofdm_equalize_sy
 	set_algorithm(algo);
 }
 
-~ofdm_equalize_symbols_impl(){
+~equalize_symbols_impl(){
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -57,7 +57,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 	while((i < ninput_items[0]) && (o < noutput_items)) {
 
-		get_tags_in_window(tags, 0, i, i + 1, pmt::string_to_symbol("ofdm_start"));
+		get_tags_in_window(tags, 0, i, i + 1, pmt::string_to_symbol("wifi_start"));
 
 		// new WiFi frame
 		if(tags.size()) {
@@ -67,7 +67,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 		// first data symbol (= signal field)
 		if(d_nsym == 2) {
 			add_item_tag(0, nitems_written(0) + o,
-				pmt::string_to_symbol("ofdm_start"),
+				pmt::string_to_symbol("wifi_start"),
 				pmt::PMT_T,
 				pmt::string_to_symbol(name()));
 		}
@@ -113,8 +113,8 @@ private:
 };
 
 
-ofdm_equalize_symbols::sptr
-ofdm_equalize_symbols::make(Equalizer algo, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_equalize_symbols_impl(algo, debug));
+equalize_symbols::sptr
+equalize_symbols::make(Equalizer algo, bool debug) {
+	return gnuradio::get_initial_sptr(new equalize_symbols_impl(algo, debug));
 }
 

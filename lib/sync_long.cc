@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/ofdm_sync_long.h>
+#include <ieee802-11/sync_long.h>
 #include "utils.h"
 #include <gnuradio/io_signature.h>
 #include <gnuradio/filter/fir_filter.h>
@@ -31,10 +31,10 @@ bool compare_abs(const std::pair<gr_complex, int>& first, const std::pair<gr_com
 	return abs(get<0>(first)) > abs(get<0>(second));
 }
 
-class ofdm_sync_long_impl : public ofdm_sync_long {
+class sync_long_impl : public sync_long {
 
 public:
-ofdm_sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("ofdm_sync_long",
+sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("sync_long",
 		gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
 		gr::io_signature::make(1, 1, sizeof(gr_complex))),
 		d_fir(gr::filter::kernel::fir_filter_ccc(1, LONG)),
@@ -48,7 +48,7 @@ ofdm_sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("ofd
 	d_correlation = gr::fft::malloc_complex(8192);
 }
 
-~ofdm_sync_long_impl(){
+~sync_long_impl(){
 	gr::fft::free(d_correlation);
 }
 
@@ -120,7 +120,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 			if(!rel)  {
 				add_item_tag(0, nitems_written(0),
-					pmt::string_to_symbol("ofdm_start"),
+					pmt::string_to_symbol("wifi_start"),
 					pmt::PMT_T,
 					pmt::string_to_symbol(name()));
 			}
@@ -235,12 +235,12 @@ private:
 	static const std::vector<gr_complex> LONG;
 };
 
-ofdm_sync_long::sptr
-ofdm_sync_long::make(unsigned int sync_length, bool log, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_sync_long_impl(sync_length, log, debug));
+sync_long::sptr
+sync_long::make(unsigned int sync_length, bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new sync_long_impl(sync_length, log, debug));
 }
 
-const std::vector<gr_complex> ofdm_sync_long_impl::LONG = {
+const std::vector<gr_complex> sync_long_impl::LONG = {
 
 gr_complex(-0.0455, -1.0679), gr_complex( 0.3528, -0.9865), gr_complex( 0.8594,  0.7348), gr_complex( 0.1874,  0.2475),
 gr_complex( 0.5309, -0.7784), gr_complex(-1.0218, -0.4897), gr_complex(-0.3401, -0.9423), gr_complex( 0.8657, -0.2298),

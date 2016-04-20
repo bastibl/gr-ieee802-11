@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,32 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "wifi_signal_field_impl.h"
+#include "signal_field_impl.h"
 #include "utils.h"
 #include <gnuradio/digital/lfsr.h>
 
 using namespace gr::ieee802_11;
 
-wifi_signal_field::sptr
-wifi_signal_field::make() {
-	return wifi_signal_field::sptr(new wifi_signal_field_impl());
+signal_field::sptr
+signal_field::make() {
+	return signal_field::sptr(new signal_field_impl());
 }
 
-wifi_signal_field::wifi_signal_field() : packet_header_default(48, "packet_len") {};
+signal_field::signal_field() : packet_header_default(48, "packet_len") {};
 
 
-wifi_signal_field_impl::wifi_signal_field_impl() : packet_header_default(48, "packet_len") {}
+signal_field_impl::signal_field_impl() : packet_header_default(48, "packet_len") {}
 
 
-wifi_signal_field_impl::~wifi_signal_field_impl() {}
+signal_field_impl::~signal_field_impl() {}
 
 
-int wifi_signal_field_impl::get_bit(int b, int i) {
+int signal_field_impl::get_bit(int b, int i) {
 	return (b & (1 << i) ? 1 : 0);
 }
 
 
-void wifi_signal_field_impl::generate_signal_field(char *out, tx_param &tx, ofdm_param &ofdm) {
+void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm) {
 
 	//data bits of the signal header
 	char *signal_header = (char *) malloc(sizeof(char) * 24);
@@ -51,7 +51,7 @@ void wifi_signal_field_impl::generate_signal_field(char *out, tx_param &tx, ofdm
 	//interleaving
 	char *interleaved_signal_header = (char *) malloc(sizeof(char) * 48);
 
-	int length = tx.psdu_size;
+	int length = frame.psdu_size;
 
 	// first 4 bits represent the modulation and coding scheme
 	signal_header[ 0] = get_bit(ofdm.rate_field, 3);
@@ -88,22 +88,22 @@ void wifi_signal_field_impl::generate_signal_field(char *out, tx_param &tx, ofdm
 	}
 
 	ofdm_param signal_ofdm(BPSK_1_2);
-	tx_param signal_tx(signal_ofdm, 3);
-	signal_tx.n_data = 24;
-	signal_tx.n_sym = 1;
+	frame_param signal_param(signal_ofdm, 3);
+	signal_param.n_data = 24;
+	signal_param.n_sym = 1;
 
 	// convolutional encoding (scrambling is not needed)
-	convolutional_encoding(signal_header, encoded_signal_header, signal_tx);
+	convolutional_encoding(signal_header, encoded_signal_header, signal_param);
 	// interleaving
-	//interleave(encoded_signal_header, interleaved_signal_header, signal_tx, signal_ofdm);
-	interleave(encoded_signal_header, out, signal_tx, signal_ofdm);
+	//interleave(encoded_signal_header, interleaved_signal_header, signal_param, signal_ofdm);
+	interleave(encoded_signal_header, out, signal_param, signal_ofdm);
 
 	free(signal_header);
 	free(encoded_signal_header);
 	free(interleaved_signal_header);
 }
 
-bool wifi_signal_field_impl::header_formatter(long packet_len, unsigned char *out, const std::vector<tag_t> &tags)
+bool signal_field_impl::header_formatter(long packet_len, unsigned char *out, const std::vector<tag_t> &tags)
 {
 
 	bool encoding_found = false;
@@ -128,13 +128,13 @@ bool wifi_signal_field_impl::header_formatter(long packet_len, unsigned char *ou
 	}
 
 	ofdm_param ofdm((Encoding)encoding);
-	tx_param tx(ofdm, len);
+	frame_param frame(ofdm, len);
 
-	generate_signal_field((char*)out, tx, ofdm);
+	generate_signal_field((char*)out, frame, ofdm);
 	return true;
 }
 
-bool wifi_signal_field_impl::header_parser(
+bool signal_field_impl::header_parser(
 		const unsigned char *in, std::vector<tag_t> &tags) {
 
 	throw std::runtime_error("not implemented yet");

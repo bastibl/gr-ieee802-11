@@ -22,7 +22,7 @@
 
 namespace gr {
 namespace ieee802_11 {
-    
+
 class IEEE802_11_API chunks_to_symbols : virtual public tagged_stream_block
 {
 public:

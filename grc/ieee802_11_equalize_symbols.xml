@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>OFDM Sync Long</name>
-	<key>ieee802_11_ofdm_sync_long</key>
+	<name>WiFi Equalize Symbols</name>
+	<key>ieee802_11_equalize_symbols</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_sync_long($sync_length, $log, $debug)</make>
+	<make>ieee802_11.equalize_symbols($algo, $debug)</make>
+	<callback>set_algorithm($algo)</callback>
 
 	<param>
-		<name>Log</name>
-		<key>log</key>
-		<value>False</value>
-		<type>bool</type>
+		<name>Algorithm</name>
+		<key>algo</key>
+		<value>ieee802_11.LINEAR_COMB</value>
+		<type>int</type>
 
 		<option>
-			<name>Enable</name>
-			<key>True</key>
+			<name>LMS</name>
+			<key>ieee802_11.LMS</key>
 		</option>
 		<option>
-			<name>Disable</name>
-			<key>False</key>
+			<name>linear comb</name>
+			<key>ieee802_11.LINEAR_COMB</key>
 		</option>
 	</param>
 
@@ -39,31 +40,19 @@
 		</option>
 	</param>
 
-	<param>
-		<name>Sync Length</name>
-		<key>sync_length</key>
-		<value>240</value>
-		<type>int</type>
-	</param>
-
-	<check>$sync_length > 0</check>
-
 	<sink>
 		<name>in</name>
 		<type>complex</type>
-		<nports>1</nports>
-	</sink>
-
-	<sink>
-		<name>in delayed</name>
-		<type>complex</type>
+                <vlen>64</vlen>
 		<nports>1</nports>
 	</sink>
 
 	<source>
 		<name>out</name>
 		<type>complex</type>
+		<vlen>48</vlen>
 		<nports>1</nports>
 	</source>
 
 </block>
+

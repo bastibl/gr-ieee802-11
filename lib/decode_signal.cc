@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/ofdm_decode_signal.h>
+#include <ieee802-11/decode_signal.h>
 #include <gnuradio/io_signature.h>
 #include "utils.h"
 
@@ -24,10 +24,10 @@ using namespace gr::ieee802_11;
 using namespace itpp;
 
 
-class ofdm_decode_signal_impl : public ofdm_decode_signal {
+class decode_signal_impl : public decode_signal {
 
 public:
-ofdm_decode_signal_impl(bool log, bool debug) : block("ofdm_decode_signal",
+decode_signal_impl(bool log, bool debug) : block("decode_signal",
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex)),
 			gr::io_signature::make(1, 1, 48 * sizeof(gr_complex))),
 			d_log(log),
@@ -39,7 +39,7 @@ ofdm_decode_signal_impl(bool log, bool debug) : block("ofdm_decode_signal",
 	set_tag_propagation_policy(block::TPP_DONT);
 }
 
-~ofdm_decode_signal_impl(){
+~decode_signal_impl(){
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
@@ -61,7 +61,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	while((i < ninput_items[0]) && (o < noutput_items)) {
 
 		get_tags_in_range(tags, 0, nread + i, nread + i + 1,
-			pmt::string_to_symbol("ofdm_start"));
+			pmt::string_to_symbol("wifi_start"));
 
 		if(tags.size()) {
 			for(int n = 0; n < 48; n++) {
@@ -75,7 +75,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			if(print_signal()) {
 
 				add_item_tag(0, nitems_written(0) + o,
-					pmt::string_to_symbol("ofdm_start"),
+					pmt::string_to_symbol("wifi_start"),
 					pmt::cons(pmt::from_uint64(d_len),
 						pmt::from_uint64(d_encoding)),
 					pmt::string_to_symbol(name()));
@@ -213,10 +213,10 @@ private:
 	static int inter[48];
 };
 
-ofdm_decode_signal::sptr
-ofdm_decode_signal::make(bool log, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_decode_signal_impl(log, debug));
+decode_signal::sptr
+decode_signal::make(bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new decode_signal_impl(log, debug));
 }
 
-int ofdm_decode_signal_impl::inter[48]={0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47};
+int decode_signal_impl::inter[48]={0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,1,4,7,10,13,16,19,22,25,28,31,34,37,40,43,46,2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47};
 

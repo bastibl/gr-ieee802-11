@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2015, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,28 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H
-#define INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H
+#ifndef INCLUDED_IEEE802_11_EQUALIZE_SYMBOLS_H
+#define INCLUDED_IEEE802_11_EQUALIZE_SYMBOLS_H
 
 #include <ieee802-11/api.h>
-#include <gnuradio/digital/packet_header_default.h>
+#include <gnuradio/block.h>
+
+enum Equalizer {
+	LMS          = 0,
+	LINEAR_COMB  = 1,
+};
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API wifi_signal_field : virtual public digital::packet_header_default
+class IEEE802_11_API equalize_symbols : virtual public block
 {
 public:
-	typedef boost::shared_ptr<wifi_signal_field> sptr;
-	static sptr make();
 
-protected:
-	wifi_signal_field();
+	typedef boost::shared_ptr<equalize_symbols> sptr;
+	static sptr make(Equalizer algo, bool debug = false);
+	virtual void set_algorithm(Equalizer algo) = 0;
+
 };
 
-} // namespace ieee802_11
-} // namespace gr
+}  // namespace ieee802_11
+}  // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_WIFI_SIGNAL_FIELD_H */
+#endif /* INCLUDED_IEEE802_11_EQUALIZE_SYMBOLS_H*/
 

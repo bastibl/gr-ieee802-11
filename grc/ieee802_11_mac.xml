@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>OFDM MAC</name>
-	<key>ieee802_11_ofdm_mac</key>
+	<name>WiFi MAC</name>
+	<key>ieee802_11_mac</key>
 	<category>IEEE802.11</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.ofdm_mac($src_mac, $dst_mac, $bss_mac)</make>
+	<make>ieee802_11.mac($src_mac, $dst_mac, $bss_mac)</make>
 
 	<param>
 		<name>SRC MAC</name>

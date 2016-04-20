@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+# Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -94,20 +94,21 @@ add_dependencies(ieee802_11_generated_sources ieee802_11_generated_includes)
 ########################################################################
 list(APPEND gr_ieee802_11_sources
     ${generated_sources}
+    chunks_to_symbols_impl.cc
+    constellations.cc
+    decode_mac.cc
+    decode_signal.cc
+    equalize_symbols.cc
     equalizer/linear_comb.cc
     equalizer/lms.cc
-    chunks_to_symbols_impl.cc
     ether_encap_impl.cc
-    ofdm_decode_mac.cc
-    ofdm_decode_signal.cc
-    ofdm_equalize_symbols.cc
-    ofdm_mac.cc
-    ofdm_mapper.cc
-    ofdm_parse_mac.cc
-    ofdm_sync_long.cc
-    ofdm_sync_short.cc
+    mac.cc
+    mapper.cc
+    parse_mac.cc
+    signal_field_impl.cc
+    sync_long.cc
+    sync_short.cc
     utils.cc
-    wifi_signal_field_impl.cc
 )
 
 list(APPEND gr_ieee802_11_libs

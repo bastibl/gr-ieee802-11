@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+#  Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -70,16 +70,16 @@ list(APPEND include_sources
     ${generated_includes}
     api.h
     chunks_to_symbols.h
+    decode_mac.h
+    decode_signal.h
+    equalize_symbols.h
     ether_encap.h
-    ofdm_decode_mac.h
-    ofdm_decode_signal.h
-    ofdm_equalize_symbols.h
-    ofdm_mac.h
-    ofdm_mapper.h
-    ofdm_parse_mac.h
-    ofdm_sync_long.h
-    ofdm_sync_short.h
-    wifi_signal_field.h
+    mac.h
+    mapper.h
+    parse_mac.h
+    signal_field.h
+    sync_long.h
+    sync_short.h
 )
 
 install(

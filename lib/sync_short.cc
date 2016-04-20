@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/ofdm_sync_short.h>
+#include <ieee802-11/sync_short.h>
 #include <gnuradio/io_signature.h>
 #include "utils.h"
 
@@ -25,11 +25,11 @@ using namespace gr::ieee802_11;
 static const int MIN_GAP = 480;
 static const int MAX_SAMPLES = 540 * 80;
 
-class ofdm_sync_short_impl : public ofdm_sync_short {
+class sync_short_impl : public sync_short {
 
 public:
-ofdm_sync_short_impl(double threshold, unsigned int min_plateau, bool log, bool debug) :
-		block("ofdm_sync_short",
+sync_short_impl(double threshold, unsigned int min_plateau, bool log, bool debug) :
+		block("sync_short",
 			gr::io_signature::make3(3, 3, sizeof(gr_complex), sizeof(gr_complex), sizeof(float)),
 			gr::io_signature::make(1, 1, sizeof(gr_complex))),
 		d_log(log),
@@ -131,7 +131,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 void insert_tag(uint64_t item) {
 	mylog(boost::format("frame start at %1%") % item);
 
-	const pmt::pmt_t key = pmt::string_to_symbol("ofdm_start");
+	const pmt::pmt_t key = pmt::string_to_symbol("wifi_start");
 	const pmt::pmt_t value = pmt::PMT_T;
 	const pmt::pmt_t srcid = pmt::string_to_symbol(name());
 	add_item_tag(0, item, key, value, srcid);
@@ -148,7 +148,7 @@ private:
 	const unsigned int MIN_PLATEAU;
 };
 
-ofdm_sync_short::sptr
-ofdm_sync_short::make(double threshold, unsigned int min_plateau, bool log, bool debug) {
-	return gnuradio::get_initial_sptr(new ofdm_sync_short_impl(threshold, min_plateau, log, debug));
+sync_short::sptr
+sync_short::make(double threshold, unsigned int min_plateau, bool log, bool debug) {
+	return gnuradio::get_initial_sptr(new sync_short_impl(threshold, min_plateau, log, debug));
 }

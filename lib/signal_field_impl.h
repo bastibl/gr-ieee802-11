@@ -14,25 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_PARSE_MAC_H
-#define INCLUDED_IEEE802_11_OFDM_PARSE_MAC_H
 
-#include <ieee802-11/api.h>
-#include <gnuradio/block.h>
+#ifndef INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
+#define INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
+
+#include <ieee802-11/signal_field.h>
+#include "utils.h"
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API ofdm_parse_mac : virtual public block
+class signal_field_impl : public signal_field
 {
 public:
+	signal_field_impl();
+	~signal_field_impl();
 
-	typedef boost::shared_ptr<ofdm_parse_mac> sptr;
-	static sptr make(bool log = false, bool debug = false);
+	bool header_formatter(long packet_len, unsigned char *out,
+			const std::vector<tag_t> &tags);
 
+	bool header_parser(const unsigned char *header,
+			std::vector<tag_t> &tags);
+private:
+	int get_bit(int b, int i);
+	void generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm);
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_OFDM_PARSE_MAC_H */
+#endif /* INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H */
+

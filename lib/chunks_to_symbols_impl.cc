@@ -29,7 +29,7 @@ chunks_to_symbols::make()
 }
 
 chunks_to_symbols_impl::chunks_to_symbols_impl()
-	: tagged_stream_block("wifi_chunks_to_symbols",
+	: tagged_stream_block("chunks_to_symbols",
 			   io_signature::make(1, 1, sizeof(char)),
 			   io_signature::make(1, 1, sizeof(gr_complex)), "packet_len") {
 }

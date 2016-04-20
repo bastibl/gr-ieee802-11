@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_OFDM_MAC_H
-#define INCLUDED_IEEE802_11_OFDM_MAC_H
+#ifndef INCLUDED_IEEE802_11_PARSE_MAC_H
+#define INCLUDED_IEEE802_11_PARSE_MAC_H
 
 #include <ieee802-11/api.h>
 #include <gnuradio/block.h>
@@ -23,17 +23,16 @@
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API ofdm_mac : virtual public block
+class IEEE802_11_API parse_mac : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<ofdm_mac> sptr;
-	static sptr make(std::vector<uint8_t> src_mac,
-			std::vector<uint8_t> dst_mac,
-			std::vector<uint8_t> bss_mac);
+	typedef boost::shared_ptr<parse_mac> sptr;
+	static sptr make(bool log = false, bool debug = false);
+
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_OFDM_MAC_H */
+#endif /* INCLUDED_IEEE802_11_PARSE_MAC_H */

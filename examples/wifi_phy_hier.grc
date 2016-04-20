@@ -1339,7 +1339,7 @@
     </param>
     <param>
       <key>log</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>maxoutbuf</key>
