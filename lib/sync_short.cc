@@ -73,7 +73,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 					d_copied = 0;
 					d_freq_offset = arg(in_abs[i]) / 16;
 					d_plateau = 0;
-					insert_tag(nitems_written(0));
+					insert_tag(nitems_written(0), d_freq_offset);
 					dout << "SHORT Frame!" << std::endl;
 					break;
 				}
@@ -99,7 +99,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 					d_copied = 0;
 					d_plateau = 0;
 					d_freq_offset = arg(in_abs[o]) / 16;
-					insert_tag(nitems_written(0) + o);
+					insert_tag(nitems_written(0) + o, d_freq_offset);
 					dout << "SHORT Frame!" << std::endl;
 					break;
 				}
@@ -128,11 +128,11 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	return 0;
 }
 
-void insert_tag(uint64_t item) {
+void insert_tag(uint64_t item, double freq_offset) {
 	mylog(boost::format("frame start at %1%") % item);
 
 	const pmt::pmt_t key = pmt::string_to_symbol("wifi_start");
-	const pmt::pmt_t value = pmt::PMT_T;
+	const pmt::pmt_t value = pmt::from_double(freq_offset);
 	const pmt::pmt_t srcid = pmt::string_to_symbol(name());
 	add_item_tag(0, item, key, value, srcid);
 }
