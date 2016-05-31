@@ -99,8 +99,11 @@ list(APPEND gr_ieee802_11_sources
     decode_mac.cc
     decode_signal.cc
     equalize_symbols.cc
-    equalizer/linear_comb.cc
+    equalizer/base.cc
+    equalizer/comb.cc
+    equalizer/ls.cc
     equalizer/lms.cc
+    equalizer/sta.cc
     ether_encap_impl.cc
     mac.cc
     mapper.cc

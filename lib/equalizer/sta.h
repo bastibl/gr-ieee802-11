@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDED_IEEE802_11_EQUALIZER_LMS_H
-#define INCLUDED_IEEE802_11_EQUALIZER_LMS_H
+#ifndef INCLUDED_IEEE802_11_EQUALIZER_STA_H
+#define INCLUDED_IEEE802_11_EQUALIZER_STA_H
 
 #include "base.h"
 #include <vector>
@@ -25,20 +25,21 @@ namespace gr {
 namespace ieee802_11 {
 namespace equalizer {
 
-class lms: public base {
+class sta: public base {
 public:
 	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod);
-private:
 	double get_snr();
 
-
+private:
 	gr_complex d_H[64];
 	double d_snr;
+
 	const double alpha = 0.5;
+	const int beta = 2;
 };
 
 } /* namespace channel_estimation */
 } /* namespace ieee802_11 */
 } /* namespace gr */
 
-#endif /* INCLUDED_IEEE802_11_EQUALIZER_LMS_H */
+#endif /* INCLUDED_IEEE802_11_EQUALIZER_STA_H */

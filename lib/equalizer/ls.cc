@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "lms.h"
+#include "ls.h"
 #include <cstring>
 #include <iostream>
 
 using namespace gr::ieee802_11::equalizer;
 
-void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
 
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
@@ -42,6 +42,7 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		}
 
 	} else {
+
 		int c = 0;
 		for(int i = 0; i < 64; i++) {
 			if( (i == 11) || (i == 25) || (i == 32) || (i == 39) || (i == 53) || (i < 6) || ( i > 58)) {
@@ -49,16 +50,12 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 			} else {
 				symbols[c] = in[i] / d_H[i];
 				bits[c] = mod->decision_maker(&symbols[c]);
-				gr_complex point;
-				mod->map_to_points(bits[c], &point);
-				d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * in[i] / point;
 				c++;
 			}
 		}
 	}
 }
 
-double
-lms::get_snr() {
+double ls::get_snr() {
 	return d_snr;
 }

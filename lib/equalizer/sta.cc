@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "lms.h"
+#include "sta.h"
 #include <cstring>
 #include <iostream>
 
 using namespace gr::ieee802_11::equalizer;
 
-void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
 
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
@@ -42,6 +42,17 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 		}
 
 	} else {
+
+		gr_complex H_update[64];
+		gr_complex H[64];
+
+		gr_complex p = POLARITY[(n - 2) % 127];
+
+		H[11] = in[11] *  p;
+		H[25] = in[25] *  p;
+		H[39] = in[39] *  p;
+		H[53] = in[53] * -p;
+
 		int c = 0;
 		for(int i = 0; i < 64; i++) {
 			if( (i == 11) || (i == 25) || (i == 32) || (i == 39) || (i == 53) || (i < 6) || ( i > 58)) {
@@ -51,14 +62,31 @@ void lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 				bits[c] = mod->decision_maker(&symbols[c]);
 				gr_complex point;
 				mod->map_to_points(bits[c], &point);
-				d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * in[i] / point;
+				H[i] = in[i] / point;
 				c++;
 			}
+		}
+
+		for(int i = 0; i < 64; i++) {
+			int n = 0;
+			gr_complex s = 0;
+			for(int k = i-beta; k <= i+beta; k++) {
+				if((k == 32) || (k < 6) || ( k > 58)) {
+					continue;
+				}
+				n++;
+				s += H[k];
+			}
+			H_update[i] = s / gr_complex(n, 0);
+		}
+
+		for(int i = 0; i < 64; i++) {
+			d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * H_update[i];
 		}
 	}
 }
 
 double
-lms::get_snr() {
+sta::get_snr() {
 	return d_snr;
 }

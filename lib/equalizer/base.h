@@ -19,6 +19,7 @@
 #define INCLUDED_IEEE802_11_EQUALIZER_BASE_H
 
 #include <gnuradio/gr_complex.h>
+#include <gnuradio/digital/constellation.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -27,7 +28,13 @@ namespace equalizer {
 class base {
 public:
 	virtual ~base() {};
-	virtual void equalize(const gr_complex *in, gr_complex *out, int n) = 0;
+	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) = 0;
+	virtual double get_snr() = 0;
+
+	static const gr_complex POLARITY[127];
+
+protected:
+	static const gr_complex LONG[64];
 };
 
 } /* namespace channel_estimation */
