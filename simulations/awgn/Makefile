@@ -18,6 +18,7 @@ results/all.csv: $(PCAPFILES)
 %.pcap: sim.py
 	@echo $@
 	mkdir -p results
+	export GR_CONF_DEFAULT_MAX_MESSAGES=123
 	$(eval REPETITION=$(shell python -c "print \"$@\".split(\"_\")[1]"))
 	$(eval ENCODING=$(shell python -c "print \"$@\".split(\"_\")[2]"))
 	$(eval SNR=$(shell python -c "print \"$@\".split(\"_\")[3]"))
@@ -25,4 +26,5 @@ results/all.csv: $(PCAPFILES)
 	@echo ENCODING=$(ENCODING)
 	@echo SNR=$(SNR)
 	./sim.py --messages=$(MESSAGES) --encoding=$(ENCODING) --snr=$(SNR) --repetition=$(REPETITION)
+#gdb -ex run -ex quit --args python ./sim.py --messages=$(MESSAGES) --encoding=$(ENCODING) --snr=$(SNR) --repetition=$(REPETITION)
 

@@ -109,6 +109,112 @@
     </param>
   </block>
   <block>
+    <key>analog_noise_source_x</key>
+    <param>
+      <key>amp</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(916, 616)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>90</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>analog_noise_source_x_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>noise_type</key>
+      <value>analog.GR_GAUSSIAN</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>seed</key>
+      <value>repetition</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_add_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(904, 496)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>90</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_add_xx_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_file_sink</key>
     <param>
       <key>append</key>
@@ -136,7 +242,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(40, 365)</value>
+      <value>(256, 388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -152,7 +258,7 @@
     </param>
     <param>
       <key>unbuffered</key>
-      <value>True</value>
+      <value>False</value>
     </param>
     <param>
       <key>vlen</key>
@@ -183,7 +289,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 568)</value>
+      <value>(688, 588)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -211,116 +317,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_null_sink</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(408, 424)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_null_sink_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>channels_channel_model</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>block_tags</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>epsilon</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>freq_offset</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(704, 543)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>channels_channel_model_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>noise_voltage</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>seed</key>
-      <value>repetition</value>
-    </param>
-    <param>
-      <key>taps</key>
-      <value>1.0</value>
-    </param>
-  </block>
-  <block>
     <key>parameter</key>
     <param>
       <key>alias</key>
@@ -337,7 +333,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1016, 14)</value>
+      <value>(792, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -396,7 +392,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(368, 543)</value>
+      <value>(512, 560)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -424,7 +420,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
   </block>
   <block>
-    <key>foo_periodic_msg_source</key>
+    <key>foo_random_periodic_msg_source</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -447,7 +443,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 181)</value>
+      <value>(392, 200)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -455,15 +451,15 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>id</key>
-      <value>foo_periodic_msg_source_0</value>
+      <value>foo_random_periodic_msg_source_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
     <param>
-      <key>msg</key>
-      <value>pmt.intern("".join([chr(random.randint(0,255)) for x in (lambda: (random.seed(repetition) == None) and range(pdu_len-24))()]))</value>
+      <key>msg_len</key>
+      <value>pdu_len - 24</value>
     </param>
     <param>
       <key>minoutbuf</key>
@@ -475,11 +471,15 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>interval</key>
-      <value>interval</value>
+      <value>5</value>
     </param>
     <param>
       <key>quit</key>
       <value>True</value>
+    </param>
+    <param>
+      <key>seed</key>
+      <value>repetition</value>
     </param>
   </block>
   <block>
@@ -506,7 +506,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 373)</value>
+      <value>(464, 396)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -530,7 +530,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
   </block>
   <block>
-    <key>ieee802_11_ofdm_mac</key>
+    <key>ieee802_11_mac</key>
     <param>
       <key>bss_mac</key>
       <value>[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]</value>
@@ -557,7 +557,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(552, 216)</value>
+      <value>(720, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -565,7 +565,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>id</key>
-      <value>ieee802_11_ofdm_mac_0</value>
+      <value>ieee802_11_mac_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -650,49 +650,6 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>comment</key>
-      <value>message generation interval (in ms)</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(792, 21)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>interval</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value></value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>intx</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>200</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
       <value>Number of messages to generate</value>
     </param>
     <param>
@@ -744,7 +701,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1032, 173)</value>
+      <value>(1048, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -760,7 +717,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>l</value>
     </param>
     <param>
       <key>type</key>
@@ -787,7 +744,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 13)</value>
+      <value>(208, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -803,7 +760,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>short_id</key>
-      <value></value>
+      <value>r</value>
     </param>
     <param>
       <key>type</key>
@@ -877,7 +834,7 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(568, 376)</value>
+      <value>(720, 408)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -896,12 +853,20 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
       <value>0</value>
     </param>
     <param>
+      <key>bandwidth</key>
+      <value>10e6</value>
+    </param>
+    <param>
       <key>chan_est</key>
-      <value>0</value>
+      <value>ieee802_11.LS</value>
     </param>
     <param>
       <key>encoding</key>
       <value>encoding</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>5.89e9</value>
     </param>
     <param>
       <key>sensitivity</key>
@@ -909,14 +874,20 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     </param>
   </block>
   <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>channels_channel_model_0</sink_block_id>
+    <source_block_id>analog_noise_source_x_0</source_block_id>
+    <sink_block_id>blocks_add_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_add_xx_0</source_block_id>
+    <sink_block_id>wifi_phy_hier_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>channels_channel_model_0</source_block_id>
-    <sink_block_id>wifi_phy_hier_0</sink_block_id>
+    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
+    <sink_block_id>blocks_add_xx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -927,14 +898,8 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>foo_periodic_msg_source_0</source_block_id>
-    <sink_block_id>foo_wireshark_connector_0</sink_block_id>
-    <source_key>out</source_key>
-    <sink_key>in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>foo_periodic_msg_source_0</source_block_id>
-    <sink_block_id>ieee802_11_ofdm_mac_0</sink_block_id>
+    <source_block_id>foo_random_periodic_msg_source_0</source_block_id>
+    <sink_block_id>ieee802_11_mac_0</sink_block_id>
     <source_key>out</source_key>
     <sink_key>app in</sink_key>
   </connection>
@@ -945,16 +910,10 @@ corresponds to BPSK 1/2, ..., 64-QAM 3/4</value>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>ieee802_11_ofdm_mac_0</source_block_id>
+    <source_block_id>ieee802_11_mac_0</source_block_id>
     <sink_block_id>wifi_phy_hier_0</sink_block_id>
     <source_key>phy out</source_key>
     <sink_key>mac_in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>blocks_null_sink_0</sink_block_id>
-    <source_key>1</source_key>
-    <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
