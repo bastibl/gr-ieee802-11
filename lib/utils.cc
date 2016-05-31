@@ -20,62 +20,6 @@
 #include <cstring>
 #include <math.h>
 
-// constellations for different modulations (normalized to avg power 1)
-const std::complex<double> BPSK_D[2] = {
-		std::complex<double>(-1.0, 0.0), std::complex<double>(1.0, 0.0)};
-
-
-const std::complex<double> QPSK_D[4] = {
-		std::complex<double>(-0.7071, -0.7071), std::complex<double>(-0.7071, 0.7071),
-		std::complex<double>(+0.7071, -0.7071), std::complex<double>(+0.7071, 0.7071)};
-
-
-const std::complex<double> QAM16_D[16] = {
-		std::complex<double>(-0.9487, -0.9487), std::complex<double>(-0.9487, -0.3162),
-		std::complex<double>(-0.9487, 0.9487), std::complex<double>(-0.9487, 0.3162),
-		std::complex<double>(-0.3162, -0.9487), std::complex<double>(-0.3162, -0.3162),
-		std::complex<double>(-0.3162, 0.9487), std::complex<double>(-0.3162, 0.3162),
-		std::complex<double>(0.9487, -0.9487), std::complex<double>(0.9487, -0.3162),
-		std::complex<double>(0.9487, 0.9487), std::complex<double>(0.9487, 0.3162),
-		std::complex<double>(0.3162, -0.9487), std::complex<double>(0.3162, -0.3162),
-		std::complex<double>(0.3162, 0.9487), std::complex<double>(0.3162, 0.3162)};
-
-
-const std::complex<double> QAM64_D[64] = {
-		std::complex<double>(-1.0801, -1.0801), std::complex<double>(-1.0801, -0.7715),
-		std::complex<double>(-1.0801, -0.1543), std::complex<double>(-1.0801, -0.4629),
-		std::complex<double>(-1.0801, 1.0801), std::complex<double>(-1.0801, 0.7715),
-		std::complex<double>(-1.0801, 0.1543), std::complex<double>(-1.0801, 0.4629),
-		std::complex<double>(-0.7715, -1.0801), std::complex<double>(-0.7715, -0.7715),
-		std::complex<double>(-0.7715, -0.1543), std::complex<double>(-0.7715, -0.4629),
-		std::complex<double>(-0.7715, 1.0801), std::complex<double>(-0.7715, 0.7715),
-		std::complex<double>(-0.7715, 0.1543), std::complex<double>(-0.7715, 0.4629),
-		std::complex<double>(-0.1543, -1.0801), std::complex<double>(-0.1543, -0.7715),
-		std::complex<double>(-0.1543, -0.1543), std::complex<double>(-0.1543, -0.4629),
-		std::complex<double>(-0.1543, 1.0801), std::complex<double>(-0.1543, 0.7715),
-		std::complex<double>(-0.1543, 0.1543), std::complex<double>(-0.1543, 0.4629),
-		std::complex<double>(-0.4629, -1.0801), std::complex<double>(-0.4629, -0.7715),
-		std::complex<double>(-0.4629, -0.1543), std::complex<double>(-0.4629, -0.4629),
-		std::complex<double>(-0.4629, 1.0801), std::complex<double>(-0.4629, 0.7715),
-		std::complex<double>(-0.4629, 0.1543), std::complex<double>(-0.4629, 0.4629),
-		std::complex<double>(1.0801, -1.0801), std::complex<double>(1.0801, -0.7715),
-		std::complex<double>(1.0801, -0.1543), std::complex<double>(1.0801, -0.4629),
-		std::complex<double>(1.0801, 1.0801), std::complex<double>(1.0801, 0.7715),
-		std::complex<double>(1.0801, 0.1543), std::complex<double>(1.0801, 0.4629),
-		std::complex<double>(0.7715, -1.0801), std::complex<double>(0.7715, -0.7715),
-		std::complex<double>(0.7715, -0.1543), std::complex<double>(0.7715, -0.4629),
-		std::complex<double>(0.7715, 1.0801), std::complex<double>(0.7715, 0.7715),
-		std::complex<double>(0.7715, 0.1543), std::complex<double>(0.7715, 0.4629),
-		std::complex<double>(0.1543, -1.0801), std::complex<double>(0.1543, -0.7715),
-		std::complex<double>(0.1543, -0.1543), std::complex<double>(0.1543, -0.4629),
-		std::complex<double>(0.1543, 1.0801), std::complex<double>(0.1543, 0.7715),
-		std::complex<double>(0.1543, 0.1543), std::complex<double>(0.1543, 0.4629),
-		std::complex<double>(0.4629, -1.0801), std::complex<double>(0.4629, -0.7715),
-		std::complex<double>(0.4629, -0.1543), std::complex<double>(0.4629, -0.4629),
-		std::complex<double>(0.4629, 1.0801), std::complex<double>(0.4629, 0.7715),
-		std::complex<double>(0.4629, 0.1543), std::complex<double>(0.4629, 0.4629)};
-
-
 ofdm_param::ofdm_param(Encoding e) {
 	encoding = e;
 
@@ -160,11 +104,10 @@ frame_param::frame_param(ofdm_param &ofdm, int psdu_length) {
 	// number of symbols (17-11)
 	n_sym = (int) ceil((16 + 8 * psdu_size + 6) / (double) ofdm.n_dbps);
 
-	// number of bits of the data field (17-12)
-	n_data = n_sym * ofdm.n_dbps;
+	n_data_bits = n_sym * ofdm.n_dbps;
 
 	// number of padding bits (17-13)
-	n_pad = n_data - (16 + 8 * psdu_size + 6);
+	n_pad = n_data_bits - (16 + 8 * psdu_size + 6);
 
 	n_encoded_bits = n_sym * ofdm.n_cbps;
 }
@@ -173,8 +116,9 @@ frame_param::print() {
 	std::cout << "FRAME Parameters:" << std::endl;
 	std::cout << "psdu_size: " << psdu_size << std::endl;
 	std::cout << "n_sym: " << n_sym << std::endl;
-	std::cout << "n_data: " << n_data << std::endl;
 	std::cout << "n_pad: " << n_pad << std::endl;
+	std::cout << "n_encoded_bits: " << n_encoded_bits << std::endl;
+	std::cout << "n_data_bits: " << n_data_bits << std::endl;
 }
 
 
@@ -183,7 +127,7 @@ void scramble(const char *in, char *out, frame_param &frame, char initial_state)
     int state = initial_state;
     int feedback;
 
-    for (int i = 0; i < frame.n_data; i++) {
+    for (int i = 0; i < frame.n_data_bits; i++) {
 
 	feedback = (!!(state & 64)) ^ (!!(state & 8));
 	out[i] = feedback ^ in[i];
@@ -193,7 +137,7 @@ void scramble(const char *in, char *out, frame_param &frame, char initial_state)
 
 
 void reset_tail_bits(char *scrambled_data, frame_param &frame) {
-	memset(scrambled_data + frame.n_data - frame.n_pad - 6, 0, 6 * sizeof(char));
+	memset(scrambled_data + frame.n_data_bits - frame.n_pad - 6, 0, 6 * sizeof(char));
 }
 
 
@@ -212,7 +156,7 @@ void convolutional_encoding(const char *in, char *out, frame_param &frame) {
 
 	int state = 0;
 
-	for(int i = 0; i < frame.n_data; i++) {
+	for(int i = 0; i < frame.n_data_bits; i++) {
 		assert(in[i] == 0 || in[i] == 1);
 		state = ((state << 1) & 0x7e) | in[i];
 		out[i * 2]     = ones(state & 0155) % 2;
@@ -225,7 +169,7 @@ void puncturing(const char *in, char *out, frame_param &frame, ofdm_param &ofdm)
 
 	int mod;
 
-	for (int i = 0; i < frame.n_data * 2; i++) {
+	for (int i = 0; i < frame.n_data_bits * 2; i++) {
 		switch(ofdm.encoding) {
 			case BPSK_1_2:
 			case QPSK_1_2:
@@ -286,33 +230,6 @@ void interleave(const char *in, char *out, frame_param &frame, ofdm_param &ofdm,
 }
 
 
-void interleave(const double *in, double *out, frame_param &frame, ofdm_param &ofdm, bool reverse) {
-
-	int n_cbps = ofdm.n_cbps;
-	int first[n_cbps];
-	int second[n_cbps];
-	int s = std::max(ofdm.n_bpsc / 2, 1);
-
-	for(int j = 0; j < n_cbps; j++) {
-		first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
-	}
-
-	for(int i = 0; i < n_cbps; i++) {
-		second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
-	}
-
-	for(int i = 0; i < frame.n_sym; i++) {
-		for(int k = 0; k < n_cbps; k++) {
-			if(reverse) {
-				out[i * n_cbps + second[first[k]]] = in[i * n_cbps + k];
-			} else {
-				out[i * n_cbps + k] = in[i * n_cbps + second[first[k]]];
-			}
-		}
-	}
-}
-
-
 void split_symbols(const char *in, char *out, frame_param &frame, ofdm_param &ofdm) {
 
 	int symbols = frame.n_sym * 48;
@@ -321,7 +238,7 @@ void split_symbols(const char *in, char *out, frame_param &frame, ofdm_param &of
 		out[i] = 0;
 		for(int k = 0; k < ofdm.n_bpsc; k++) {
 			assert(*in == 1 || *in == 0);
-			out[i] |= (*in << (ofdm.n_bpsc - k - 1));
+			out[i] |= (*in << k);
 			in++;
 		}
 	}

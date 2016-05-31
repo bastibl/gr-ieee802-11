@@ -72,9 +72,8 @@ list(APPEND include_sources
     chunks_to_symbols.h
     constellations.h
     decode_mac.h
-    decode_signal.h
-    equalize_symbols.h
     ether_encap.h
+    frame_equalizer.h
     mac.h
     mapper.h
     parse_mac.h

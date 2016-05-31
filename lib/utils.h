@@ -23,8 +23,9 @@
 #include <cinttypes>
 #include <iostream>
 
-const int MAX_SYM = 520; // enough for 1500 byte BPSK 1/2
-const int MAX_BITS = 1550 * 8 * 2;
+#define MAX_FRAME_SIZE (1500 + 28 + 4)
+#define MAX_SYM (((16 + 8 * MAX_FRAME_SIZE + 6) / 24) + 1)
+#define MAX_ENCODED_BITS ((16 + 8 * MAX_FRAME_SIZE + 6) * 2 + 288)
 
 #define dout d_debug && std::cout
 
@@ -33,12 +34,6 @@ const int MAX_BITS = 1550 * 8 * 2;
 #else
 #define mylog(msg) do { d_log && std::cout << msg << std::endl; } while(0);
 #endif
-
-// same mappings in double (itpp sucks)
-extern const std::complex<double> BPSK_D[2];
-extern const std::complex<double> QPSK_D[4];
-extern const std::complex<double> QAM16_D[16];
-extern const std::complex<double> QAM64_D[64];
 
 struct mac_header {
 	//protocol version, type, subtype, to_ds, from_ds, ...
@@ -81,11 +76,11 @@ public:
 	int psdu_size;
 	// number of OFDM symbols (17-11)
 	int n_sym;
-	// number of data bits in the DATA field, including service and padding (17-12)
-	int n_data;
 	// number of padding bits in the DATA field (17-13)
 	int n_pad;
 	int n_encoded_bits;
+	// number of data bits, including service and padding (17-12)
+	int n_data_bits;
 
 	void print();
 };
@@ -104,7 +99,6 @@ public:
  */
 void generate_mac_data_frame(const char *msdu, int msdu_size, char **psdu, int *psdu_size, char seq);
 
-
 void scramble(const char *input, char *out, frame_param &frame, char initial_state);
 
 void reset_tail_bits(char *scrambled_data, frame_param &frame);
@@ -114,7 +108,6 @@ void convolutional_encoding(const char *input, char *out, frame_param &frame);
 void puncturing(const char *input, char *out, frame_param &frame, ofdm_param &ofdm);
 
 void interleave(const char *input, char *out, frame_param &frame, ofdm_param &ofdm, bool reverse = false);
-void interleave(const double *input, double *out, frame_param &frame, ofdm_param &ofdm, bool reverse = false);
 
 void split_symbols(const char *input, char *out, frame_param &frame, ofdm_param &ofdm);
 

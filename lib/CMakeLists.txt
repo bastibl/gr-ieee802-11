@@ -97,14 +97,13 @@ list(APPEND gr_ieee802_11_sources
     chunks_to_symbols_impl.cc
     constellations_impl.cc
     decode_mac.cc
-    decode_signal.cc
-    equalize_symbols.cc
     equalizer/base.cc
     equalizer/comb.cc
     equalizer/ls.cc
     equalizer/lms.cc
     equalizer/sta.cc
     ether_encap_impl.cc
+    frame_equalizer_impl.cc
     mac.cc
     mapper.cc
     parse_mac.cc
