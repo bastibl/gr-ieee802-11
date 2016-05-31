@@ -120,7 +120,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(560, 13)</value>
+      <value>(528, 19)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -128,11 +128,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>out_buf_size</value>
+      <value>max_symbols</value>
     </param>
     <param>
       <key>value</key>
-      <value>96000</value>
+      <value>5 + 1 + ((16 + 1540 * 8 + 6) * 2) / 24</value>
     </param>
   </block>
   <block>
@@ -190,6 +190,49 @@
     </param>
   </block>
   <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1008, 14)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>bandwidth</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>10e6</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_complex_to_mag</key>
     <param>
       <key>alias</key>
@@ -209,7 +252,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(976, 576)</value>
+      <value>(960, 585)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -252,7 +295,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 496)</value>
+      <value>(600, 505)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -295,7 +338,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 600)</value>
+      <value>(384, 601)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -338,7 +381,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(424, 792)</value>
+      <value>(432, 771)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -393,7 +436,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(224, 600)</value>
+      <value>(224, 595)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -495,7 +538,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 552)</value>
+      <value>(608, 569)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -546,7 +589,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(912, 768)</value>
+      <value>(904, 755)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -597,7 +640,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(760, 240)</value>
+      <value>(744, 257)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -621,7 +664,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>out_buf_size</value>
+      <value>max_symbols * 48 * 8</value>
     </param>
     <param>
       <key>ninputs</key>
@@ -630,57 +673,6 @@
     <param>
       <key>tag_preserve_head_pos</key>
       <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_vector_to_stream</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(312, 867)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_vector_to_stream_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_items</key>
-      <value>48</value>
     </param>
     <param>
       <key>vlen</key>
@@ -703,7 +695,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 13)</value>
+      <value>(640, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -727,7 +719,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>ieee802_11.LS</value>
     </param>
   </block>
   <block>
@@ -754,7 +746,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(504, 189)</value>
+      <value>(504, 203)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -813,7 +805,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 232)</value>
+      <value>(1040, 227)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -833,7 +825,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>out_buf_size</value>
+      <value>max_symbols * 48 * 8</value>
     </param>
     <param>
       <key>occupied_carriers</key>
@@ -880,7 +872,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(736, 373)</value>
+      <value>(752, 379)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -900,7 +892,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>out_buf_size</value>
+      <value>max_symbols * 48 * 8</value>
     </param>
     <param>
       <key>rolloff</key>
@@ -931,7 +923,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 189)</value>
+      <value>(240, 203)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -970,7 +962,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 13)</value>
+      <value>(728, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1025,7 +1017,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 359)</value>
+      <value>(1040, 363)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1045,7 +1037,7 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>out_buf_size</value>
+      <value>max_symbols * 48 * 8</value>
     </param>
     <param>
       <key>nthreads</key>
@@ -1088,7 +1080,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1008, 911)</value>
+      <value>(992, 896)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1124,6 +1116,49 @@
     </param>
   </block>
   <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 14)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>frequency</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>5.89e9</value>
+    </param>
+  </block>
+  <block>
     <key>ieee802_11_chunks_to_symbols_xx</key>
     <param>
       <key>alias</key>
@@ -1143,7 +1178,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 288)</value>
+      <value>(496, 289)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1159,7 +1194,160 @@
     </param>
     <param>
       <key>minoutbuf</key>
-      <value>out_buf_size</value>
+      <value>max_symbols * 48 * 8</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_decode_mac</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 932)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_decode_mac_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_frame_equalizer</key>
+    <param>
+      <key>algo</key>
+      <value>chan_est</value>
+    </param>
+    <param>
+      <key>bw</key>
+      <value>bandwidth</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>freq</key>
+      <value>frequency</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(776, 896)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_frame_equalizer_0</value>
+    </param>
+    <param>
+      <key>log</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>ieee802_11_mapper</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>debug</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>encoding</key>
+      <value>encoding</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(208, 107)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ieee802_11_mapper_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -1182,7 +1370,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 496)</value>
+      <value>(848, 499)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1229,7 +1417,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(744, 576)</value>
+      <value>(752, 579)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1257,194 +1445,6 @@
     </param>
   </block>
   <block>
-    <key>ieee802_11_decode_mac</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(312, 933)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_decode_mac_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_decode_signal</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(536, 933)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_decode_signal_0</value>
-    </param>
-    <param>
-      <key>log</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_equalize_symbols</key>
-    <param>
-      <key>algo</key>
-      <value>chan_est</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(752, 933)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_equalize_symbols_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>ieee802_11_mapper</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>debug</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>encoding</key>
-      <value>encoding</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(200, 109)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ieee802_11_mapper_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>pad_sink</key>
     <param>
       <key>comment</key>
@@ -1456,7 +1456,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(528, 384)</value>
+      <value>(568, 395)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1499,7 +1499,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 867)</value>
+      <value>(512, 876)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1511,7 +1511,7 @@
     </param>
     <param>
       <key>type</key>
-      <value>complex</value>
+      <value>message</value>
     </param>
     <param>
       <key>label</key>
@@ -1523,7 +1523,7 @@
     </param>
     <param>
       <key>optional</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>vlen</key>
@@ -1542,7 +1542,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(112, 936)</value>
+      <value>(312, 940)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1585,7 +1585,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(56, 496)</value>
+      <value>(64, 499)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1628,7 +1628,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 112)</value>
+      <value>(424, 115)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1675,7 +1675,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 13)</value>
+      <value>(824, 11)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1726,7 +1726,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 744)</value>
+      <value>(640, 739)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1777,7 +1777,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(128, 696)</value>
+      <value>(128, 713)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1869,12 +1869,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_vector_to_stream_0</source_block_id>
-    <sink_block_id>pad_sink_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>digital_chunks_to_symbols_xx_0</source_block_id>
     <sink_block_id>blocks_tagged_stream_mux_0</sink_block_id>
     <source_key>0</source_key>
@@ -1906,7 +1900,7 @@
   </connection>
   <connection>
     <source_block_id>fft_vxx_0_1</source_block_id>
-    <sink_block_id>ieee802_11_equalize_symbols_0</sink_block_id>
+    <sink_block_id>ieee802_11_frame_equalizer_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1915,6 +1909,36 @@
     <sink_block_id>blocks_tagged_stream_mux_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
+    <sink_block_id>pad_sink_2</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_frame_equalizer_0</source_block_id>
+    <sink_block_id>ieee802_11_decode_mac_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_frame_equalizer_0</source_block_id>
+    <sink_block_id>pad_sink_1</sink_block_id>
+    <source_key>symbols</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_mapper_0</source_block_id>
+    <sink_block_id>digital_packet_headergenerator_bb_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>ieee802_11_mapper_0</source_block_id>
+    <sink_block_id>ieee802_11_chunks_to_symbols_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>ieee802_11_moving_average_xx_0</source_block_id>
@@ -1933,42 +1957,6 @@
     <sink_block_id>sync_short</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_decode_mac_0</source_block_id>
-    <sink_block_id>pad_sink_2</sink_block_id>
-    <source_key>out</source_key>
-    <sink_key>in</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_decode_signal_0</source_block_id>
-    <sink_block_id>blocks_vector_to_stream_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_decode_signal_0</source_block_id>
-    <sink_block_id>ieee802_11_decode_mac_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_equalize_symbols_0</source_block_id>
-    <sink_block_id>ieee802_11_decode_signal_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_mapper_0</source_block_id>
-    <sink_block_id>digital_packet_headergenerator_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>ieee802_11_mapper_0</source_block_id>
-    <sink_block_id>ieee802_11_chunks_to_symbols_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>pad_source_0</source_block_id>

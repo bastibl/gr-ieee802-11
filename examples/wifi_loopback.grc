@@ -85,7 +85,7 @@
     <key>variable_chooser</key>
     <param>
       <key>choices</key>
-      <value>[0, 1]</value>
+      <value>[ieee802_11.LS, ieee802_11.LMS, ieee802_11.STA, ieee802_11.COMB]</value>
     </param>
     <param>
       <key>comment</key>
@@ -93,7 +93,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>1</value>
+      <value>ieee802_11.LS</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 7)</value>
+      <value>(184, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -121,7 +121,7 @@
     </param>
     <param>
       <key>labels</key>
-      <value>["LMS", "Linear Comb"]</value>
+      <value>["LS", "LMS", "STA", "Linear Comb"]</value>
     </param>
     <param>
       <key>notebook</key>
@@ -148,7 +148,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>0</value>
+      <value>5</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -156,7 +156,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 8)</value>
+      <value>(488, 9)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -199,11 +199,11 @@
     </param>
     <param>
       <key>converver</key>
-      <value>int_converter</value>
+      <value>float_converter</value>
     </param>
     <param>
       <key>value</key>
-      <value>100</value>
+      <value>10e-6</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -211,7 +211,66 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 8)</value>
+      <value>(984, 17)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>grid_pos</key>
+      <value></value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>epsilon</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>max</key>
+      <value>20e-6</value>
+    </param>
+    <param>
+      <key>min</key>
+      <value>-20e-6</value>
+    </param>
+    <param>
+      <key>notebook</key>
+      <value></value>
+    </param>
+    <param>
+      <key>num_steps</key>
+      <value>1000</value>
+    </param>
+    <param>
+      <key>style</key>
+      <value>wx.SL_HORIZONTAL</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_slider</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>converver</key>
+      <value>int_converter</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(792, 9)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -289,7 +348,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>500</value>
+      <value>400</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -297,7 +356,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 7)</value>
+      <value>(664, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -356,7 +415,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(336, 7)</value>
+      <value>(368, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -423,7 +482,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 277)</value>
+      <value>(144, 259)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -466,7 +525,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 181)</value>
+      <value>(488, 171)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -517,7 +576,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 600)</value>
+      <value>(736, 740)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -564,7 +623,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 520)</value>
+      <value>(124, 448)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -577,6 +636,53 @@
     <param>
       <key>type</key>
       <value>float</value>
+    </param>
+    <param>
+      <key>tag</key>
+      <value>packet_len</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_pdu_to_tagged_stream</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(512, 404)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_pdu_to_tagged_stream_0_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
     </param>
     <param>
       <key>tag</key>
@@ -611,7 +717,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>epsilon</key>
@@ -619,11 +725,11 @@
     </param>
     <param>
       <key>freq_offset</key>
-      <value>0</value>
+      <value>epsilon * 5.89e9 / 10e6</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 575)</value>
+      <value>(904, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -686,7 +792,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(504, 575)</value>
+      <value>(560, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -737,7 +843,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 285)</value>
+      <value>(352, 267)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -788,7 +894,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(584, 184)</value>
+      <value>(736, 179)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -835,7 +941,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(112, 381)</value>
+      <value>(288, 364)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -859,6 +965,69 @@
     </param>
   </block>
   <block>
+    <key>pfb_arb_resampler_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1063, 480)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>90</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>pfb_arb_resampler_xxx_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>nfilts</key>
+      <value>32</value>
+    </param>
+    <param>
+      <key>rrate</key>
+      <value>1+epsilon</value>
+    </param>
+    <param>
+      <key>samp_delay</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>atten</key>
+      <value>100</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>ccf</value>
+    </param>
+  </block>
+  <block>
     <key>wifi_phy_hier</key>
     <param>
       <key>alias</key>
@@ -878,7 +1047,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 368)</value>
+      <value>(792, 376)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -897,12 +1066,20 @@
       <value>0</value>
     </param>
     <param>
+      <key>bandwidth</key>
+      <value>10e6</value>
+    </param>
+    <param>
       <key>chan_est</key>
       <value>chan_est</value>
     </param>
     <param>
       <key>encoding</key>
       <value>encoding</value>
+    </param>
+    <param>
+      <key>frequency</key>
+      <value>5.89e9</value>
     </param>
     <param>
       <key>sensitivity</key>
@@ -945,7 +1122,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 627)</value>
+      <value>(224, 558)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1032,11 +1209,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(336, 391)</value>
+      <value>(408, 568)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>180</value>
+      <value>270</value>
     </param>
     <param>
       <key>grid_pos</key>
@@ -1114,8 +1291,14 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_pdu_to_tagged_stream_0_0</source_block_id>
+    <sink_block_id>wxgui_scopesink2_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>channels_channel_model_0</source_block_id>
-    <sink_block_id>wifi_phy_hier_0</sink_block_id>
+    <sink_block_id>pfb_arb_resampler_xxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1144,10 +1327,16 @@
     <sink_key>pdus</sink_key>
   </connection>
   <connection>
-    <source_block_id>wifi_phy_hier_0</source_block_id>
-    <sink_block_id>wxgui_scopesink2_0</sink_block_id>
-    <source_key>1</source_key>
+    <source_block_id>pfb_arb_resampler_xxx_0</source_block_id>
+    <sink_block_id>wifi_phy_hier_0</sink_block_id>
+    <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>wifi_phy_hier_0</source_block_id>
+    <sink_block_id>blocks_pdu_to_tagged_stream_0_0</sink_block_id>
+    <source_key>carrier</source_key>
+    <sink_key>pdus</sink_key>
   </connection>
   <connection>
     <source_block_id>wifi_phy_hier_0</source_block_id>
