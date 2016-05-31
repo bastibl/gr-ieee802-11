@@ -82,6 +82,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 			if(d_state == COPY) {
 				d_state = RESET;
 			}
+			d_freq_offset_short = pmt::to_double(d_tags.front().value);
 		}
 	}
 
@@ -120,9 +121,9 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 			if(!rel)  {
 				add_item_tag(0, nitems_written(0),
-					pmt::string_to_symbol("wifi_start"),
-					pmt::PMT_T,
-					pmt::string_to_symbol(name()));
+						pmt::string_to_symbol("wifi_start"),
+						pmt::from_double(d_freq_offset_short - d_freq_offset),
+						pmt::string_to_symbol(name()));
 			}
 
 			if(rel >= 0 && (rel < 128 || ((rel - 128) % 80) > 15)) {
@@ -222,6 +223,7 @@ private:
 	int         d_offset;
 	int         d_frame_start;
 	float       d_freq_offset;
+	double      d_freq_offset_short;
 
 	gr_complex *d_correlation;
 	list<pair<gr_complex, int> > d_cor;
