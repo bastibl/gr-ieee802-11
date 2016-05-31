@@ -88,14 +88,11 @@ void signal_field_impl::generate_signal_field(char *out, frame_param &frame, ofd
 	}
 
 	ofdm_param signal_ofdm(BPSK_1_2);
-	frame_param signal_param(signal_ofdm, 3);
-	signal_param.n_data = 24;
-	signal_param.n_sym = 1;
+	frame_param signal_param(signal_ofdm, 0);
 
 	// convolutional encoding (scrambling is not needed)
 	convolutional_encoding(signal_header, encoded_signal_header, signal_param);
 	// interleaving
-	//interleave(encoded_signal_header, interleaved_signal_header, signal_param, signal_ofdm);
 	interleave(encoded_signal_header, out, signal_param, signal_ofdm);
 
 	free(signal_header);

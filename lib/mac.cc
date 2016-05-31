@@ -66,8 +66,9 @@ mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector
 
 void phy_in (pmt::pmt_t msg) {
 	// this must be a pair
-	if (!pmt::is_blob(pmt::cdr(msg)))
+	if (!pmt::is_blob(pmt::cdr(msg))) {
 		throw std::runtime_error("PMT must be blob");
+	}
 
 	// strip MAC header
 	// TODO: check for frame type to determine header size
@@ -85,12 +86,7 @@ void app_in (pmt::pmt_t msg) {
 	const char   *msdu;
 	std::string  str;
 
-	if(pmt::is_eof_object(msg)) {
-		message_port_pub(pmt::mp("phy out"), pmt::PMT_EOF);
-		detail().get()->set_done(true);
-		return;
-
-	} else if(pmt::is_symbol(msg)) {
+	if(pmt::is_symbol(msg)) {
 
 		str = pmt::symbol_to_string(msg);
 		msg_len = str.length();
@@ -103,10 +99,10 @@ void app_in (pmt::pmt_t msg) {
 
 	} else {
 		throw std::invalid_argument("MAC expects PDUs or strings");
-                return;
+		return;
 	}
 
-	if(msg_len > 1500) {
+	if(msg_len >= MAX_FRAME_SIZE - 32) {
 		throw std::invalid_argument("Frame too large (> 1500)");
 	}
 

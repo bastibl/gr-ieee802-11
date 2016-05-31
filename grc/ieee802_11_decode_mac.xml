@@ -41,9 +41,8 @@
 
 	<sink>
 		<name>in</name>
-		<type>complex</type>
+		<type>byte</type>
 		<vlen>48</vlen>
-		<nports>1</nports>
 	</sink>
 
 	<source>

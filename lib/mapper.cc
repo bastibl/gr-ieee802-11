@@ -66,12 +66,11 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 		"   length: " << d_symbols_len << std::endl;
 
 	while(!d_symbols_offset) {
-		pmt::pmt_t msg(delete_head_blocking(pmt::intern("in")));
+		pmt::pmt_t msg(delete_head_nowait(pmt::intern("in")));
 
-                if(pmt::is_eof_object(msg)) {
-			dout << "MAPPER: exiting" << std::endl;
-                        return -1;
-                }
+		if(!msg.get()) {
+			return 0;
+		}
 
 		if(pmt::is_pair(msg)) {
 			dout << "MAPPER: received new message" << std::endl;
@@ -88,16 +87,15 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			}
 
 			//alloc memory for modulation steps
-			char *data_bits        = (char*)calloc(frame.n_data, sizeof(char));
-			char *scrambled_data   = (char*)calloc(frame.n_data, sizeof(char));
-			char *encoded_data     = (char*)calloc(frame.n_data * 2, sizeof(char));
+			char *data_bits        = (char*)calloc(frame.n_data_bits, sizeof(char));
+			char *scrambled_data   = (char*)calloc(frame.n_data_bits, sizeof(char));
+			char *encoded_data     = (char*)calloc(frame.n_data_bits * 2, sizeof(char));
 			char *punctured_data   = (char*)calloc(frame.n_encoded_bits, sizeof(char));
 			char *interleaved_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
 			char *symbols          = (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
 
 			//generate the WIFI data field, adding service field and pad bits
 			generate_bits(psdu, data_bits, frame);
-			//print_hex_array(data_bits, frame.n_data);
 
 			// scrambling
 			static uint8_t scrambler = 1;
@@ -106,13 +104,10 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 				scrambler = 1;
 			}
 
-			//print_hex_array(scrambled_data, frame.n_data);
 			// reset tail bits
 			reset_tail_bits(scrambled_data, frame);
-			//print_hex_array(scrambled_data, frame.n_data);
 			// encoding
 			convolutional_encoding(scrambled_data, encoded_data, frame);
-			//print_hex_array(encoded_data, frame.n_data * 2);
 			// puncturing
 			puncturing(encoded_data, punctured_data, frame, d_ofdm);
 			//std::cout << "punctured" << std::endl;
@@ -120,7 +115,7 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			interleave(punctured_data, interleaved_data, frame, d_ofdm);
 			//std::cout << "interleaved" << std::endl;
 
-                        // one byte per symbol
+			// one byte per symbol
 			split_symbols(interleaved_data, symbols, frame, d_ofdm);
 
 			d_symbols_len = frame.n_sym * 48;
