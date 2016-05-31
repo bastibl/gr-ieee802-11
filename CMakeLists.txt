@@ -83,7 +83,6 @@ set(GRC_BLOCKS_DIR      ${GR_PKG_DATA_DIR}/grc/blocks)
 set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
 find_package(Gnuradio)
 find_package(CppUnit)
-find_package(ITPP)
 find_package(Log4cpp)
 
 if(NOT GNURADIO_RUNTIME_FOUND)
@@ -92,10 +91,6 @@ endif()
 
 if(NOT CPPUNIT_FOUND)
     message(FATAL_ERROR "CppUnit required to compile ieee802-11")
-endif()
-
-if(NOT ITPP_FOUND)
-    message(FATAL_ERROR "ITPP required to compile ieee802-11")
 endif()
 
 if (LOG4CPP_FOUND)
@@ -134,7 +129,6 @@ include_directories(
     ${CMAKE_BINARY_DIR}/include
     ${Boost_INCLUDE_DIRS}
     ${CPPUNIT_INCLUDE_DIRS}
-    ${ITPP_INCLUDE_DIR}
     ${GNURADIO_RUNTIME_INCLUDE_DIRS}
 )
 

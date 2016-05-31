@@ -29,14 +29,6 @@ There are several ways to install GNU Radio. You can use
 - [from source](http://gnuradio.org/redmine/projects/gnuradio/wiki/InstallingGRFromSource)
 
 
-### IT++
-
-I use the Viterbi decoder of IT++.
-
-    sudo apt-get install libitpp-dev
-    sudo port install itpp
-
-
 ### gr-foo
 
 I have some non project specific GNU Radio blocks in my gr-foo repo that are needed. For example the Wireshark connector. You can find these blocks at [https://github.com/bastibl/gr-foo](https://github.com/bastibl/gr-foo). They are installed with the typical command sequence:

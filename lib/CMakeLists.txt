@@ -117,7 +117,6 @@ list(APPEND gr_ieee802_11_sources
 list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
     ${GNURADIO_ALL_LIBRARIES}
-    ${ITPP_LIBRARIES}
     ${LOG4CPP_LIBRARIES}
 )
 
