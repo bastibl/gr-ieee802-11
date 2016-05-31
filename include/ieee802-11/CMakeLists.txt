@@ -70,6 +70,7 @@ list(APPEND include_sources
     ${generated_includes}
     api.h
     chunks_to_symbols.h
+    constellations.h
     decode_mac.h
     decode_signal.h
     equalize_symbols.h

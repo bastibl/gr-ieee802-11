@@ -95,7 +95,7 @@ add_dependencies(ieee802_11_generated_sources ieee802_11_generated_includes)
 list(APPEND gr_ieee802_11_sources
     ${generated_sources}
     chunks_to_symbols_impl.cc
-    constellations.cc
+    constellations_impl.cc
     decode_mac.cc
     decode_signal.cc
     equalize_symbols.cc

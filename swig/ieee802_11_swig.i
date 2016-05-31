@@ -25,6 +25,7 @@
 #include "gnuradio/digital/packet_header_default.h"
 
 #include "ieee802-11/chunks_to_symbols.h"
+#include "ieee802-11/constellations.h"
 #include "ieee802-11/ether_encap.h"
 #include "ieee802-11/moving_average_cc.h"
 #include "ieee802-11/moving_average_ff.h"
@@ -41,7 +42,13 @@
 
 %include "gnuradio/digital/packet_header_default.h"
 
+%ignore gr::digital::constellation_bpsk;
+%ignore gr::digital::constellation_qpsk;
+%ignore gr::digital::constellation_16qam;
+%include "gnuradio/digital/constellation.h"
+
 %include "ieee802-11/chunks_to_symbols.h"
+%include "ieee802-11/constellations.h"
 %include "ieee802-11/ether_encap.h"
 %include "ieee802-11/moving_average_cc.h"
 %include "ieee802-11/moving_average_ff.h"
@@ -71,5 +78,29 @@ GR_SWIG_BLOCK_MAGIC2(ieee802_11, sync_short);
 %template(signal_field_sptr) boost::shared_ptr<gr::ieee802_11::signal_field>;
 %pythoncode %{
 signal_field_sptr.__repr__ = lambda self: "<signal_field>"
-signal_field = signal_field .make;
+signal_field = signal_field.make;
+%}
+
+%template(constellation_bpsk_sptr) boost::shared_ptr<gr::ieee802_11::constellation_bpsk>;
+%pythoncode %{
+constellation_bpsk_sptr.__repr__ = lambda self: "<constellation BPSK>"
+constellation_bpsk = constellation_bpsk.make;
+%}
+
+%template(constellation_qpsk_sptr) boost::shared_ptr<gr::ieee802_11::constellation_qpsk>;
+%pythoncode %{
+constellation_qpsk_sptr.__repr__ = lambda self: "<constellation QPSK>"
+constellation_qpsk = constellation_qpsk.make;
+%}
+
+%template(constellation_16qam_sptr) boost::shared_ptr<gr::ieee802_11::constellation_16qam>;
+%pythoncode %{
+constellation_16qam_sptr.__repr__ = lambda self: "<constellation 16QAM>"
+constellation_16qam = constellation_16qam.make;
+%}
+
+%template(constellation_64qam_sptr) boost::shared_ptr<gr::ieee802_11::constellation_64qam>;
+%pythoncode %{
+constellation_64qam_sptr.__repr__ = lambda self: "<constellation 64QAM>"
+constellation_64qam = constellation_64qam.make;
 %}
