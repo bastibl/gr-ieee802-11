@@ -109,6 +109,7 @@ list(APPEND gr_ieee802_11_sources
     sync_long.cc
     sync_short.cc
     utils.cc
+    viterbi_decoder.cc
 )
 
 list(APPEND gr_ieee802_11_libs
