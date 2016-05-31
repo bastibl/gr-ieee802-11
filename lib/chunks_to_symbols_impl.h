@@ -18,6 +18,7 @@
 #define INCLUDED_IEEE802_11_CHUNKS_TO_SYMBOLS_IMPL_H
 
 #include <ieee802-11/chunks_to_symbols.h>
+#include <ieee802-11/constellations.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -33,11 +34,12 @@ public:
 			gr_vector_const_void_star &input_items,
 			gr_vector_void_star &output_items);
 
-protected:
-	static const gr_complex BPSK[2];
-	static const gr_complex QPSK[4];
-	static const gr_complex QAM16[16];
-	static const gr_complex QAM64[64];
+private:
+	boost::shared_ptr<gr::digital::constellation> d_mapping;
+	constellation_bpsk::sptr d_bpsk;
+	constellation_qpsk::sptr d_qpsk;
+	constellation_16qam::sptr d_16qam;
+	constellation_64qam::sptr d_64qam;
 };
 
 } /* namespace ieee802_11 */
