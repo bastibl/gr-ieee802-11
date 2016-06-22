@@ -3,7 +3,7 @@
 <block>
 	<name>WiFi Sync Short</name>
 	<key>ieee802_11_sync_short</key>
-	<category>IEEE802.11</category>
+	<category>[IEEE802.11]</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.sync_short($threshold, $min_plateau, $log, $debug)</make>
 

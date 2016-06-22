@@ -2,7 +2,7 @@
 <block>
 	<name>Chunks to Symbols</name>
 	<key>ieee802_11_chunks_to_symbols_xx</key>
-	<category>IEEE802.11</category>
+	<category>[IEEE802.11]</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.chunks_to_symbols()</make>
 	<sink>

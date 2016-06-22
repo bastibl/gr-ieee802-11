@@ -2,7 +2,7 @@
 <block>
 	<name>Moving Average</name>
 	<key>ieee802_11_moving_average_xx</key>
-	<category>IEEE802.11</category>
+	<category>[IEEE802.11]</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.moving_average_$(type.fcn)($length)</make>
 	<callback>set_length($length)</callback>
