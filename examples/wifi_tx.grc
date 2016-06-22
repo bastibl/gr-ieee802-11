@@ -686,7 +686,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(344, 424)</value>
+      <value>(352, 408)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1730,6 +1730,10 @@
     <param>
       <key>hide_cmd_port</key>
       <value>False</value>
+    </param>
+    <param>
+      <key>hide_lo_controls</key>
+      <value>True</value>
     </param>
     <param>
       <key>stream_args</key>

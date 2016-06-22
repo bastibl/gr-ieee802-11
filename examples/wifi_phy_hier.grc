@@ -14,7 +14,7 @@
     </param>
     <param>
       <key>category</key>
-      <value>IEEE802.11</value>
+      <value>[IEEE802.11]</value>
     </param>
     <param>
       <key>comment</key>
