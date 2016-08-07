@@ -1,6 +1,12 @@
-Hi,
+Hi!
 
-this an IEEE 802.11 a/g/p transceiver for GNU Radio v3.7. Over the air, I tested it with the Ettus USRP N210 with XCVR2450 and CBX daughterboards. For interoperability tests I use mainly an Atheros (ath5k) WiFi card. The code can also be used for packet error rate simulations.
+This an IEEE 802.11 a/g/p transceiver for GNU Radio that is fitted for operation with Ettus N210s and B210s. Interoperability was tested with many off-the-shelf WiFi cards and IEEE 802.11p prototypes. The code can also be used in simulations.
+
+
+# Development
+
+Like GNU Radio, this module uses *master* and *next* branches for development, which are supposed to be used with the corresponding GNU Radio branches.
+I recommend staying up-to-date by using the *next* branch.
 
 # Installation
 
