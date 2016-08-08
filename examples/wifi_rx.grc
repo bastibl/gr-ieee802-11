@@ -1064,6 +1064,10 @@
       <value>chan_est</value>
     </param>
     <param>
+      <key>bw</key>
+      <value>samp_rate</value>
+    </param>
+    <param>
       <key>alias</key>
       <value></value>
     </param>
@@ -1082,6 +1086,10 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
+    </param>
+    <param>
+      <key>freq</key>
+      <value>freq</value>
     </param>
     <param>
       <key>_coordinate</key>
