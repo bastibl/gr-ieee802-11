@@ -3183,7 +3183,7 @@
     </param>
     <param>
       <key>bandwidth</key>
-      <value>10e6</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>chan_est</key>
@@ -3191,11 +3191,11 @@
     </param>
     <param>
       <key>encoding</key>
-      <value>0</value>
+      <value>encoding</value>
     </param>
     <param>
       <key>frequency</key>
-      <value>5.89e9</value>
+      <value>freq</value>
     </param>
     <param>
       <key>sensitivity</key>
