@@ -37,6 +37,7 @@ if(NOT WIN32)
     #http://gcc.gnu.org/wiki/Visibility
     add_definitions(-fvisibility=hidden)
     add_definitions(-std=c++0x)
+    add_definitions(-msse2)
 endif()
 
 ########################################################################
