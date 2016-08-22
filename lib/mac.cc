@@ -102,7 +102,7 @@ void app_in (pmt::pmt_t msg) {
 		return;
 	}
 
-	if(msg_len >= MAX_FRAME_SIZE - 32) {
+	if(msg_len > MAX_PAYLOAD_SIZE) {
 		throw std::invalid_argument("Frame too large (> 1500)");
 	}
 

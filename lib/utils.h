@@ -23,9 +23,10 @@
 #include <cinttypes>
 #include <iostream>
 
-#define MAX_FRAME_SIZE (1500 + 28 + 4)
-#define MAX_SYM (((16 + 8 * MAX_FRAME_SIZE + 6) / 24) + 1)
-#define MAX_ENCODED_BITS ((16 + 8 * MAX_FRAME_SIZE + 6) * 2 + 288)
+#define MAX_PAYLOAD_SIZE 1500
+#define MAX_PSDU_SIZE (MAX_PAYLOAD_SIZE + 28) // MAC, CRC
+#define MAX_SYM (((16 + 8 * MAX_PSDU_SIZE + 6) / 24) + 1)
+#define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + 288)
 
 #define dout d_debug && std::cout
 

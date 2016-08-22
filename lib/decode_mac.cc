@@ -75,7 +75,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			frame_param frame = frame_param(ofdm, len_data);
 
 			// check for maximum frame size
-			if(frame.n_sym <= MAX_SYM && frame.psdu_size <= MAX_FRAME_SIZE) {
+			if(frame.n_sym <= MAX_SYM && frame.psdu_size <= MAX_PSDU_SIZE) {
 				d_ofdm = ofdm;
 				d_frame = frame;
 				copied = 0;
@@ -107,6 +107,7 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	}
 
 	consume(0, i);
+
 	return 0;
 }
 
@@ -170,7 +171,7 @@ void deinterleave() {
 void descramble (uint8_t *decoded_bits) {
 
 	int state = 0;
-	std::memset(out_bytes, 0, d_frame.n_data_bits/8 + 1);
+	std::memset(out_bytes, 0, d_frame.psdu_size+2);
 
 	for(int i = 0; i < 7; i++) {
 		if(decoded_bits[i]) {
@@ -182,7 +183,7 @@ void descramble (uint8_t *decoded_bits) {
 	int feedback;
 	int bit;
 
-	for(int i = 7; i < d_frame.n_data_bits; i++) {
+	for(int i = 7; i < d_frame.psdu_size*8+16; i++) {
 		feedback = ((!!(state & 64))) ^ (!!(state & 8));
 		bit = feedback ^ (decoded_bits[i] & 0x1);
 		out_bytes[i/8] |= bit << (i%8);
@@ -193,15 +194,15 @@ void descramble (uint8_t *decoded_bits) {
 void print_output() {
 
 	dout << std::endl;
-	dout << "psdu size" << d_frame.n_data_bits / 8 << std::endl;
-	for(int i = 0; i < d_frame.psdu_size+2; i++) {
+	dout << "psdu size" << d_frame.psdu_size << std::endl;
+	for(int i = 2; i < d_frame.psdu_size+2; i++) {
 		dout << std::setfill('0') << std::setw(2) << std::hex << ((unsigned int)out_bytes[i] & 0xFF) << std::dec << " ";
 		if(i % 16 == 15) {
 			dout << std::endl;
 		}
 	}
 	dout << std::endl;
-	for(int i = 0; i < d_frame.n_data_bits / 8; i++) {
+	for(int i = 2; i < d_frame.psdu_size+2; i++) {
 		if((out_bytes[i] > 31) && (out_bytes[i] < 127)) {
 			dout << ((char) out_bytes[i]);
 		} else {
@@ -223,7 +224,7 @@ private:
 	uint8_t d_rx_symbols[48 * MAX_SYM];
 	uint8_t d_rx_bits[MAX_ENCODED_BITS];
 	uint8_t d_deinterleaved_bits[MAX_ENCODED_BITS];
-	uint8_t out_bytes[MAX_FRAME_SIZE];
+	uint8_t out_bytes[MAX_PSDU_SIZE + 2]; // 2 for signal field
 
 	int copied;
 	bool d_frame_complete;
