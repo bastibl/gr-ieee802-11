@@ -24,6 +24,8 @@
 
 using namespace gr::ieee802_11;
 
+#define CANARY_SIZE 64
+
 class decode_mac_impl : public decode_mac {
 
 public:
@@ -38,12 +40,27 @@ decode_mac_impl(bool log, bool debug) :
 	d_frame(d_ofdm, 0),
 	d_frame_complete(true) {
 
+	memset(canary, 0, CANARY_SIZE);
+
 	message_port_register_out(pmt::mp("out"));
+}
+
+// poor man's valgrind...
+void check_canary(void) {
+	for (int i=CANARY_SIZE-1; i>=0; --i) {
+		if (canary[i] != 0) {
+			// seen in the wild: ERROR: canary overwritten at offset 6
+			std::cout << "ERROR: canary overwritten at offset " << i << "\n";
+			return;
+		}
+	}
 }
 
 int general_work (int noutput_items, gr_vector_int& ninput_items,
 		gr_vector_const_void_star& input_items,
 		gr_vector_void_star& output_items) {
+
+	//check_canary();
 
 	const uint8_t *in = (const uint8_t*)input_items[0];
 
@@ -220,13 +237,18 @@ private:
 	double d_snr;
 	viterbi_decoder d_decoder;
 
+	int copied;
+	bool d_frame_complete;
+
 	uint8_t d_rx_symbols[48 * MAX_SYM];
 	uint8_t d_rx_bits[MAX_ENCODED_BITS];
 	uint8_t d_deinterleaved_bits[MAX_ENCODED_BITS];
 	uint8_t out_bytes[MAX_FRAME_SIZE];
 
-	int copied;
-	bool d_frame_complete;
+	// DO NOT ADD any member below this point, there is a stack corruption 
+	// going on. This is a temporary workaround, until the root cause is found:
+	// https://en.wikipedia.org/wiki/Stack_buffer_overflow#Stack_canaries
+	uint8_t canary[CANARY_SIZE];
 };
 
 decode_mac::sptr
