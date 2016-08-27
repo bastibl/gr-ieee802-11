@@ -93,6 +93,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(8, 244)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>filename</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"results/sim_%d_%.2f_%.1f_.pcap" % (repetition, sensitivity, snr)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(8, 85)</value>
     </param>
     <param>
@@ -132,7 +159,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>" + os.path.dirname(os.path.realpath(__file__)) + "/results/sim_%d_%.2f_%.1f_.pcap" % (repetition, sensitivity, snr) + "</value>
+      <value>filename</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -596,37 +623,6 @@
     <param>
       <key>import</key>
       <value>import random</value>
-    </param>
-  </block>
-  <block>
-    <key>import</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(8, 244)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>import_0_0_0</value>
-    </param>
-    <param>
-      <key>import</key>
-      <value>import os</value>
     </param>
   </block>
   <block>
