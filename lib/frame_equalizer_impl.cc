@@ -327,7 +327,7 @@ frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
 		d_frame_mod = d_64qam;
 		dout << "Encoding: 27 Mbit/s   ";
 		break;
-	defaul:
+	default:
 		dout << "unknown encoding" << std::endl;
 		return false;
 	}
