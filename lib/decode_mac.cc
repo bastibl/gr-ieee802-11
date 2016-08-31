@@ -70,12 +70,12 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			}
 			d_frame_complete = false;
 
-			pmt::pmt_t tuple = tags[0].value;
-			int len_data = pmt::to_uint64(pmt::tuple_ref(tuple, 0));
-			int encoding = pmt::to_uint64(pmt::tuple_ref(tuple, 1));
-			d_snr = pmt::to_double(pmt::tuple_ref(tuple, 2));
-			d_nom_freq = pmt::to_double(pmt::tuple_ref(tuple, 3));
-			d_freq_offset = pmt::to_double(pmt::tuple_ref(tuple, 4));
+			pmt::pmt_t dict = tags[0].value;
+			int len_data = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE+1)));
+			int encoding = pmt::to_uint64(pmt::dict_ref(dict, pmt::mp("encoding"), pmt::from_uint64(0)));
+			d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
+			d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
+			d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
 
 			ofdm_param ofdm = ofdm_param((Encoding)encoding);
 			frame_param frame = frame_param(ofdm, len_data);

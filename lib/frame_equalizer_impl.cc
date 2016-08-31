@@ -209,15 +209,16 @@ frame_equalizer_impl::general_work (int noutput_items,
 
 			if(decode_signal_field(out + o * 48)) {
 
-				// TODO: it would better to use pmt::dict instead of raw list of numbers
+				pmt::pmt_t dict = pmt::make_dict();
+				dict = pmt::dict_add(dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
+				dict = pmt::dict_add(dict, pmt::mp("encoding"), pmt::from_uint64(d_frame_encoding));
+				dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_equalizer->get_snr()));
+				dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
+				dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
 				add_item_tag(0, nitems_written(0) + o,
 						pmt::string_to_symbol("wifi_start"),
-						pmt::make_tuple(pmt::from_uint64(d_frame_bytes),
-								pmt::from_uint64(d_frame_encoding),
-								pmt::from_double(d_equalizer->get_snr()),
-								pmt::from_double(d_freq),  // nominal frequency
-								pmt::from_double(d_freq_offset_from_synclong)),
-						pmt::string_to_symbol(name()));
+						dict,
+						pmt::string_to_symbol(alias()));
 			}
 		}
 
