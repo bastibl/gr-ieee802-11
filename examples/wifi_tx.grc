@@ -30,7 +30,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 5)</value>
+      <value>(8, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 3)</value>
+      <value>(632, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -156,7 +156,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 3)</value>
+      <value>(312, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -211,7 +211,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 123)</value>
+      <value>(808, 112)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -266,7 +266,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 3)</value>
+      <value>(808, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -352,7 +352,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 3)</value>
+      <value>(944, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -411,7 +411,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 3)</value>
+      <value>(1064, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -470,7 +470,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(472, 3)</value>
+      <value>(488, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -517,7 +517,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>10</value>
+      <value>0.75</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -525,7 +525,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 3)</value>
+      <value>(176, 8)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -545,7 +545,7 @@
     </param>
     <param>
       <key>max</key>
-      <value>100</value>
+      <value>1</value>
     </param>
     <param>
       <key>min</key>
@@ -906,7 +906,7 @@
     </param>
     <param>
       <key>norm_gain0</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>gain0</key>
@@ -1558,7 +1558,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(392, 552)</value>
+      <value>(392, 544)</value>
     </param>
     <param>
       <key>_rotation</key>
