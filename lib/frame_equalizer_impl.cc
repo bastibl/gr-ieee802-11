@@ -132,7 +132,7 @@ frame_equalizer_impl::general_work (int noutput_items,
 			d_frame_symbols = 0;
 			d_frame_mod = d_bpsk;
 
-			d_freq_offset_from_synclong = pmt::to_double(tags.front().value) * d_bw;
+			d_freq_offset_from_synclong = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI);
 			d_epsilon0 = pmt::to_double(tags.front().value) * d_bw / (2 * M_PI * d_freq);
 			d_er = 0;
 
