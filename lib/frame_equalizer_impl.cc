@@ -79,7 +79,7 @@ frame_equalizer_impl::set_algorithm(Equalizer algo) {
 		d_equalizer = new equalizer::lms();
 		break;
 	case STA:
-		dout << "Comb" << std::endl;
+        dout << "STA" << std::endl;
 		d_equalizer = new equalizer::sta();
 		break;
 	default:
