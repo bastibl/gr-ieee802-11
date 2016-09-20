@@ -29,7 +29,7 @@
 #define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + 288)
 
 #define dout d_debug && std::cout
-#define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg) }} while(0);
+#define mylog(msg) do { if(d_log) { GR_LOG_INFO(d_logger, msg); }} while(0);
 
 struct mac_header {
 	//protocol version, type, subtype, to_ds, from_ds, ...
