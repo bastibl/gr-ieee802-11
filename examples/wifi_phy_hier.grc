@@ -1648,7 +1648,7 @@
     </param>
     <param>
       <key>optional</key>
-      <value>False</value>
+      <value>True</value>
     </param>
     <param>
       <key>type</key>
