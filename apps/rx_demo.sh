@@ -1,6 +1,8 @@
 #!/bin/bash
 
-FILE="/tmp/ofdm.pcap"
+### Enable Wireshark Connector in wifi_rx flow graph
+
+FILE="/tmp/wifi.pcap"
 FLOWGRAPH="wifi_rx.py"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
