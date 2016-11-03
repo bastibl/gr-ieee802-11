@@ -80,7 +80,6 @@
 		}															\
 	}
 
-
 using namespace gr::ieee802_11;
 
 
@@ -91,6 +90,7 @@ viterbi_decoder::viterbi_decoder() :
 viterbi_decoder::~viterbi_decoder() {
 }
 
+#ifdef IEEE80211_MSSE2
 void
 viterbi_decoder::viterbi_butterfly2_sse2(unsigned char *symbols,
 		__m128i *mm0, __m128i *mm1, __m128i *pp0, __m128i *pp1) {
@@ -197,23 +197,236 @@ viterbi_decoder::viterbi_butterfly2_sse2(unsigned char *symbols,
 		path1[2*i+1] = _mm_unpackhi_epi8(tmp0, tmp1);
 	}
 }
+#else
+void
+viterbi_decoder::viterbi_butterfly2_generic(unsigned char *symbols,
+		unsigned char *mm0, unsigned char *mm1, unsigned char *pp0,
+		unsigned char *pp1)
+{
+  int i, j, k;
+
+  unsigned char *metric0, *metric1;
+  unsigned char *path0, *path1;
+
+  metric0 = mm0;
+  path0 = pp0;
+  metric1 = mm1;
+  path1 = pp1;
+
+  // Operate on 4 symbols (2 bits) at a time
+
+  unsigned char m0[16], m1[16], m2[16], m3[16], decision0[16], decision1[16], survivor0[16], survivor1[16];
+  unsigned char metsv[16], metsvm[16];
+  unsigned char shift0[16], shift1[16];
+  unsigned char tmp0[16], tmp1[16];
+  unsigned char sym0v[16], sym1v[16];
+  unsigned short simd_epi16;
+
+  for (j = 0; j < 16; j++) {
+	sym0v[j] = symbols[0];
+	sym1v[j] = symbols[1];
+  }
+
+  for (i = 0; i < 2; i++) {
+	if (symbols[0] == 2) {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = d_branchtab27_generic[1].c[(i*16) + j] ^ sym1v[j];
+		metsv[j] = 1 - metsvm[j];
+	  }
+	}
+	else if (symbols[1] == 2) {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = d_branchtab27_generic[0].c[(i*16) + j] ^ sym0v[j];
+		metsv[j] = 1 - metsvm[j];
+	  }
+	}
+	else {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = (d_branchtab27_generic[0].c[(i*16) + j] ^ sym0v[j]) + (d_branchtab27_generic[1].c[(i*16) + j] ^ sym1v[j]);
+		metsv[j] = 2 - metsvm[j];
+	  }
+	}
+
+	for (j = 0; j < 16; j++) {
+	  m0[j] = metric0[(i*16) + j] + metsv[j];
+	  m1[j] = metric0[((i+2)*16) + j] + metsvm[j];
+	  m2[j] = metric0[(i*16) + j] + metsvm[j];
+	  m3[j] = metric0[((i+2)*16) + j] + metsv[j];
+	}
+
+	for (j = 0; j < 16; j++) {
+	  decision0[j] = ((m0[j] - m1[j]) > 0) ? 0xff : 0x0;
+	  decision1[j] = ((m2[j] - m3[j]) > 0) ? 0xff : 0x0;
+	  survivor0[j] = (decision0[j] & m0[j]) | ((~decision0[j]) & m1[j]);
+	  survivor1[j] = (decision1[j] & m2[j]) | ((~decision1[j]) & m3[j]);
+	}
+
+	for (j = 0; j < 16; j += 2) {
+	  simd_epi16 = path0[(i*16) + j];
+	  simd_epi16 |= path0[(i*16) + (j+1)] << 8;
+	  simd_epi16 <<= 1;
+	  shift0[j] = simd_epi16;
+	  shift0[j+1] = simd_epi16 >> 8;
+
+	  simd_epi16 = path0[((i+2)*16) + j];
+	  simd_epi16 |= path0[((i+2)*16) + (j+1)] << 8;
+	  simd_epi16 <<= 1;
+	  shift1[j] = simd_epi16;
+	  shift1[j+1] = simd_epi16 >> 8;
+	}
+	for (j = 0; j < 16; j++) {
+	  shift1[j] = shift1[j] + 1;
+	}
+
+	for (j = 0, k = 0; j < 16; j += 2, k++) {
+	  metric1[(2*i*16) + j] = survivor0[k];
+	  metric1[(2*i*16) + (j+1)] = survivor1[k];
+	}
+	for (j = 0; j < 16; j++) {
+	  tmp0[j] = (decision0[j] & shift0[j]) | ((~decision0[j]) & shift1[j]);
+	}
+
+	for (j = 0, k = 8; j < 16; j += 2, k++) {
+	  metric1[((2*i+1)*16) + j] = survivor0[k];
+	  metric1[((2*i+1)*16) + (j+1)] = survivor1[k];
+	}
+	for (j = 0; j < 16; j++) {
+	  tmp1[j] = (decision1[j] & shift0[j]) | ((~decision1[j]) & shift1[j]);
+	}
+
+	for (j = 0, k = 0; j < 16; j += 2, k++) {
+	  path1[(2*i*16) + j] = tmp0[k];
+	  path1[(2*i*16) + (j+1)] = tmp1[k];
+	}
+	for (j = 0, k = 8; j < 16; j += 2, k++) {
+	  path1[((2*i+1)*16) + j] = tmp0[k];
+	  path1[((2*i+1)*16) + (j+1)] = tmp1[k];
+	}
+  }
+
+  metric0 = mm1;
+  path0 = pp1;
+  metric1 = mm0;
+  path1 = pp0;
+
+  for (j = 0; j < 16; j++) {
+	sym0v[j] = symbols[2];
+	sym1v[j] = symbols[3];
+  }
+
+  for (i = 0; i < 2; i++) {
+	if (symbols[2] == 2) {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = d_branchtab27_generic[1].c[(i*16) + j] ^ sym1v[j];
+		metsv[j] = 1 - metsvm[j];
+	  }
+	}
+	else if (symbols[3] == 2) {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = d_branchtab27_generic[0].c[(i*16) + j] ^ sym0v[j];
+		metsv[j] = 1 - metsvm[j];
+	  }
+	}
+	else {
+	  for (j = 0; j < 16; j++) {
+		metsvm[j] = (d_branchtab27_generic[0].c[(i*16) + j] ^ sym0v[j]) + (d_branchtab27_generic[1].c[(i*16) + j] ^ sym1v[j]);
+		metsv[j] = 2 - metsvm[j];
+	  }
+	}
+
+	for (j = 0; j < 16; j++) {
+	  m0[j] = metric0[(i*16) + j] + metsv[j];
+	  m1[j] = metric0[((i+2)*16) + j] + metsvm[j];
+	  m2[j] = metric0[(i*16) + j] + metsvm[j];
+	  m3[j] = metric0[((i+2)*16) + j] + metsv[j];
+	}
+
+	for (j = 0; j < 16; j++) {
+	  decision0[j] = ((m0[j] - m1[j]) > 0) ? 0xff : 0x0;
+	  decision1[j] = ((m2[j] - m3[j]) > 0) ? 0xff : 0x0;
+	  survivor0[j] = (decision0[j] & m0[j]) | ((~decision0[j]) & m1[j]);
+	  survivor1[j] = (decision1[j] & m2[j]) | ((~decision1[j]) & m3[j]);
+	}
+
+	for (j = 0; j < 16; j += 2) {
+	  simd_epi16 = path0[(i*16) + j];
+	  simd_epi16 |= path0[(i*16) + (j+1)] << 8;
+	  simd_epi16 <<= 1;
+	  shift0[j] = simd_epi16;
+	  shift0[j+1] = simd_epi16 >> 8;
+
+	  simd_epi16 = path0[((i+2)*16) + j];
+	  simd_epi16 |= path0[((i+2)*16) + (j+1)] << 8;
+	  simd_epi16 <<= 1;
+	  shift1[j] = simd_epi16;
+	  shift1[j+1] = simd_epi16 >> 8;
+	}
+	for (j = 0; j < 16; j++) {
+	  shift1[j] = shift1[j] + 1;
+	}
+
+	for (j = 0, k = 0; j < 16; j += 2, k++) {
+	  metric1[(2*i*16) + j] = survivor0[k];
+	  metric1[(2*i*16) + (j+1)] = survivor1[k];
+	}
+	for (j = 0; j < 16; j++) {
+	  tmp0[j] = (decision0[j] & shift0[j]) | ((~decision0[j]) & shift1[j]);
+	}
+
+	for (j = 0, k = 8; j < 16; j += 2, k++) {
+	  metric1[((2*i+1)*16) + j] = survivor0[k];
+	  metric1[((2*i+1)*16) + (j+1)] = survivor1[k];
+	}
+	for (j = 0; j < 16; j++) {
+	  tmp1[j] = (decision1[j] & shift0[j]) | ((~decision1[j]) & shift1[j]);
+	}
+
+	for (j = 0, k = 0; j < 16; j += 2, k++) {
+	  path1[(2*i*16) + j] = tmp0[k];
+	  path1[(2*i*16) + (j+1)] = tmp1[k];
+	}
+	for (j = 0, k = 8; j < 16; j += 2, k++) {
+	  path1[((2*i+1)*16) + j] = tmp0[k];
+	  path1[((2*i+1)*16) + (j+1)] = tmp1[k];
+	}
+  }
+}
+#endif
 
 //  Find current best path
+#ifdef IEEE80211_MSSE2
 unsigned char
 viterbi_decoder::viterbi_get_output_sse2(__m128i *mm0, __m128i *pp0,
 		int ntraceback, unsigned char *outbuf) {
+#else
+unsigned char
+viterbi_decoder::viterbi_get_output_generic(unsigned char *mm0,
+		unsigned char *pp0, int ntraceback, unsigned char *outbuf) {
+#endif
 	int i;
 	int bestmetric, minmetric;
 	int beststate = 0;
 	int pos = 0;
+#ifndef IEEE80211_MSSE2
+	int j;
+#endif
 
 	// circular buffer with the last ntraceback paths
 	d_store_pos = (d_store_pos + 1) % ntraceback;
 
+#ifdef IEEE80211_MSSE2
 	for (i = 0; i < 4; i++) {
 		_mm_store_si128((__m128i *) &d_mmresult[i*16], mm0[i]);
 		_mm_store_si128((__m128i *) &d_ppresult[d_store_pos][i*16], pp0[i]);
 	}
+#else
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 16; j++) {
+			d_mmresult[(i*16) + j] = mm0[(i*16) + j];
+			d_ppresult[d_store_pos][(i*16) + j] = pp0[(i*16) + j];
+		}
+	}
+#endif
 
 	// Find out the best final state
 	bestmetric = d_mmresult[beststate];
@@ -241,12 +454,21 @@ viterbi_decoder::viterbi_get_output_sse2(__m128i *mm0, __m128i *pp0,
 	// Store output byte
 	*outbuf = d_ppresult[pos][beststate];
 
+#ifdef IEEE80211_MSSE2
 	// Zero out the path variable
 	// and prevent metric overflow
 	for (i = 0; i < 4; i++) {
 		pp0[i] = _mm_setzero_si128();
 		mm0[i] = _mm_sub_epi8(mm0[i], _mm_set1_epi8(minmetric));
 	}
+#else
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 16; j++) {
+			pp0[(i*16) + j] = 0;
+			mm0[(i*16) + j] = mm0[(i*16) + j] - minmetric;
+		}
+	}
+#endif
 
 	return bestmetric;
 }
@@ -303,12 +525,21 @@ viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
 	while(n_decoded < d_frame->n_data_bits) {
 
 		if ((in_count % 4) == 0) { //0 or 3
+#ifdef IEEE80211_MSSE2
 			viterbi_butterfly2_sse2(&depunctured[in_count & 0xfffffffc], d_metric0, d_metric1, d_path0, d_path1);
+#else
+			viterbi_butterfly2_generic(&depunctured[in_count & 0xfffffffc], d_metric0_generic, d_metric1_generic,
+									d_path0_generic, d_path1_generic);
+#endif
 
 			if ((in_count > 0) && (in_count % 16) == 8) { // 8 or 11
 				unsigned char c;
 
+#ifdef IEEE80211_MSSE2
 				viterbi_get_output_sse2(d_metric0, d_path0, d_ntraceback, &c);
+#else
+				viterbi_get_output_generic(d_metric0_generic, d_path0_generic, d_ntraceback, &c);
+#endif
 
 				if (out_count >= d_ntraceback) {
 					for (int i= 0; i < 8; i++) {
@@ -328,7 +559,11 @@ viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
 void
 viterbi_decoder::reset() {
 
+#ifdef IEEE80211_MSSE2
 	viterbi_chunks_init_sse2();
+#else
+	viterbi_chunks_init_generic();
+#endif
 
 	switch(d_ofdm->encoding) {
 	case BPSK_1_2:
@@ -354,10 +589,17 @@ viterbi_decoder::reset() {
 	}
 }
 
-void // Initialize starting metrics to prefer 0 state
+// Initialize starting metrics to prefer 0 state
+#ifdef IEEE80211_MSSE2
+void
 viterbi_decoder::viterbi_chunks_init_sse2() {
+#else
+void
+viterbi_decoder::viterbi_chunks_init_generic() {
+#endif
 	int i, j;
 
+#ifdef IEEE80211_MSSE2
 	for (i = 0; i < 4; i++) {
 		d_metric0[i] = _mm_setzero_si128();
 		d_path0[i] = _mm_setzero_si128();
@@ -368,6 +610,18 @@ viterbi_decoder::viterbi_chunks_init_sse2() {
 		d_branchtab27_sse2[0].c[i] = (polys[0] < 0) ^ PARTAB[(2*i) & abs(polys[0])] ? 1 : 0;
 		d_branchtab27_sse2[1].c[i] = (polys[1] < 0) ^ PARTAB[(2*i) & abs(polys[1])] ? 1 : 0;
 	}
+#else
+	for (i = 0; i < 4; i++) {
+		d_metric0_generic[i] = 0;
+		d_path0_generic[i] = 0;
+	}
+
+	int polys[2] = { 0x6d, 0x4f };
+	for(i=0; i < 32; i++) {
+		d_branchtab27_generic[0].c[i] = (polys[0] < 0) ^ PARTAB[(2*i) & abs(polys[0])] ? 1 : 0;
+		d_branchtab27_generic[1].c[i] = (polys[1] < 0) ^ PARTAB[(2*i) & abs(polys[1])] ? 1 : 0;
+	}
+#endif
 
 	for (i = 0; i < 64; i++) {
 		d_mmresult[i] = 0;

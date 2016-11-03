@@ -17,7 +17,9 @@
 #ifndef INCLUDED_IEEE802_11_VITERBI_DECODER_H
 #define INCLUDED_IEEE802_11_VITERBI_DECODER_H
 
+#ifdef IEEE80211_MSSE2
 #include <xmmintrin.h>
+#endif
 #include "utils.h"
 
 namespace gr {
@@ -50,15 +52,28 @@ private:
 	unsigned char d_ppresult[TRACEBACK_MAX][64] __attribute__((aligned(16)));
 
 
+#ifdef IEEE80211_MSSE2
 	union branchtab27 {
 		unsigned char c[32];
 		__m128i v[2];
 	} d_branchtab27_sse2[2];
+#else
+	union branchtab27 {
+		unsigned char c[32];
+	} d_branchtab27_generic[2];
+#endif
 
+#ifdef IEEE80211_MSSE2
 	__m128i d_metric0[4] __attribute__ ((aligned(16)));
 	__m128i d_metric1[4] __attribute__ ((aligned(16)));
 	__m128i d_path0[4] __attribute__ ((aligned(16)));
 	__m128i d_path1[4] __attribute__ ((aligned(16)));
+#else
+	unsigned char d_metric0_generic[64] __attribute__ ((aligned(16)));
+	unsigned char d_metric1_generic[64] __attribute__ ((aligned(16)));
+	unsigned char d_path0_generic[64] __attribute__ ((aligned(16)));
+	unsigned char d_path1_generic[64] __attribute__ ((aligned(16)));
+#endif
 
 	int d_ntraceback;
 	int d_k;
@@ -76,11 +91,21 @@ private:
 
 	void reset();
 	uint8_t* depuncture(uint8_t *in);
+
+#ifdef IEEE80211_MSSE2
 	void viterbi_chunks_init_sse2();
 	void viterbi_butterfly2_sse2(unsigned char *symbols,
 			__m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
 	unsigned char viterbi_get_output_sse2(__m128i *mm0,
 			__m128i *pp0, int ntraceback, unsigned char *outbuf);
+#else
+	void viterbi_chunks_init_generic();
+	void viterbi_butterfly2_generic(unsigned char *symbols,
+			unsigned char m0[], unsigned char m1[], unsigned char p0[],
+			unsigned char p1[]);
+	unsigned char viterbi_get_output_generic(unsigned char *mm0,
+			unsigned char *pp0, int ntraceback, unsigned char *outbuf);
+#endif
 };
 
 } // namespace ieee802_11
