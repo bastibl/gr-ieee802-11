@@ -21,7 +21,7 @@
 #include <ieee802-11/frame_equalizer.h>
 #include <ieee802-11/constellations.h>
 #include "equalizer/base.h"
-#include "viterbi_decoder.h"
+#include "viterbi_decoder/viterbi_decoder.h"
 
 namespace gr {
 namespace ieee802_11 {

@@ -120,8 +120,18 @@ list(APPEND gr_ieee802_11_sources
     sync_long.cc
     sync_short.cc
     utils.cc
-    viterbi_decoder.cc
 )
+
+# use SSE2 optimized viterbi implementation if SSE2 is enabled
+if(SSE2_SUPPORTED)
+    list(APPEND gr_ieee802_11_sources
+        viterbi_decoder/viterbi_decoder_x86.cc
+    )
+else()
+    list(APPEND gr_ieee802_11_sources
+        viterbi_decoder/viterbi_decoder_generic.cc
+    )
+endif(SSE2_SUPPORTED)
 
 list(APPEND gr_ieee802_11_libs
     ${Boost_LIBRARIES}
