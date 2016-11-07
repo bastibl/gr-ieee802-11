@@ -120,6 +120,7 @@ list(APPEND gr_ieee802_11_sources
     sync_long.cc
     sync_short.cc
     utils.cc
+    viterbi_decoder/base.cc
 )
 
 # use SSE2 optimized viterbi implementation if SSE2 is enabled
