@@ -27,7 +27,7 @@
  * Some modifications from original Karn code by Matt Ettus
  * Major modifications by adding SSE2 code by Bogdan Diaconescu
  */
-#include "viterbi_decoder.h"
+#include "viterbi_decoder_x86.h"
 #include <cstring>
 #include <iostream>
 
@@ -80,16 +80,7 @@
 		}															\
 	}
 
-
 using namespace gr::ieee802_11;
-
-
-viterbi_decoder::viterbi_decoder() :
-	d_store_pos(0) {
-}
-
-viterbi_decoder::~viterbi_decoder() {
-}
 
 void
 viterbi_decoder::viterbi_butterfly2_sse2(unsigned char *symbols,
@@ -251,41 +242,6 @@ viterbi_decoder::viterbi_get_output_sse2(__m128i *mm0, __m128i *pp0,
 	return bestmetric;
 }
 
-uint8_t*
-viterbi_decoder::depuncture(uint8_t *in) {
-
-	int count;
-	int n_cbps = d_ofdm->n_cbps;
-	uint8_t *depunctured;
-
-	if (d_ntraceback == 5) {
-		count = d_frame->n_sym * n_cbps;
-		depunctured = in;
-
-	} else {
-		depunctured = d_depunctured;
-		count = 0;
-		for(int i = 0; i < d_frame->n_sym; i++) {
-			for(int k = 0; k < n_cbps; k++) {
-				while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
-					depunctured[count] = 2;
-					count++;
-				}
-
-				// Insert received bits
-				depunctured[count] = in[i * n_cbps + k];
-				count++;
-
-				while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
-					depunctured[count] = 2;
-					count++;
-				}
-			}
-		}
-	}
-
-	return depunctured;
-}
 
 uint8_t*
 viterbi_decoder::decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) {
@@ -354,7 +310,8 @@ viterbi_decoder::reset() {
 	}
 }
 
-void // Initialize starting metrics to prefer 0 state
+// Initialize starting metrics to prefer 0 state
+void
 viterbi_decoder::viterbi_chunks_init_sse2() {
 	int i, j;
 
@@ -376,44 +333,3 @@ viterbi_decoder::viterbi_chunks_init_sse2() {
 		}
 	}
 }
-
-
-/* Parity lookup table */
-const unsigned char viterbi_decoder::PARTAB[256] = {
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-};
-
-const unsigned char viterbi_decoder::PUNCTURE_1_2[2] = {1, 1};
-const unsigned char viterbi_decoder::PUNCTURE_2_3[4] = {1, 1, 1, 0};
-const unsigned char viterbi_decoder::PUNCTURE_3_4[6] = {1, 1, 1, 0, 0, 1};

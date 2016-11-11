@@ -17,7 +17,7 @@
 #include <ieee802-11/decode_mac.h>
 
 #include "utils.h"
-#include "viterbi_decoder.h"
+#include "viterbi_decoder/viterbi_decoder.h"
 
 #include <boost/crc.hpp>
 #include <gnuradio/io_signature.h>

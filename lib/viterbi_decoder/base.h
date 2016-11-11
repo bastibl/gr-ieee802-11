@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_VITERBI_DECODER_H
-#define INCLUDED_IEEE802_11_VITERBI_DECODER_H
+#ifndef INCLUDED_IEEE802_11_VITERBI_DECODER_BASE_H
+#define INCLUDED_IEEE802_11_VITERBI_DECODER_BASE_H
 
-#include <xmmintrin.h>
 #include "utils.h"
 
 namespace gr {
@@ -31,34 +30,21 @@ namespace ieee802_11 {
  * created by Phil Karn. The SSE2 version was made by Bogdan
  * Diaconescu. For more info see: gr-dvbt/lib/d_viterbi.h
  */
-class viterbi_decoder
+class base
 {
 public:
 
-	viterbi_decoder();
-	virtual ~viterbi_decoder();
+	base();
+	~base();
+	virtual uint8_t* decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) = 0;
 
-	uint8_t* decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in);
-
-private:
-
+protected:
 	// Position in circular buffer where the current decoded byte is stored
 	int d_store_pos;
 	// Metrics for each state
 	unsigned char d_mmresult[64] __attribute__((aligned(16)));
 	// Paths for each state
 	unsigned char d_ppresult[TRACEBACK_MAX][64] __attribute__((aligned(16)));
-
-
-	union branchtab27 {
-		unsigned char c[32];
-		__m128i v[2];
-	} d_branchtab27_sse2[2];
-
-	__m128i d_metric0[4] __attribute__ ((aligned(16)));
-	__m128i d_metric1[4] __attribute__ ((aligned(16)));
-	__m128i d_path0[4] __attribute__ ((aligned(16)));
-	__m128i d_path1[4] __attribute__ ((aligned(16)));
 
 	int d_ntraceback;
 	int d_k;
@@ -74,16 +60,11 @@ private:
 	static const unsigned char PUNCTURE_2_3[4];
 	static const unsigned char PUNCTURE_3_4[6];
 
-	void reset();
+	virtual void reset() = 0;
 	uint8_t* depuncture(uint8_t *in);
-	void viterbi_chunks_init_sse2();
-	void viterbi_butterfly2_sse2(unsigned char *symbols,
-			__m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
-	unsigned char viterbi_get_output_sse2(__m128i *mm0,
-			__m128i *pp0, int ntraceback, unsigned char *outbuf);
 };
 
 } // namespace ieee802_11
 } // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_VITERBI_DECODER_H */
+#endif /* INCLUDED_IEEE802_11_VITERBI_DECODER_BASE_H */
