@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -177,7 +177,7 @@
     </param>
     <param>
       <key>widget</key>
-      <value>radio_buttons</value>
+      <value>combo_box</value>
     </param>
   </block>
   <block>
@@ -200,7 +200,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -276,7 +276,7 @@
     </param>
     <param>
       <key>widget</key>
-      <value>radio_buttons</value>
+      <value>combo_box</value>
     </param>
   </block>
   <block>
@@ -299,7 +299,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>3,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -362,7 +362,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>2,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -452,7 +452,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>3,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -515,7 +515,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>2,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1163,7 +1163,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>1,0,1,2</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1486,7 +1486,7 @@
     </param>
     <param>
       <key>avg</key>
-      <value>0</value>
+      <value>0.05</value>
     </param>
     <param>
       <key>alias</key>
