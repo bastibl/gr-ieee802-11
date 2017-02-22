@@ -15,6 +15,13 @@ I recommend staying up-to-date by using the *next* branch.
 
 Please note that ```apt-get``` is the package manager of Debian/Ubuntu based systems, while ```port``` is one package manager for OSX. So use either (not both) according to your needs.
 
+### Swig
+
+Swig is required to create the python bindings.
+
+    sudo apt-get install swig
+    sudo port install swig
+
 
 ### log4cpp
 
