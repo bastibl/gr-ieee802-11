@@ -30,16 +30,16 @@ void ls::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boo
 		double signal = 0;
 		double noise = 0;
 		for(int i = 0; i < 64; i++) {
+			if((i == 32) || (i < 6) || ( i > 58)) {
+				continue;
+			}
 			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
 			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
-		}
-
-		d_snr = 10 * std::log10(signal / noise / 2);
-
-		for(int i = 0; i < 64; i++) {
 			d_H[i] += in[i];
 			d_H[i] /= LONG[i] * gr_complex(2, 0);
 		}
+
+		d_snr = 10 * std::log10(signal / noise / 2);
 
 	} else {
 
