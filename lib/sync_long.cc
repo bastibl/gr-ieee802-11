@@ -104,6 +104,7 @@ int general_work (int noutput, gr_vector_int& ninput_items,
 
 			if(d_offset == SYNC_LENGTH) {
 				search_frame_start();
+				mylog(boost::format("LONG: frame start at %1%") % d_frame_start);
 				d_offset = 0;
 				d_count = 0;
 				d_state = COPY;

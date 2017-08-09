@@ -33,6 +33,7 @@ mapper_impl(Encoding e, bool debug) :
 			d_symbols_offset(0),
 			d_symbols(NULL),
 			d_debug(debug),
+			d_scrambler(1),
 			d_ofdm(e) {
 
 	message_port_register_in(pmt::mp("in"));
@@ -98,10 +99,9 @@ int general_work(int noutput, gr_vector_int& ninput_items,
 			generate_bits(psdu, data_bits, frame);
 
 			// scrambling
-			static uint8_t scrambler = 1;
-			scramble(data_bits, scrambled_data, frame, scrambler++);
-			if(scrambler > 127) {
-				scrambler = 1;
+			scramble(data_bits, scrambled_data, frame, d_scrambler++);
+			if(d_scrambler > 127) {
+				d_scrambler = 1;
 			}
 
 			// reset tail bits
@@ -172,6 +172,7 @@ void set_encoding(Encoding encoding) {
 }
 
 private:
+	uint8_t      d_scrambler;
 	bool         d_debug;
 	char*        d_symbols;
 	int          d_symbols_offset;

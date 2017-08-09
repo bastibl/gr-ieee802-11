@@ -337,7 +337,7 @@ frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
 	return true;
 }
 
-int
+const int
 frame_equalizer_impl::interleaver_pattern[48] = {
 	 0, 3, 6, 9,12,15,18,21,
 	24,27,30,33,36,39,42,45,

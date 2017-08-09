@@ -79,7 +79,7 @@ private:
 	constellation_16qam::sptr d_16qam;
 	constellation_64qam::sptr d_64qam;
 
-	static int interleaver_pattern[48];
+	static const int interleaver_pattern[48];
 };
 
 } // namespace ieee802_11
