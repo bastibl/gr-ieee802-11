@@ -35,6 +35,7 @@ if _RTLD_GLOBAL != 0:
 
 # import swig generated symbols into the test namespace
 from ieee802_11_swig import *
+from utils import *
 
 # import any pure python here
 #
