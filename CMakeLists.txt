@@ -106,6 +106,7 @@ if(NOT SWIG_FOUND)
     message(FATAL_ERROR "SWIG required to compile gr-ieee802-11")
 endif()
 
+find_package(Doxygen)
 ########################################################################
 # On Apple only, set install name and use rpath correctly, if not already set
 ########################################################################
