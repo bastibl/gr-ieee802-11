@@ -96,7 +96,7 @@ volk_profile is part of GNU Radio. It benchmarks different SIMD implementations 
 
 ### Calibrate your daughterboard
 
-If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to minimize IQ imbalance and TX DC offsets. See the [application notes](http://files.ettus.com/uhd_docs/manual/html/calibration.html).
+If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to minimize IQ imbalance and TX DC offsets. See the [application notes](http://files.ettus.com/manual/page_calibration.html).
 
 
 
