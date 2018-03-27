@@ -38,7 +38,7 @@ You need at least version 3.7.3.
 There are several ways to install GNU Radio. You can use
 
 - [pybombs](http://gnuradio.org/redmine/projects/pybombs/wiki)
-- [pre-combiled binaries](http://gnuradio.org/redmine/projects/gnuradio/wiki/BinaryPackages)
+- [pre-compiled binaries](http://gnuradio.org/redmine/projects/gnuradio/wiki/BinaryPackages)
 - [from source](http://gnuradio.org/redmine/projects/gnuradio/wiki/InstallingGRFromSource)
 
 
