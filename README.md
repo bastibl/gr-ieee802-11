@@ -100,7 +100,7 @@ If you have a WBX, SBX, or CBX daughterboard you should calibrate it in order to
 
 
 
-# Checking you installation
+# Checking your installation
 
 As a first step I recommend to test the ```wifi_loopback.grc``` flow graph. This flow graph does not need any hardware and allows you to ensure that the software part is installed correctly. So open the flow graph and run it. If everything works as intended you should see some decoded 'Hello World' packets in the console.
 
