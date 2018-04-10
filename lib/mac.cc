@@ -168,7 +168,7 @@ private:
 	uint8_t d_src_mac[6];
 	uint8_t d_dst_mac[6];
 	uint8_t d_bss_mac[6];
-	uint8_t d_psdu[1528];
+	uint8_t d_psdu[MAX_PSDU_SIZE];
 };
 
 mac::sptr
