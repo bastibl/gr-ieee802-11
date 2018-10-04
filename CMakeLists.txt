@@ -87,11 +87,6 @@ if(NOT GNURADIO_RUNTIME_FOUND)
     message(FATAL_ERROR "GNU Radio required to compile gr-ieee802-11")
 endif()
 
-find_package(CppUnit)
-if(NOT CPPUNIT_FOUND)
-    message(FATAL_ERROR "CppUnit required to compile gr-ieee802-11")
-endif()
-
 find_package(SWIG)
 if(NOT SWIG_FOUND)
     message(FATAL_ERROR "SWIG required to compile gr-ieee802-11")
@@ -126,13 +121,11 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/lib
     ${CMAKE_BINARY_DIR}/include
     ${Boost_INCLUDE_DIRS}
-    ${CPPUNIT_INCLUDE_DIRS}
     ${GNURADIO_RUNTIME_INCLUDE_DIRS}
 )
 
 link_directories(
     ${Boost_LIBRARY_DIRS}
-    ${CPPUNIT_LIBRARY_DIRS}
     ${GNURADIO_RUNTIME_LIBRARY_DIRS}
 )
 
