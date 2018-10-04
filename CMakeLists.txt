@@ -92,11 +92,6 @@ if(NOT CPPUNIT_FOUND)
     message(FATAL_ERROR "CppUnit required to compile gr-ieee802-11")
 endif()
 
-find_package(Log4cpp)
-if(NOT LOG4CPP_FOUND)
-    message(FATAL_ERROR "LOG4CPP required to compile ieee802-11")
-endif ()
-
 find_package(SWIG)
 if(NOT SWIG_FOUND)
     message(FATAL_ERROR "SWIG required to compile gr-ieee802-11")

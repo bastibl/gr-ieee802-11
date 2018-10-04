@@ -22,15 +22,6 @@ Swig is required to create the python bindings.
     sudo apt-get install swig
     sudo port install swig
 
-
-### log4cpp
-
-I use the new [logging feature](http://gnuradio.org/doc/doxygen/page_logger.html) of GNU Radio which relies on log4cpp. This should be an optional dependency some day, but currently it is required. You can install it with
-
-    sudo apt-get install liblog4cpp5-dev
-    sudo port install log4cpp
-
-
 ### GNU Radio v3.7
 
 You need at least version 3.7.3.
