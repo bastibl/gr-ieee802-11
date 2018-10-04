@@ -46,8 +46,6 @@ set(GR_SWIG_DOC_DIRS
     ${CMAKE_CURRENT_BINARY_DIR}/../include/ieee802-11/
 )
 
-set(GR_SWIG_TARGET_DEPS ieee802_11_generated_includes)
-
 GR_SWIG_MAKE(ieee802_11_swig ieee802_11_swig.i)
 
 ########################################################################
