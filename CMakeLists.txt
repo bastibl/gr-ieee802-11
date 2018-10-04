@@ -61,6 +61,18 @@ if(NOT Boost_FOUND)
 endif()
 
 ########################################################################
+# Find gnuradio build dependencies
+########################################################################
+set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
+
+find_package(Gnuradio)
+if(NOT GNURADIO_RUNTIME_FOUND)
+    message(FATAL_ERROR "GNU Radio required to compile gr-ieee802-11")
+endif()
+
+find_package(Doxygen)
+
+########################################################################
 # Install directories
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
@@ -77,22 +89,6 @@ set(GR_LIBEXEC_DIR      libexec)
 set(GR_PKG_LIBEXEC_DIR  ${GR_LIBEXEC_DIR}/${CMAKE_PROJECT_NAME})
 set(GRC_BLOCKS_DIR      ${GR_PKG_DATA_DIR}/grc/blocks)
 
-########################################################################
-# Find gnuradio build dependencies
-########################################################################
-set(GR_REQUIRED_COMPONENTS RUNTIME FILTER FFT PMT DIGITAL)
-
-find_package(Gnuradio)
-if(NOT GNURADIO_RUNTIME_FOUND)
-    message(FATAL_ERROR "GNU Radio required to compile gr-ieee802-11")
-endif()
-
-find_package(SWIG)
-if(NOT SWIG_FOUND)
-    message(FATAL_ERROR "SWIG required to compile gr-ieee802-11")
-endif()
-
-find_package(Doxygen)
 ########################################################################
 # On Apple only, set install name and use rpath correctly, if not already set
 ########################################################################
