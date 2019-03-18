@@ -1,5 +1,6 @@
+/* -*- c++ -*- */
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright 2013, 2019 Bastian Bloessl <mail@bastibl.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +18,9 @@
 #define IEEE802_11_API
 #define DIGITAL_API
 
-%include "gnuradio.i"
+%include "gnuradio.i"           // the common stuff
 
+//load generated python docstrings
 %include "ieee802_11_swig_doc.i"
 
 %{
