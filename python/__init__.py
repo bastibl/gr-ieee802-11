@@ -15,9 +15,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# import swig generated symbols into the test namespace
-from .ieee802_11_swig import *
-from .utils import *
+# The presence of this file turns this directory into a Python package
+
+'''
+This is the GNU Radio IEEE802_11 module. Place your Python package
+description here (python/__init__.py).
+'''
+from __future__ import unicode_literals
+
+# import swig generated symbols into the ieee802_11 namespace
+try:
+    # this might fail if the module is python-only
+    from .ieee802_11_swig import *
+except ImportError:
+    pass
 
 # import any pure python here
+from .utils import *
 #
