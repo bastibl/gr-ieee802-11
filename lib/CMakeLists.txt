@@ -30,7 +30,7 @@ endif(SSE2_SUPPORTED)
 ########################################################################
 # Setup library
 ########################################################################
-list(APPEND gr_ieee802_11_sources
+list(APPEND ieee802_11_sources
     chunks_to_symbols_impl.cc
     constellations_impl.cc
     decode_mac.cc
@@ -53,29 +53,60 @@ list(APPEND gr_ieee802_11_sources
 
 # use SSE2 optimized viterbi implementation if SSE2 is enabled
 if(SSE2_SUPPORTED)
-    list(APPEND gr_ieee802_11_sources
+    list(APPEND ieee802_11_sources
         viterbi_decoder/viterbi_decoder_x86.cc
     )
 else()
-    list(APPEND gr_ieee802_11_sources
+    list(APPEND ieee802_11_sources
         viterbi_decoder/viterbi_decoder_generic.cc
     )
 endif(SSE2_SUPPORTED)
 
-list(APPEND gr_ieee802_11_libs
-    ${Boost_LIBRARIES}
-    ${GNURADIO_ALL_LIBRARIES}
-)
+set(ieee802_11_sources "${ieee802_11_sources}" PARENT_SCOPE)
+if(NOT ieee802_11_sources)
+    MESSAGE(STATUS "No C++ sources... skipping lib/")
+    return()
+endif(NOT ieee802_11_sources)
 
-add_library(gnuradio-ieee802_11 SHARED ${gr_ieee802_11_sources})
-target_link_libraries(gnuradio-ieee802_11 ${gr_ieee802_11_libs})
+add_library(gnuradio-ieee802_11 SHARED ${ieee802_11_sources})
+target_link_libraries(gnuradio-ieee802_11
+        gnuradio::gnuradio-runtime
+        gnuradio::gnuradio-filter
+        gnuradio::gnuradio-blocks
+        gnuradio::gnuradio-analog
+        gnuradio::gnuradio-fft
+        gnuradio::gnuradio-digital)
+target_include_directories(gnuradio-ieee802_11
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+    PUBLIC $<INSTALL_INTERFACE:include>
+  )
 set_target_properties(gnuradio-ieee802_11 PROPERTIES DEFINE_SYMBOL "gnuradio_ieee802_11_EXPORTS")
+
+if(APPLE)
+    set_target_properties(gnuradio-ieee802_11 PROPERTIES
+        INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+    )
+endif(APPLE)
 
 ########################################################################
 # Install built library files
 ########################################################################
-install(TARGETS gnuradio-ieee802_11
-    LIBRARY DESTINATION lib${LIB_SUFFIX} # .so/.dylib file
-    ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
-    RUNTIME DESTINATION bin              # .dll file
+include(GrMiscUtils)
+GR_LIBRARY_FOO(gnuradio-ieee802_11)
+
+########################################################################
+# Print summary
+########################################################################
+message(STATUS "Using install prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Building for version: ${VERSION} / ${LIBVER}")
+
+########################################################################
+# Build and register unit test
+########################################################################
+include(GrTest)
+
+# If your unit tests require special include paths, add them here
+#include_directories()
+# List all files that contain Boost.UTF unit tests here
+list(APPEND test_ieee802_11_sources
 )

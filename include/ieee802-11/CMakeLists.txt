@@ -35,7 +35,7 @@ list(APPEND include_sources
 )
 
 install(
-	FILES ${include_sources}
-	DESTINATION ${GR_INCLUDE_DIR}/gnuradio/ieee802_11
-	COMPONENT "ieee802_11_devel"
+    FILES ${include_sources}
+    DESTINATION ${GR_INCLUDE_DIR}/gnuradio/ieee802_11
+    COMPONENT "ieee802_11_devel"
 )

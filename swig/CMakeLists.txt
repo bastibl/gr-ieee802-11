@@ -16,30 +16,34 @@
 #
 
 ########################################################################
+# Check if there is C++ code at all
+########################################################################
+if(NOT ieee802_11_sources)
+    MESSAGE(STATUS "No C++ sources... skipping swig/")
+    return()
+endif(NOT ieee802_11_sources)
+
+########################################################################
 # Include swig generation macros
 ########################################################################
 find_package(SWIG)
-include(GrPython)
+find_package(PythonLibs)
+if(NOT SWIG_FOUND OR NOT PYTHONLIBS_FOUND)
+    return()
+endif()
 include(GrSwig)
-
-set(GR_SWIG_INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/
-    ${CMAKE_CURRENT_BINARY_DIR}/../include/
-)
+include(GrPython)
 
 ########################################################################
 # Setup swig generation
 ########################################################################
-foreach(incdir ${GNURADIO_RUNTIME_INCLUDE_DIRS})
-    list(APPEND GR_SWIG_INCLUDE_DIRS ${incdir}/gnuradio/swig)
-endforeach(incdir)
+set(GR_SWIG_INCLUDE_DIRS $<TARGET_PROPERTY:gnuradio::runtime_swig,INTERFACE_INCLUDE_DIRECTORIES>)
+set(GR_SWIG_TARGET_DEPS gnuradio::runtime_swig)
 
 set(GR_SWIG_LIBRARIES gnuradio-ieee802_11)
+
 set(GR_SWIG_DOC_FILE ${CMAKE_CURRENT_BINARY_DIR}/ieee802_11_swig_doc.i)
-set(GR_SWIG_DOC_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/../include/ieee802-11/
-    ${CMAKE_CURRENT_BINARY_DIR}/../include/ieee802-11/
-)
+set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 GR_SWIG_MAKE(ieee802_11_swig ieee802_11_swig.i)
 

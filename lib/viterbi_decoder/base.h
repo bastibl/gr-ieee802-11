@@ -17,7 +17,7 @@
 #ifndef INCLUDED_IEEE802_11_VITERBI_DECODER_BASE_H
 #define INCLUDED_IEEE802_11_VITERBI_DECODER_BASE_H
 
-#include "utils.h"
+#include "../utils.h"
 
 namespace gr {
 namespace ieee802_11 {
