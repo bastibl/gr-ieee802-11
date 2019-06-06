@@ -1,15 +1,26 @@
 options:
   parameters:
+    author: ''
     category: '[IEEE802.11]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
     generate_options: hb
     hier_block_src_path: '.:'
     id: wifi_phy_hier
     max_nouts: '0'
+    output_language: python
     placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
     run: 'True'
     run_command: '{python} -u {filename}'
     run_options: prompt
     sizing_mode: fixed
+    thread_safe_setters: ''
     title: WiFi PHY Hier
     window_size: 1280, 1024
   states:
@@ -21,6 +32,7 @@ blocks:
 - name: header_formatter
   id: variable
   parameters:
+    comment: ''
     value: ieee802_11.signal_field()
   states:
     coordinate: [400, 12]
@@ -29,6 +41,7 @@ blocks:
 - name: max_symbols
   id: variable
   parameters:
+    comment: ''
     value: int(5 + 1 + ((16 + 1540 * 8 + 6) * 2) / 24)
   states:
     coordinate: [528, 12]
@@ -37,6 +50,7 @@ blocks:
 - name: sync_length
   id: variable
   parameters:
+    comment: ''
     value: '320'
   states:
     coordinate: [192, 12]
@@ -45,6 +59,7 @@ blocks:
 - name: window_size
   id: variable
   parameters:
+    comment: ''
     value: '48'
   states:
     coordinate: [296, 12]
@@ -53,7 +68,11 @@ blocks:
 - name: bandwidth
   id: parameter
   parameters:
+    alias: ''
+    comment: ''
     hide: none
+    label: ''
+    short_id: ''
     type: eng_float
     value: 10e6
   states:
@@ -63,6 +82,9 @@ blocks:
 - name: blocks_complex_to_mag_0
   id: blocks_complex_to_mag
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     vlen: '1'
@@ -73,6 +95,9 @@ blocks:
 - name: blocks_complex_to_mag_squared_0
   id: blocks_complex_to_mag_squared
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     vlen: '1'
@@ -83,6 +108,9 @@ blocks:
 - name: blocks_conjugate_cc_0
   id: blocks_conjugate_cc
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -92,6 +120,9 @@ blocks:
 - name: blocks_delay_0
   id: blocks_delay
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     delay: sync_length
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -99,12 +130,15 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [424, 764]
+    coordinate: [432, 764.0]
     rotation: 0
     state: enabled
 - name: blocks_delay_0_0
   id: blocks_delay
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     delay: '16'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -118,42 +152,58 @@ blocks:
 - name: blocks_divide_xx_0
   id: blocks_divide_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     num_inputs: '2'
     type: float
     vlen: '1'
   states:
-    coordinate: [1120, 656]
+    coordinate: [1120.0, 560]
     rotation: 270
     state: enabled
 - name: blocks_moving_average_xx_0
   id: blocks_moving_average_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     length: window_size
     max_iter: '4000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
     scale: '1'
     type: complex
     vlen: '1'
   states:
-    coordinate: [760, 572.0]
+    coordinate: [752, 556.0]
     rotation: 0
     state: true
 - name: blocks_moving_average_xx_1
   id: blocks_moving_average_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     length: window_size  + 16
     max_iter: '4000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
     scale: '1'
     type: float
     vlen: '1'
   states:
-    coordinate: [816, 476.0]
+    coordinate: [824, 476.0]
     rotation: 0
     state: true
 - name: blocks_multiply_xx_0
   id: blocks_multiply_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     num_inputs: '2'
@@ -166,6 +216,9 @@ blocks:
 - name: blocks_stream_to_vector_0
   id: blocks_stream_to_vector
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     num_items: '64'
@@ -178,6 +231,9 @@ blocks:
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     lengthtagname: '"packet_len"'
     maxoutbuf: '0'
     minoutbuf: max_symbols * 48 * 8
@@ -192,7 +248,12 @@ blocks:
 - name: chan_est
   id: parameter
   parameters:
+    alias: ''
+    comment: ''
     hide: none
+    label: ''
+    short_id: ''
+    type: ''
     value: ieee802_11.LS
   states:
     coordinate: [640, 12]
@@ -201,6 +262,9 @@ blocks:
 - name: digital_chunks_to_symbols_xx_0
   id: digital_chunks_to_symbols_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     dimension: '1'
     in_type: byte
     maxoutbuf: '0'
@@ -215,12 +279,16 @@ blocks:
 - name: digital_ofdm_carrier_allocator_cvc_0_0_0
   id: digital_ofdm_carrier_allocator_cvc
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     fft_len: '64'
     len_tag_key: '"packet_len"'
     maxoutbuf: '0'
     minoutbuf: max_symbols * 48 * 8
     occupied_carriers: (list(range(-26, -21)) + list(range(-20, -7)) + list(range(-6,
       0)) + list(range(1, 7)) + list(range(8, 21)) +list( range(22, 27)),)
+    output_is_shifted: 'True'
     pilot_carriers: ((-21, -7, 7, 21), )
     pilot_symbols: ((1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1,
       -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1),
@@ -272,12 +340,15 @@ blocks:
       -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1,
       1, 1, 1, 1, 0, 0, 0, 0, 0))
   states:
-    coordinate: [1040, 232]
+    coordinate: [1040, 220.0]
     rotation: 0
     state: enabled
 - name: digital_ofdm_cyclic_prefixer_0_0
   id: digital_ofdm_cyclic_prefixer
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     cp_len: '16'
     input_size: '64'
     maxoutbuf: '0'
@@ -285,12 +356,15 @@ blocks:
     rolloff: '2'
     tagname: '"packet_len"'
   states:
-    coordinate: [752, 376]
+    coordinate: [752, 372.0]
     rotation: 180
     state: enabled
 - name: digital_packet_headergenerator_bb_0
   id: digital_packet_headergenerator_bb
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     header_formatter: header_formatter.formatter()
     len_tag_key: '"packet_len"'
     maxoutbuf: '0'
@@ -302,7 +376,11 @@ blocks:
 - name: encoding
   id: parameter
   parameters:
+    alias: ''
+    comment: ''
     hide: none
+    label: ''
+    short_id: ''
     type: intx
     value: ieee802_11.BPSK_1_2
   states:
@@ -312,6 +390,9 @@ blocks:
 - name: fft_vxx_0_0
   id: fft_vxx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     fft_size: '64'
     forward: 'False'
     maxoutbuf: '0'
@@ -321,12 +402,15 @@ blocks:
     type: complex
     window: tuple([1/52**.5] * 64)
   states:
-    coordinate: [1040, 368]
+    coordinate: [1040, 364.0]
     rotation: 180
     state: enabled
 - name: fft_vxx_0_1
   id: fft_vxx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     fft_size: '64'
     forward: 'True'
     maxoutbuf: '0'
@@ -342,7 +426,11 @@ blocks:
 - name: frequency
   id: parameter
   parameters:
+    alias: ''
+    comment: ''
     hide: none
+    label: ''
+    short_id: ''
     type: eng_float
     value: 5.89e9
   states:
@@ -352,6 +440,9 @@ blocks:
 - name: ieee802_11_chunks_to_symbols_xx_0
   id: ieee802_11_chunks_to_symbols_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: max_symbols * 48 * 8
     minoutbuf: max_symbols * 48 * 8
   states:
@@ -361,19 +452,25 @@ blocks:
 - name: ieee802_11_decode_mac_0
   id: ieee802_11_decode_mac
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'False'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    coordinate: [512, 924]
+    coordinate: [544, 900.0]
     rotation: 180
     state: enabled
 - name: ieee802_11_frame_equalizer_0
   id: ieee802_11_frame_equalizer
   parameters:
-    algo: ieee802_11.LS
+    affinity: ''
+    algo: chan_est
+    alias: ''
     bw: bandwidth
+    comment: ''
     debug: 'False'
     freq: frequency
     log: 'False'
@@ -386,8 +483,11 @@ blocks:
 - name: ieee802_11_mapper_0
   id: ieee802_11_mapper
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'True'
-    encoding: ieee802_11.BPSK_1_2
+    encoding: encoding
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -397,43 +497,57 @@ blocks:
 - name: pad_sink_0
   id: pad_sink
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     label: samp_out
     num_streams: '1'
     optional: 'False'
     type: complex
     vlen: '1'
   states:
-    coordinate: [576, 396]
+    coordinate: [576, 396.0]
     rotation: 180
     state: enabled
 - name: pad_sink_1
   id: pad_sink
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     label: carrier
     num_streams: '1'
     optional: 'True'
     type: message
     vlen: '1'
   states:
-    coordinate: [560, 868.0]
+    coordinate: [560, 980.0]
     rotation: 180
     state: enabled
 - name: pad_sink_2
   id: pad_sink
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     label: mac_out
     num_streams: '1'
     optional: 'True'
     type: message
     vlen: '1'
   states:
-    coordinate: [328, 932]
+    coordinate: [368, 908.0]
     rotation: 180
     state: enabled
 - name: pad_source_0
   id: pad_source
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     label: samp_in
+    maxoutbuf: '0'
+    minoutbuf: '0'
     num_streams: '1'
     optional: 'False'
     type: complex
@@ -445,7 +559,12 @@ blocks:
 - name: pad_source_1
   id: pad_source
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     label: mac_in
+    maxoutbuf: '0'
+    minoutbuf: '0'
     num_streams: '1'
     optional: 'True'
     type: message
@@ -457,7 +576,11 @@ blocks:
 - name: sensitivity
   id: parameter
   parameters:
+    alias: ''
+    comment: ''
     hide: none
+    label: ''
+    short_id: ''
     type: eng_float
     value: '0.56'
   states:
@@ -467,18 +590,24 @@ blocks:
 - name: sync_long
   id: ieee802_11_sync_long
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'False'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     sync_length: sync_length
   states:
-    coordinate: [608, 732]
+    coordinate: [608, 732.0]
     rotation: 0
     state: enabled
 - name: sync_short
   id: ieee802_11_sync_short
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'False'
     log: 'False'
     maxoutbuf: '0'

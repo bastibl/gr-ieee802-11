@@ -1,15 +1,27 @@
 options:
   parameters:
+    author: ''
     category: Custom
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
     id: wifi_loopback
     max_nouts: '0'
+    output_language: python
     placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
     run: 'True'
     run_command: '{python} -u {filename}'
     run_options: prompt
     sizing_mode: fixed
+    thread_safe_setters: ''
+    title: ''
     window_size: 1280, 1024
   states:
     coordinate: [16, 12]
@@ -20,7 +32,14 @@ blocks:
 - name: chan_est
   id: variable_qtgui_chooser
   parameters:
+    comment: ''
     gui_hint: 0,0,1,1
+    label: ''
+    label0: ''
+    label1: ''
+    label2: ''
+    label3: ''
+    label4: ''
     labels: '["LS", "LMS", "STA", "Linear Comb"]'
     num_opts: '0'
     option1: '1'
@@ -39,7 +58,14 @@ blocks:
 - name: encoding
   id: variable_qtgui_chooser
   parameters:
+    comment: ''
     gui_hint: 0,1,1,1
+    label: ''
+    label0: ''
+    label1: ''
+    label2: ''
+    label3: ''
+    label4: ''
     labels: '["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM
       3/4", "64QAM 2/3", "64QAM 3/4"]'
     num_opts: '0'
@@ -59,7 +85,9 @@ blocks:
 - name: epsilon
   id: variable_qtgui_range
   parameters:
+    comment: ''
     gui_hint: 3,1,1,1
+    label: ''
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: float
@@ -75,7 +103,9 @@ blocks:
 - name: interval
   id: variable_qtgui_range
   parameters:
+    comment: ''
     gui_hint: 2,1,1,1
+    label: ''
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: int
@@ -91,6 +121,7 @@ blocks:
 - name: out_buf_size
   id: variable
   parameters:
+    comment: ''
     value: '96000'
   states:
     coordinate: [16, 76]
@@ -99,7 +130,9 @@ blocks:
 - name: pdu_length
   id: variable_qtgui_range
   parameters:
+    comment: ''
     gui_hint: 3,0,1,1
+    label: ''
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: int
@@ -115,7 +148,9 @@ blocks:
 - name: snr
   id: variable_qtgui_range
   parameters:
+    comment: ''
     gui_hint: 2,0,1,1
+    label: ''
     min_len: '200'
     orient: Qt.Horizontal
     rangeType: float
@@ -131,69 +166,68 @@ blocks:
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
+    affinity: ''
+    alias: ''
     append: 'False'
+    comment: ''
     file: /tmp/wifi.bin
     type: byte
     unbuffered: 'True'
     vlen: '1'
   states:
-    coordinate: [144, 259]
+    coordinate: [120, 556.0]
     rotation: 180
     state: disabled
-- name: blocks_message_debug_0
-  id: blocks_message_debug
-  parameters: {}
-  states:
-    coordinate: [744, 304.0]
-    rotation: 0
-    state: true
 - name: blocks_message_strobe_0
   id: blocks_message_strobe
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     msg: pmt.intern("".join("x" for i in range(pdu_length)))
     period: interval
   states:
-    coordinate: [488, 171]
+    coordinate: [544, 204.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_xx_0
   id: blocks_multiply_const_xx
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     const: (10**(snr/10.0))**.5
+    maxoutbuf: '0'
+    minoutbuf: '0'
     type: complex
     vlen: '1'
   states:
-    coordinate: [704, 732.0]
+    coordinate: [720, 740.0]
     rotation: 0
     state: true
-- name: blocks_pdu_to_tagged_stream_0
-  id: blocks_pdu_to_tagged_stream
-  parameters:
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    tag: packet_len
-    type: float
-  states:
-    coordinate: [124, 448]
-    rotation: 270
-    state: disabled
 - name: blocks_pdu_to_tagged_stream_0_0
   id: blocks_pdu_to_tagged_stream
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     tag: packet_len
     type: complex
   states:
-    coordinate: [464, 404.0]
+    coordinate: [400, 372.0]
     rotation: 180
-    state: disabled
+    state: enabled
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
+    affinity: ''
+    alias: ''
     block_tags: 'False'
+    comment: ''
     epsilon: '1.0'
     freq_offset: epsilon * 5.89e9 / 10e6
     maxoutbuf: '0'
@@ -202,12 +236,15 @@ blocks:
     seed: '0'
     taps: '1.0'
   states:
-    coordinate: [912, 712]
+    coordinate: [904, 700.0]
     rotation: 0
     state: enabled
 - name: foo_packet_pad2_0
   id: foo_packet_pad2
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'False'
     delay: 'False'
     delay_sec: '0.001'
@@ -216,60 +253,75 @@ blocks:
     pad_front: '500'
     pad_tail: '0'
   states:
-    coordinate: [544, 724.0]
+    coordinate: [560, 708.0]
     rotation: 0
     state: enabled
 - name: foo_wireshark_connector_0
   id: foo_wireshark_connector
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     tech: '127'
   states:
-    coordinate: [352, 267]
+    coordinate: [328, 564.0]
     rotation: 180
     state: disabled
 - name: ieee802_11_mac_0
   id: ieee802_11_mac
   parameters:
+    affinity: ''
+    alias: ''
     bss_mac: '[0xff, 0xff, 0xff, 0xff, 0xff, 0xff]'
+    comment: ''
     dst_mac: '[0x42, 0x42, 0x42, 0x42, 0x42, 0x42]'
     maxoutbuf: '0'
     minoutbuf: '0'
     src_mac: '[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]'
   states:
-    coordinate: [736, 179]
+    coordinate: [784, 212.0]
     rotation: 0
     state: enabled
 - name: ieee802_11_parse_mac_0
   id: ieee802_11_parse_mac
   parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
     debug: 'True'
     log: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    coordinate: [288, 364]
+    coordinate: [360, 492.0]
     rotation: 180
     state: enabled
 - name: pfb_arb_resampler_xxx_0
   id: pfb_arb_resampler_xxx
   parameters:
+    affinity: ''
+    alias: ''
     atten: '100'
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
     nfilts: '32'
     rrate: 1+epsilon
     samp_delay: '0'
+    taps: ''
     type: ccf
   states:
-    coordinate: [1064, 464]
+    coordinate: [1092.0, 504]
     rotation: 90
     state: enabled
 - name: qtgui_const_sink_x_0
   id: qtgui_const_sink_x
   parameters:
+    affinity: ''
+    alias: ''
     alpha1: '1.0'
     alpha10: '1.0'
     alpha2: '1.0'
@@ -292,8 +344,19 @@ blocks:
     color7: '"red"'
     color8: '"red"'
     color9: '"red"'
+    comment: ''
     grid: 'False'
     gui_hint: 1,0,1,2
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
     legend: 'True'
     marker1: '0'
     marker10: '0'
@@ -340,54 +403,21 @@ blocks:
     ymax: '2'
     ymin: '-2'
   states:
-    coordinate: [388.0, 512]
-    rotation: 270
-    state: disabled
-- name: qtgui_number_sink_0
-  id: qtgui_number_sink
-  parameters:
-    autoscale: 'False'
-    avg: '0.05'
-    color1: ("black", "black")
-    color10: ("black", "black")
-    color2: ("black", "black")
-    color3: ("black", "black")
-    color4: ("black", "black")
-    color5: ("black", "black")
-    color6: ("black", "black")
-    color7: ("black", "black")
-    color8: ("black", "black")
-    color9: ("black", "black")
-    factor1: '1'
-    factor10: '1'
-    factor2: '1'
-    factor3: '1'
-    factor4: '1'
-    factor5: '1'
-    factor6: '1'
-    factor7: '1'
-    factor8: '1'
-    factor9: '1'
-    graph_type: qtgui.NUM_GRAPH_NONE
-    label1: Error Rate
-    max: '100'
-    min: '0'
-    name: '""'
-    nconnections: '1'
-    type: float
-    unit1: Percent
-    update_time: '0.10'
-  states:
-    coordinate: [192, 628]
-    rotation: 0
-    state: disabled
+    coordinate: [152, 364.0]
+    rotation: 180
+    state: enabled
 - name: wifi_phy_hier_0
   id: wifi_phy_hier
   parameters:
+    affinity: ''
+    alias: ''
     bandwidth: 10e6
     chan_est: chan_est
+    comment: ''
     encoding: encoding
     frequency: 5.9e6
+    maxoutbuf: '0'
+    minoutbuf: '0'
     sensitivity: '0.56'
   states:
     coordinate: [736, 484.0]
@@ -397,16 +427,13 @@ blocks:
 connections:
 - [blocks_message_strobe_0, strobe, ieee802_11_mac_0, app in]
 - [blocks_multiply_const_xx_0, '0', channels_channel_model_0, '0']
-- [blocks_pdu_to_tagged_stream_0, '0', qtgui_number_sink_0, '0']
 - [blocks_pdu_to_tagged_stream_0_0, '0', qtgui_const_sink_x_0, '0']
 - [channels_channel_model_0, '0', pfb_arb_resampler_xxx_0, '0']
 - [foo_packet_pad2_0, '0', blocks_multiply_const_xx_0, '0']
 - [foo_wireshark_connector_0, '0', blocks_file_sink_0, '0']
 - [ieee802_11_mac_0, phy out, wifi_phy_hier_0, mac_in]
-- [ieee802_11_parse_mac_0, fer, blocks_pdu_to_tagged_stream_0, pdus]
 - [pfb_arb_resampler_xxx_0, '0', wifi_phy_hier_0, '0']
 - [wifi_phy_hier_0, '0', foo_packet_pad2_0, '0']
-- [wifi_phy_hier_0, carrier, blocks_message_debug_0, print]
 - [wifi_phy_hier_0, carrier, blocks_pdu_to_tagged_stream_0_0, pdus]
 - [wifi_phy_hier_0, mac_out, foo_wireshark_connector_0, in]
 - [wifi_phy_hier_0, mac_out, ieee802_11_parse_mac_0, in]
