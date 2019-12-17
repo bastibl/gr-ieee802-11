@@ -19,8 +19,7 @@
 # Setup library
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
-include (CheckCCompilerFlag)
-CHECK_C_COMPILER_FLAG ("-msse2" SSE2_SUPPORTED)
+check_include_file("xmmintrin.h" SSE2_SUPPORTED)
 
 if(SSE2_SUPPORTED)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
