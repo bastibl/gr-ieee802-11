@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,25 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_SYNC_SHORT_H
-#define INCLUDED_IEEE802_11_SYNC_SHORT_H
+#ifndef @GUARD_NAME@
+#define @GUARD_NAME@
 
-#include <ieee802-11/api.h>
-#include <gnuradio/block.h>
+#include <ieee802_11/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API sync_short : virtual public block
+class IEEE802_11_API @NAME@ : virtual public sync_block
 {
-public:
+public: 
+	typedef boost::shared_ptr<@NAME@> sptr;
+	static sptr make(int length);
 
-	typedef boost::shared_ptr<sync_short> sptr;
-	static sptr make(double threshold, unsigned int min_plateau, bool log = false, bool debug = false);
+	virtual int length() const = 0;
+	virtual void set_length(int length) = 0;
 
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} /* namespace blocks */
+} /* namespace gr */
 
-#endif /* INCLUDED_IEEE802_11_SYNC_SHORT_H */
+#endif /* @GUARD_NAME@ */

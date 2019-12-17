@@ -18,8 +18,8 @@
 #ifndef INCLUDED_IEEE802_11_FRAME_EQUALIZER_IMPL_H
 #define INCLUDED_IEEE802_11_FRAME_EQUALIZER_IMPL_H
 
-#include <ieee802-11/frame_equalizer.h>
-#include <ieee802-11/constellations.h>
+#include <ieee802_11/frame_equalizer.h>
+#include <ieee802_11/constellations.h>
 #include "equalizer/base.h"
 #include "viterbi_decoder/viterbi_decoder.h"
 

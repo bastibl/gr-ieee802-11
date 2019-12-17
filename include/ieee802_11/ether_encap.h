@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,28 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_H
+#define INCLUDED_IEEE802_11_ETHER_ENCAP_H
 
-#ifndef INCLUDED_IEEE802_11_SIGNAL_FIELD_H
-#define INCLUDED_IEEE802_11_SIGNAL_FIELD_H
-
-#include <ieee802-11/api.h>
-#include <gnuradio/digital/packet_header_default.h>
+#include <ieee802_11/api.h>
+#include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API signal_field : virtual public digital::packet_header_default
+class IEEE802_11_API ether_encap : virtual public block
 {
 public:
-	typedef boost::shared_ptr<signal_field> sptr;
-	static sptr make();
 
-protected:
-	signal_field();
+	typedef boost::shared_ptr<ether_encap> sptr;
+	static sptr make(bool debug);
+
 };
 
-} // namespace ieee802_11
-} // namespace gr
+}  // namespace ieee802_11
+}  // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_SIGNAL_FIELD_H */
-
+#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_H */

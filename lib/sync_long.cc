@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/sync_long.h>
+#include <ieee802_11/sync_long.h>
 #include "utils.h"
 #include <gnuradio/io_signature.h>
 #include <gnuradio/filter/fir_filter.h>

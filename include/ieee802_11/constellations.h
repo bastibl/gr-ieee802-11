@@ -18,7 +18,7 @@
 #ifndef INCLUDED_IEEE802_11_CONSTELLATIONS_H
 #define INCLUDED_IEEE802_11_CONSTELLATIONS_H
 
-#include <ieee802-11/api.h>
+#include <ieee802_11/api.h>
 #include <gnuradio/digital/constellation.h>
 
 namespace gr {

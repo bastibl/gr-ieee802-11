@@ -17,7 +17,7 @@
 #ifndef INCLUDED_IEEE802_11_CONSTELLATIONS_IMPL_H
 #define INCLUDED_IEEE802_11_CONSTELLATIONS_IMPL_H
 
-#include <ieee802-11/constellations.h>
+#include <ieee802_11/constellations.h>
 
 namespace gr {
 namespace ieee802_11 {
