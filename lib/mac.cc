@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <ieee802-11/mac.h>
+#include <ieee802_11/mac.h>
 
 #include <gnuradio/io_signature.h>
 #include <gnuradio/block_detail.h>

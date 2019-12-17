@@ -133,7 +133,7 @@ add_custom_target(uninstall
 ########################################################################
 # Add subdirectories
 ########################################################################
-add_subdirectory(include/ieee802-11)
+add_subdirectory(include/ieee802_11)
 add_subdirectory(lib)
 add_subdirectory(swig)
 add_subdirectory(python)

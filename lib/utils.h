@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_UTILS_H
 #define INCLUDED_IEEE802_11_UTILS_H
 
-#include <ieee802-11/api.h>
-#include <ieee802-11/mapper.h>
+#include <ieee802_11/api.h>
+#include <ieee802_11/mapper.h>
 #include <gnuradio/config.h>
 #include <cinttypes>
 #include <iostream>

@@ -18,7 +18,7 @@
 #ifndef INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
 #define INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
 
-#include <ieee802-11/signal_field.h>
+#include <ieee802_11/signal_field.h>
 #include "utils.h"
 
 namespace gr {

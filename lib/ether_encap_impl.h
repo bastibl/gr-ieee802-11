@@ -17,7 +17,7 @@
 #ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
 #define INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H
 
-#include <ieee802-11/ether_encap.h>
+#include <ieee802_11/ether_encap.h>
 
 namespace gr {
 namespace ieee802_11 {

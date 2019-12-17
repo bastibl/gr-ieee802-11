@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Bastian Bloessl <bloessl@ccs-labs.org>
+ * Copyright (C) 2013, 2016 Bastian Bloessl <bloessl@ccs-labs.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,25 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_H
-#define INCLUDED_IEEE802_11_ETHER_ENCAP_H
+#ifndef INCLUDED_IEEE802_11_DECODE_MAC_H
+#define INCLUDED_IEEE802_11_DECODE_MAC_H
 
-#include <ieee802-11/api.h>
+#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API ether_encap : virtual public block
+class IEEE802_11_API decode_mac : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<ether_encap> sptr;
-	static sptr make(bool debug);
+	typedef boost::shared_ptr<decode_mac> sptr;
+	static sptr make(bool log = false, bool debug = false);
 
 };
 
 }  // namespace ieee802_11
 }  // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_H */
+#endif /* INCLUDED_IEEE802_11_DECODE_MAC_H */
+
+
