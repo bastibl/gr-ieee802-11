@@ -21,7 +21,7 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+gr_complex * sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
 
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
@@ -87,6 +87,8 @@ void sta::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, bo
 			d_H[i] = gr_complex(1-alpha,0) * d_H[i] + gr_complex(alpha,0) * H_update[i];
 		}
 	}
+
+	return d_H;
 }
 
 double

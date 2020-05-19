@@ -72,6 +72,7 @@ private:
 
 	uint8_t d_deinterleaved[48];
 	gr_complex symbols[48];
+	gr_complex csi[52];
 
 	boost::shared_ptr<gr::digital::constellation> d_frame_mod;
 	constellation_bpsk::sptr d_bpsk;

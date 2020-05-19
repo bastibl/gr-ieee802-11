@@ -37,7 +37,7 @@ frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool deb
 frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
 	gr::block("frame_equalizer",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
-			gr::io_signature::make(1, 1, 48)),
+			gr::io_signature::make2(1, 2, 48, 52 * sizeof(gr_complex))),
 	d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
 	d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
 	d_freq_offset_from_synclong(0.0) {
@@ -114,6 +114,7 @@ frame_equalizer_impl::general_work (int noutput_items,
 
 	const gr_complex *in = (const gr_complex *) input_items[0];
 	uint8_t *out = (uint8_t *) output_items[0];
+	gr_complex *csi_out = (gr_complex *) output_items[1];
 
 	int i = 0;
 	int o = 0;
@@ -201,8 +202,8 @@ frame_equalizer_impl::general_work (int noutput_items,
 		}
 
 		// do equalization
-		d_equalizer->equalize(current_symbol, d_current_symbol,
-				symbols, out + o * 48, d_frame_mod);
+		csi_out[i] = * d_equalizer->equalize(current_symbol, d_current_symbol,
+										symbols, out + o * 48, d_frame_mod);
 
 		// signal field
 		if(d_current_symbol == 2) {

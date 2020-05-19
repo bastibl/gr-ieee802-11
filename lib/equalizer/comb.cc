@@ -19,7 +19,7 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+gr_complex * comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
 
 	gr_complex pilot[4];
 
@@ -69,6 +69,8 @@ void comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, b
 			c++;
 		}
 	}
+
+	return d_H;
 }
 
 double
