@@ -99,7 +99,6 @@
 		<type>complex</type>
 		<vlen>52</vlen>
 		<nports>1</nports>
-		<optional>1</optional>
 	</source>
 
 	<source>

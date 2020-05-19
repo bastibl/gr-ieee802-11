@@ -37,7 +37,7 @@ frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool deb
 frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
 	gr::block("frame_equalizer",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
-			gr::io_signature::make2(1, 2, 48, 52 * sizeof(gr_complex))),
+			gr::io_signature::make2(2, 2, 48, 52 * sizeof(gr_complex))),
 	d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
 	d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
 	d_freq_offset_from_synclong(0.0) {
