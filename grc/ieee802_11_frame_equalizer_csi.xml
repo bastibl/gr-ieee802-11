@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>WiFi Frame Equalizer</name>
-	<key>ieee802_11_frame_equalizer</key>
+	<name>WiFi Frame Equalizer_csi</name>
+	<key>ieee802_11_frame_equalizer_csi</key>
 	<category>[IEEE802.11]</category>
 	<import>import ieee802_11</import>
 	<make>ieee802_11.frame_equalizer($algo, $freq, $bw, $log, $debug)</make>
@@ -91,6 +91,13 @@
 		<name>out</name>
 		<type>byte</type>
 		<vlen>48</vlen>
+		<nports>1</nports>
+	</source>
+
+	<source>
+		<name>CSI</name>
+		<type>complex</type>
+		<vlen>52</vlen>
 		<nports>1</nports>
 	</source>
 
