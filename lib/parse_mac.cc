@@ -38,6 +38,7 @@ parse_mac_impl(bool log, bool debug) :
 	set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
 
 	message_port_register_out(pmt::mp("fer"));
+	message_port_register_out(pmt::mp("message"));
 }
 
 ~parse_mac_impl() {
@@ -96,6 +97,9 @@ void parse(pmt::pmt_t msg) {
 	// DATA
 	if((((h->frame_control) >> 2) & 63) == 2) {
 		print_ascii(frame + 24, data_len - 24);
+		// publish message
+		pmt::pmt_t pmt_message = pmt::string_to_symbol(to_ascii(frame + 24, data_len - 24));
+		message_port_pub(pmt::mp("message"), pmt_message);
 	// QoS Data
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
 		print_ascii(frame + 26, data_len - 26);
@@ -350,6 +354,19 @@ void print_ascii(char* buf, int length) {
 		}
 	}
 	dout << std::endl;
+}
+
+std::string to_ascii(char* buf, int length) {
+	std::string result = "";
+
+	for(int i = 0; i < length; i++) {
+		if((buf[i] > 31) && (buf[i] < 127)) {
+			result.append(&buf[i]);
+		} else {
+			result.append(".");
+		}
+	}
+	return result;
 }
 
 private:
