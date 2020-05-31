@@ -24,6 +24,9 @@ options:
     title: ''
     window_size: 1280, 1024
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [8, 12]
     rotation: 0
     state: enabled
@@ -43,6 +46,7 @@ blocks:
     labels: '["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM
       3/4", "64QAM 2/3", "64QAM 3/4"]'
     num_opts: '0'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -53,6 +57,9 @@ blocks:
     value: '0'
     widget: radio_buttons
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1072, 16]
     rotation: 0
     state: enabled
@@ -89,6 +96,7 @@ blocks:
       11p'', ''174 | 5870.0 | 11p'', ''176 | 5880.0 | 11p'', ''178 | 5890.0 | 11p'',
       ''180 | 5900.0 | 11p'', ''182 | 5910.0 | 11p'', ''184 | 5920.0 | 11p'']'
     num_opts: '0'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -110,6 +118,9 @@ blocks:
     value: '5890000000'
     widget: combo_box
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [440, 16]
     rotation: 0
     state: enabled
@@ -128,6 +139,9 @@ blocks:
     value: '300'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [312, 16]
     rotation: 0
     state: enabled
@@ -144,6 +158,7 @@ blocks:
     label4: ''
     labels: '[]'
     num_opts: '3'
+    option0: '0'
     option1: 6e6
     option2: 11e6
     option3: '3'
@@ -154,6 +169,9 @@ blocks:
     value: '0'
     widget: combo_box
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [808, 16]
     rotation: 0
     state: enabled
@@ -163,6 +181,9 @@ blocks:
     comment: ''
     value: '96000'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [8, 75]
     rotation: 0
     state: enabled
@@ -181,6 +202,9 @@ blocks:
     value: '500'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [184, 16]
     rotation: 0
     state: enabled
@@ -197,6 +221,7 @@ blocks:
     label4: ''
     labels: '["5 MHz", "10 MHz", "20 MHz"]'
     num_opts: '0'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -207,6 +232,9 @@ blocks:
     value: 10e6
     widget: combo_box
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [624, 16]
     rotation: 0
     state: enabled
@@ -225,6 +253,9 @@ blocks:
     value: '0.75'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [928, 16]
     rotation: 0
     state: enabled
@@ -239,6 +270,9 @@ blocks:
     msg: pmt.intern("".join("x" for i in range(pdu_length)))
     period: interval
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [168, 164]
     rotation: 0
     state: enabled
@@ -254,23 +288,10 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [240, 396.0]
-    rotation: 180
-    state: enabled
-- name: blocks_null_source_0
-  id: blocks_null_source
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_conns: '[[0,],]'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    num_outputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    coordinate: [680, 416.0]
     rotation: 180
     state: enabled
 - name: blocks_socket_pdu_0
@@ -287,9 +308,32 @@ blocks:
     tcp_no_delay: 'False'
     type: TCP_SERVER
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [232, 260.0]
     rotation: 0
     state: enabled
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'False'
+    tags: '[]'
+    type: complex
+    vector: (0,)
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 396.0]
+    rotation: 180
+    state: true
 - name: foo_packet_pad2_0
   id: foo_packet_pad2
   parameters:
@@ -304,6 +348,9 @@ blocks:
     pad_front: '100'
     pad_tail: '1000'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [232, 580.0]
     rotation: 0
     state: enabled
@@ -319,6 +366,9 @@ blocks:
     minoutbuf: '0'
     src_mac: '[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [440, 284]
     rotation: 0
     state: enabled
@@ -592,6 +642,9 @@ blocks:
     time_source7: ''
     type: fc32
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [400, 556.0]
     rotation: 0
     state: enabled
@@ -600,15 +653,18 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    bandwidth: 10e6
+    bandwidth: samp_rate
     chan_est: '0'
     comment: ''
     encoding: encoding
-    frequency: 5.89e9
+    frequency: freq
     maxoutbuf: '0'
     minoutbuf: '0'
     sensitivity: '0.56'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [464, 396.0]
     rotation: 180
     state: enabled
@@ -616,8 +672,8 @@ blocks:
 connections:
 - [blocks_message_strobe_0_0, strobe, ieee802_11_mac_0, app in]
 - [blocks_multiply_const_vxx_0, '0', foo_packet_pad2_0, '0']
-- [blocks_null_source_0, '0', wifi_phy_hier_0, '0']
 - [blocks_socket_pdu_0, pdus, ieee802_11_mac_0, app in]
+- [blocks_vector_source_x_0, '0', wifi_phy_hier_0, '0']
 - [foo_packet_pad2_0, '0', uhd_usrp_sink_0, '0']
 - [ieee802_11_mac_0, phy out, wifi_phy_hier_0, mac_in]
 - [wifi_phy_hier_0, '0', blocks_multiply_const_vxx_0, '0']
