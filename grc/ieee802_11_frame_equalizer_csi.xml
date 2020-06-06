@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <block>
-	<name>WiFi Frame Equalizer_csi</name>
+	<name>WiFi Frame Equalizer CSI</name>
 	<key>ieee802_11_frame_equalizer_csi</key>
 	<category>[IEEE802.11]</category>
 	<import>import ieee802_11</import>
-	<make>ieee802_11.frame_equalizer($algo, $freq, $bw, $log, $debug)</make>
+	<make>ieee802_11.frame_equalizer_csi($algo, $freq, $bw, $log, $debug)</make>
 	<callback>set_algorithm($algo)</callback>
 	<callback>set_frequency($freq)</callback>
 	<callback>set_bandwidth($bw)</callback>

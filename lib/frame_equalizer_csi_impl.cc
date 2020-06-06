@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "frame_equalizer_impl.h"
+#include "frame_equalizer_csi_impl.h"
 #include "equalizer/base.h"
 #include "equalizer/comb.h"
 #include "equalizer/lms.h"
@@ -27,15 +27,15 @@
 namespace gr {
 namespace ieee802_11 {
 
-frame_equalizer::sptr
-frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool debug) {
+frame_equalizer_csi::sptr
+frame_equalizer_csi::make(Equalizer algo, double freq, double bw, bool log, bool debug) {
 	return gnuradio::get_initial_sptr
-		(new frame_equalizer_impl(algo, freq, bw, log, debug));
+		(new frame_equalizer_csi_impl(algo, freq, bw, log, debug));
 }
 
 
-frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
-	gr::block("frame_equalizer",
+frame_equalizer_csi_impl::frame_equalizer_csi_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
+	gr::block("frame_equalizer_csi",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
 			gr::io_signature::make2(2, 2, 48, 52 * sizeof(gr_complex))),
 	d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
@@ -55,12 +55,12 @@ frame_equalizer_impl::frame_equalizer_impl(Equalizer algo, double freq, double b
 	set_algorithm(algo);
 }
 
-frame_equalizer_impl::~frame_equalizer_impl() {
+frame_equalizer_csi_impl::~frame_equalizer_csi_impl() {
 }
 
 
 void
-frame_equalizer_impl::set_algorithm(Equalizer algo) {
+frame_equalizer_csi_impl::set_algorithm(Equalizer algo) {
 	gr::thread::scoped_lock lock(d_mutex);
 	delete d_equalizer;
 
@@ -88,24 +88,24 @@ frame_equalizer_impl::set_algorithm(Equalizer algo) {
 }
 
 void
-frame_equalizer_impl::set_bandwidth(double bw) {
+frame_equalizer_csi_impl::set_bandwidth(double bw) {
 	gr::thread::scoped_lock lock(d_mutex);
 	d_bw = bw;
 }
 
 void
-frame_equalizer_impl::set_frequency(double freq) {
+frame_equalizer_csi_impl::set_frequency(double freq) {
 	gr::thread::scoped_lock lock(d_mutex);
 	d_freq = freq;
 }
 
 void
-frame_equalizer_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required) {
+frame_equalizer_csi_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required) {
 	ninput_items_required[0] = noutput_items;
 }
 
 int
-frame_equalizer_impl::general_work (int noutput_items,
+frame_equalizer_csi_impl::general_work (int noutput_items,
 		gr_vector_int &ninput_items,
 		gr_vector_const_void_star &input_items,
 		gr_vector_void_star &output_items) {
@@ -238,7 +238,7 @@ frame_equalizer_impl::general_work (int noutput_items,
 }
 
 bool
-frame_equalizer_impl::decode_signal_field(uint8_t *rx_bits) {
+frame_equalizer_csi_impl::decode_signal_field(uint8_t *rx_bits) {
 
 	static ofdm_param ofdm(BPSK_1_2);
 	static frame_param frame(ofdm, 0);
@@ -250,14 +250,14 @@ frame_equalizer_impl::decode_signal_field(uint8_t *rx_bits) {
 }
 
 void
-frame_equalizer_impl::deinterleave(uint8_t *rx_bits) {
+frame_equalizer_csi_impl::deinterleave(uint8_t *rx_bits) {
 	for(int i = 0; i < 48; i++) {
 		d_deinterleaved[i] = rx_bits[interleaver_pattern[i]];
 	}
 }
 
 bool
-frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
+frame_equalizer_csi_impl::parse_signal(uint8_t *decoded_bits) {
 
 	int r = 0;
 	d_frame_bytes = 0;
@@ -339,7 +339,7 @@ frame_equalizer_impl::parse_signal(uint8_t *decoded_bits) {
 }
 
 const int
-frame_equalizer_impl::interleaver_pattern[48] = {
+frame_equalizer_csi_impl::interleaver_pattern[48] = {
 	 0, 3, 6, 9,12,15,18,21,
 	24,27,30,33,36,39,42,45,
 	 1, 4, 7,10,13,16,19,22,

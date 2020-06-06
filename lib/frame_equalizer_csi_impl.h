@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INCLUDED_IEEE802_11_FRAME_EQUALIZER_IMPL_H
-#define INCLUDED_IEEE802_11_FRAME_EQUALIZER_IMPL_H
+#ifndef INCLUDED_IEEE802_11_FRAME_EQUALIZER_CSI_IMPL_H
+#define INCLUDED_IEEE802_11_FRAME_EQUALIZER_CSI_IMPL_H
 
-#include <ieee802-11/frame_equalizer.h>
+#include <ieee802-11/frame_equalizer_csi.h>
 #include <ieee802-11/constellations.h>
 #include "equalizer/base.h"
 #include "viterbi_decoder.h"
@@ -26,12 +26,12 @@
 namespace gr {
 namespace ieee802_11 {
 
-class frame_equalizer_impl : virtual public frame_equalizer
+class frame_equalizer_csi_impl : virtual public frame_equalizer_csi
 {
 
 public:
-	frame_equalizer_impl(Equalizer algo, double freq, double bw, bool log, bool debug);
-	~frame_equalizer_impl();
+	frame_equalizer_csi_impl(Equalizer algo, double freq, double bw, bool log, bool debug);
+	~frame_equalizer_csi_impl();
 
 	void set_algorithm(Equalizer algo);
 	void set_bandwidth(double bw);
@@ -86,4 +86,4 @@ private:
 } // namespace ieee802_11
 } // namespace gr
 
-#endif /* INCLUDED_IEEE802_11_FRAME_EQUALIZER_IMPL_H */
+#endif /* INCLUDED_IEEE802_11_FRAME_EQUALIZER_CSI_IMPL_H */
