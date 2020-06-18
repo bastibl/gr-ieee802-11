@@ -201,9 +201,12 @@ frame_equalizer_csi_impl::general_work (int noutput_items,
 			d_er = (1-alpha) * d_er + alpha * er;
 		}
 
-		// do equalization
+		// do equalization and add propagate the last tag if tags are present
 		csi_out[i] = * d_equalizer->equalize(current_symbol, d_current_symbol,
 										symbols, out + o * 48, d_frame_mod);
+		if (tags.size()){
+			gr::block::add_item_tag(1, tags.back());
+		}
 
 		// signal field
 		if(d_current_symbol == 2) {
