@@ -74,6 +74,7 @@ list(APPEND include_sources
     decode_mac.h
     ether_encap.h
     frame_equalizer.h
+    frame_equalizer_csi.h
     mac.h
     mapper.h
     parse_mac.h
