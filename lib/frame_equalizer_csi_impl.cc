@@ -37,7 +37,7 @@ frame_equalizer_csi::make(Equalizer algo, double freq, double bw, bool log, bool
 frame_equalizer_csi_impl::frame_equalizer_csi_impl(Equalizer algo, double freq, double bw, bool log, bool debug) :
 	gr::block("frame_equalizer_csi",
 			gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
-			gr::io_signature::make2(2, 2, 48, 52 * sizeof(gr_complex))),
+			gr::io_signature::make3(2, 2, 48, 52 * sizeof(double), 52 * sizeof(double))),
 	d_current_symbol(0), d_log(log), d_debug(debug), d_equalizer(NULL),
 	d_freq(freq), d_bw(bw), d_frame_bytes(0), d_frame_symbols(0),
 	d_freq_offset_from_synclong(0.0) {
@@ -114,7 +114,8 @@ frame_equalizer_csi_impl::general_work (int noutput_items,
 
 	const gr_complex *in = (const gr_complex *) input_items[0];
 	uint8_t *out = (uint8_t *) output_items[0];
-	gr_complex *csi_out = (gr_complex *) output_items[1];
+	double *signals_out = (double *) output_items[1];
+	double *noises_out = (double *) output_items[2];
 
 	int i = 0;
 	int o = 0;
@@ -201,12 +202,12 @@ frame_equalizer_csi_impl::general_work (int noutput_items,
 			d_er = (1-alpha) * d_er + alpha * er;
 		}
 
-		// do equalization and add propagate the last tag if tags are present
-		csi_out[i] = * d_equalizer->equalize(current_symbol, d_current_symbol,
-										symbols, out + o * 48, d_frame_mod);
 		if (tags.size()){
-			gr::block::add_item_tag(1, tags.back());
+			gr::block::add_item_tag(1, tags.front());
 		}
+		// do equalization and add propagate the first tag if tags are present
+		signals_out[i], noises_out[i] = * d_equalizer->equalize(current_symbol, d_current_symbol,
+										symbols, out + o * 48, d_frame_mod);
 
 		// signal field
 		if(d_current_symbol == 2) {

@@ -27,7 +27,7 @@ namespace equalizer {
 
 class lms: public base {
 public:
-	virtual gr_complex * equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod);
+	virtual double * equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod);
 private:
 	double get_snr();
 

@@ -95,8 +95,15 @@
 	</source>
 
 	<source>
-		<name>CSI</name>
-		<type>complex</type>
+		<name>Subcarrier Power</name>
+		<type>float64</type>
+		<vlen>52</vlen>
+		<nports>1</nports>
+	</source>
+
+	<source>
+		<name>Subcarrier Noise</name>
+		<type>float64</type>
 		<vlen>52</vlen>
 		<nports>1</nports>
 	</source>

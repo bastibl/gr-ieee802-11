@@ -21,20 +21,26 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-gr_complex * lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
-
+double * lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+	double signals[52];
+	double noises[52];
+	
 	if(n == 0) {
 		std::memcpy(d_H, in, 64 * sizeof(gr_complex));
 
 	} else if(n == 1) {
 		double signal = 0;
 		double noise = 0;
+		double* signals = new double[52];
+		double* noises = new double[52];
 		for(int i = 0; i < 64; i++) {
 			if((i == 32) || (i < 6) || ( i > 58)) {
 				continue;
 			}
 			noise += std::pow(std::abs(d_H[i] - in[i]), 2);
+			noises[i] = noise;
 			signal += std::pow(std::abs(d_H[i] + in[i]), 2);
+			signals[i]= signal;
 			d_H[i] += in[i];
 			d_H[i] /= LONG[i] * gr_complex(2, 0);
 		}
@@ -57,7 +63,7 @@ gr_complex * lms::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *
 		}
 	}
 
-	return d_H;
+	return signals, noises;
 }
 
 double

@@ -19,7 +19,7 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-gr_complex * comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
+double * comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod) {
 
 	gr_complex pilot[4];
 
@@ -69,8 +69,8 @@ gr_complex * comb::equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t 
 			c++;
 		}
 	}
-
-	return d_H;
+	// TODO(br): calculate signal and noise power per subcarrier
+	return 0, 0;
 }
 
 double
