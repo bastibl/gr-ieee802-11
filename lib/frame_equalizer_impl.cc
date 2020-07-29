@@ -153,11 +153,6 @@ frame_equalizer_impl::general_work (int noutput_items,
 		}
 
 		gr_complex p = equalizer::base::POLARITY[(d_current_symbol - 2) % 127];
-		gr_complex sum =
-			(current_symbol[11] *  p) +
-			(current_symbol[25] *  p) +
-			(current_symbol[39] *  p) +
-			(current_symbol[53] * -p);
 
 		double beta;
 		if(d_current_symbol < 2) {
@@ -183,10 +178,17 @@ frame_equalizer_impl::general_work (int noutput_items,
 
 		er *= d_bw / (2 * M_PI * d_freq * 80);
 
-		d_prev_pilots[0] = current_symbol[11] *  p;
-		d_prev_pilots[1] = current_symbol[25] *  p;
-		d_prev_pilots[2] = current_symbol[39] *  p;
-		d_prev_pilots[3] = current_symbol[53] * -p;
+		if(d_current_symbol < 2) {
+			d_prev_pilots[0] = current_symbol[11];
+			d_prev_pilots[1] = -current_symbol[25];
+			d_prev_pilots[2] = current_symbol[39];
+			d_prev_pilots[3] = current_symbol[53];
+		} else {
+			d_prev_pilots[0] = current_symbol[11] *  p;
+			d_prev_pilots[1] = current_symbol[25] *  p;
+			d_prev_pilots[2] = current_symbol[39] *  p;
+			d_prev_pilots[3] = current_symbol[53] * -p;
+		}
 
 		// compensate residual frequency offset
 		for(int i = 0; i < 64; i++) {
