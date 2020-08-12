@@ -34,9 +34,9 @@ ether_encap_impl::ether_encap_impl(bool debug) :
     message_port_register_out(pmt::mp("to wifi"));
 
     message_port_register_in(pmt::mp("from tap"));
-    set_msg_handler(pmt::mp("from tap"), boost::bind(&ether_encap_impl::from_tap, this, _1));
+    set_msg_handler(pmt::mp("from tap"), boost::bind(&ether_encap_impl::from_tap, this, boost::placeholders::_1));
     message_port_register_in(pmt::mp("from wifi"));
-    set_msg_handler(pmt::mp("from wifi"), boost::bind(&ether_encap_impl::from_wifi, this, _1));
+    set_msg_handler(pmt::mp("from wifi"), boost::bind(&ether_encap_impl::from_wifi, this, boost::placeholders::_1));
 }
 
 void
