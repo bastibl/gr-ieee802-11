@@ -35,7 +35,7 @@ parse_mac_impl(bool log, bool debug) :
 		d_debug(debug) {
 
 	message_port_register_in(pmt::mp("in"));
-	set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, _1));
+	set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, boost::placeholders::_1));
 
 	message_port_register_out(pmt::mp("fer"));
 }

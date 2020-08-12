@@ -48,10 +48,10 @@ mac_impl(std::vector<uint8_t> src_mac, std::vector<uint8_t> dst_mac, std::vector
 	message_port_register_out(pmt::mp("app out"));
 
 	message_port_register_in(pmt::mp("app in"));
-	set_msg_handler(pmt::mp("app in"), boost::bind(&mac_impl::app_in, this, _1));
+	set_msg_handler(pmt::mp("app in"), boost::bind(&mac_impl::app_in, this, boost::placeholders::_1));
 
 	message_port_register_in(pmt::mp("phy in"));
-	set_msg_handler(pmt::mp("phy in"), boost::bind(&mac_impl::phy_in, this, _1));
+	set_msg_handler(pmt::mp("phy in"), boost::bind(&mac_impl::phy_in, this, boost::placeholders::_1));
 
 	if(!check_mac(src_mac)) throw std::invalid_argument("wrong mac address size");
 	if(!check_mac(dst_mac)) throw std::invalid_argument("wrong mac address size");
