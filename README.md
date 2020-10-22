@@ -5,6 +5,16 @@ with Ettus N210s and B210s. Interoperability was tested with many off-the-shelf
 WiFi cards and IEEE 802.11p prototypes. The code can also be used in
 simulations.
 
+# Table of Contents
+1. [Development](#development)
+
+1. [Installation](#installation)
+
+1. [Usage](#usage)
+
+1. [Troubleshooting](#troubleshooting)
+
+1. [Further information](#further-information)
 
 # Development
 
@@ -146,7 +156,7 @@ The loopback flow graph should give you an idea of how simulations can be
 conducted. To ease use, most blocks have debugging and logging capabilities that
 can generate traces of the simulation. You can read about the logging feature
 and how to use it on the [GNU Radio
-Wiki](http://gnuradio.org/doc/doxygen/page_logger.html).
+Wiki](https://wiki.gnuradio.org/index.php/Logging).
 
 
 ## Unidirectional communication
