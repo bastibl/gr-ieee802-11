@@ -33,6 +33,8 @@ public:
 
 	static const gr_complex POLARITY[127];
 
+	const gr_complex* get_csi();
+
 protected:
 	static const gr_complex LONG[64];
 
