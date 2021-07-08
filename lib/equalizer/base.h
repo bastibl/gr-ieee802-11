@@ -35,6 +35,8 @@ public:
 
 protected:
 	static const gr_complex LONG[64];
+
+	gr_complex d_H[64];
 };
 
 } /* namespace channel_estimation */

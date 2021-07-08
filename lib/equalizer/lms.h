@@ -31,8 +31,6 @@ public:
 private:
 	double get_snr();
 
-
-	gr_complex d_H[64];
 	double d_snr;
 	const double alpha = 0.5;
 };
