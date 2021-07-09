@@ -76,7 +76,8 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 			d_snr = pmt::to_double(pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
 			d_nom_freq = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
 			d_freq_offset = pmt::to_double(pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
-
+			d_beta = pmt::to_double(pmt::dict_ref(dict, pmt::mp("beta"), pmt::from_double(0)));
+			d_csi = pmt::c32vector_elements(pmt::dict_ref(dict, pmt::mp("csi"), pmt::make_c32vector(52, 0)));
 			ofdm_param ofdm = ofdm_param((Encoding)encoding);
 			frame_param frame = frame_param(ofdm, len_data);
 
@@ -149,6 +150,8 @@ void decode() {
 	dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
 	dict = pmt::dict_add(dict, pmt::mp("nomfreq"), pmt::from_double(d_nom_freq));
 	dict = pmt::dict_add(dict, pmt::mp("freqofs"), pmt::from_double(d_freq_offset));
+	dict = pmt::dict_add(dict, pmt::mp("beta"), pmt::from_double(d_beta));
+	dict = pmt::dict_add(dict, pmt::mp("csi"), pmt::init_c32vector(52, d_csi));
 	dict = pmt::dict_add(dict, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
 	message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
 }
@@ -230,6 +233,8 @@ private:
 	double d_snr;  // dB
 	double d_nom_freq;  // nominal frequency, Hz
 	double d_freq_offset;  // frequency offset, Hz
+	double d_beta;
+	std::vector<gr_complex> d_csi;
 	viterbi_decoder d_decoder;
 
 	uint8_t d_rx_symbols[48 * MAX_SYM];

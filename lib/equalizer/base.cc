@@ -41,15 +41,14 @@ const gr_complex base::POLARITY[127] = {
 	-1,-1,-1,-1,-1, 1,-1, 1, 1,-1, 1,-1, 1, 1, 1,-1,
 	-1, 1,-1,-1,-1, 1, 1, 1,-1,-1,-1,-1,-1,-1,-1 };
 
-const gr_complex* base::get_csi() {
-	static gr_complex csi[52];
-	int j = 0;
+std::vector<gr_complex> base::get_csi() {
+	std::vector<gr_complex> csi;
+	csi.reserve(52);
 	for (int i = 0; i < 64; i++) {
 		if ((i == 32) || (i < 6) || (i > 58)) {
 			continue;
 		}
-		csi[j] = d_H[i];
-		j++;
+		csi.push_back(d_H[i]);
 	}
 	return csi;
 }

@@ -218,7 +218,10 @@ frame_equalizer_impl::general_work (int noutput_items,
 				dict = pmt::dict_add(dict, pmt::mp("freq"), pmt::from_double(d_freq));
 				dict = pmt::dict_add(dict, pmt::mp("freq_offset"), pmt::from_double(d_freq_offset_from_synclong));
 				dict = pmt::dict_add(dict, pmt::mp("beta"), pmt::from_double(beta));
-				dict = pmt::dict_add(dict, pmt::mp("csi"), pmt::init_c32vector(52, d_equalizer->get_csi()));
+
+				std::vector<gr_complex> csi = d_equalizer->get_csi();
+				dict = pmt::dict_add(dict, pmt::mp("csi"), pmt::init_c32vector(csi.size(), csi));
+
 				add_item_tag(0, nitems_written(0) + o,
 						pmt::string_to_symbol("wifi_start"),
 						dict,
