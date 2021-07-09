@@ -42,5 +42,14 @@ const gr_complex base::POLARITY[127] = {
 	-1, 1,-1,-1,-1, 1, 1, 1,-1,-1,-1,-1,-1,-1,-1 };
 
 const gr_complex* base::get_csi() {
-	return d_H;
+	static gr_complex csi[52];
+	int j = 0;
+	for (int i = 0; i < 64; i++) {
+		if ((i == 32) || (i < 6) || (i > 58)) {
+			continue;
+		}
+		csi[j] = d_H[i];
+		j++;
+	}
+	return csi;
 }
