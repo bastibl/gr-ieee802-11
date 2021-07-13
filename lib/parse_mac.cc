@@ -101,20 +101,13 @@ void parse(pmt::pmt_t pdu) {
 
 	char *frame = (char*)pmt::blob_data(d_msg);
 
-	int body_start = frame_len;
-
+	// DATA
 	if((((h->frame_control) >> 2) & 63) == 2) {
-		body_start = 24; // DATA
+		print_ascii(frame + 24, frame_len - 24);
+	// QoS Data
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
-		body_start = 26; // QoS Data
+		print_ascii(frame + 26, frame_len - 26);
 	}
-
-	int body_len = frame_len - body_start;
-
-	std::string frame_body(frame + body_start, body_len);
-
-	d_meta = pmt::dict_add(d_meta, pmt::mp("Frame Body"), pmt::mp(frame_body));
-	dout << frame_body << std::endl;
 
 	message_port_pub(pmt::mp("out"), pmt::cons(d_meta, d_msg));
 }
@@ -397,13 +390,27 @@ void parse_control(char *buf, int length) {
 }
 
 std::string format_mac_address(uint8_t *addr) {
-	std::string str = "";
+	std::stringstream str;
 
-	for(int i = 0; ; i++) {
-		str.append(std::to_string(addr[i]));
-		if(i == 5) return str;
-		str.append(":");
+	str << std::setfill('0') << std::hex << std::setw(2) << (int)addr[0];
+
+	for(int i = 1; i < 6; i++) {
+		str << ":" << (int)addr[i];
 	}
+
+	return str.str();
+}
+
+void print_ascii(char* buf, int length) {
+
+	for(int i = 0; i < length; i++) {
+		if((buf[i] > 31) && (buf[i] < 127)) {
+			dout << buf[i];
+		} else {
+			dout << ".";
+		}
+	}
+	dout << std::endl;
 }
 
 private:
