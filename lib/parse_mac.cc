@@ -37,35 +37,39 @@ parse_mac_impl(bool log, bool debug) :
 	message_port_register_in(pmt::mp("in"));
 	set_msg_handler(pmt::mp("in"), boost::bind(&parse_mac_impl::parse, this, boost::placeholders::_1));
 
-	message_port_register_out(pmt::mp("fer"));
+	message_port_register_out(pmt::mp("out"));
 }
 
 ~parse_mac_impl() {
 
 }
 
-void parse(pmt::pmt_t msg) {
+void parse(pmt::pmt_t pdu) {
 
-	if(pmt::is_eof_object(msg)) {
+	if(pmt::is_eof_object(pdu)) {
 		detail().get()->set_done(true);
 		return;
-	} else if(pmt::is_symbol(msg)) {
+	} else if(pmt::is_symbol(pdu)) {
 		return;
 	}
 
-	msg = pmt::cdr(msg);
+	d_meta = pmt::car(pdu);
+	d_msg = pmt::cdr(pdu);
 
-	int data_len = pmt::blob_length(msg);
-	mac_header *h = (mac_header*)pmt::blob_data(msg);
+	int frame_len = pmt::blob_length(d_msg);
+	mac_header *h = (mac_header*)pmt::blob_data(d_msg);
 
-	mylog(boost::format("length: %1%") % data_len );
+	mylog(boost::format("length: %1%") % frame_len );
 
-	dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
+	dout << std::endl << "new mac frame  (length " << frame_len << ")" << std::endl;
 	dout << "=========================================" << std::endl;
-	if(data_len < 20) {
+	if(frame_len < 20) {
 		dout << "frame too short to parse (<20)" << std::endl;
 		return;
 	}
+
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Duration"), pmt::mp(h->duration));
+
 	#define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
 	dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
 	dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
@@ -73,33 +77,46 @@ void parse(pmt::pmt_t msg) {
         switch((h->frame_control >> 2) & 3) {
 
 		case 0:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Type"), pmt::mp("Management"));
 			dout << " (MANAGEMENT)" << std::endl;
-			parse_management((char*)h, data_len);
+			parse_management((char*)h, frame_len);
 			break;
 		case 1:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Type"), pmt::mp("Control"));
 			dout << " (CONTROL)" << std::endl;
-			parse_control((char*)h, data_len);
+			parse_control((char*)h, frame_len);
 			break;
 
 		case 2:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Type"), pmt::mp("Data"));
 			dout << " (DATA)" << std::endl;
-			parse_data((char*)h, data_len);
+			parse_data((char*)h, frame_len);
 			break;
 
 		default:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Type"), pmt::mp("Unknown"));
 			dout << " (unknown)" << std::endl;
 			break;
 	}
 
-	char *frame = (char*)pmt::blob_data(msg);
+	char *frame = (char*)pmt::blob_data(d_msg);
 
-	// DATA
+	int body_start;
+
 	if((((h->frame_control) >> 2) & 63) == 2) {
-		print_ascii(frame + 24, data_len - 24);
-	// QoS Data
+		body_start = 24; // DATA
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
-		print_ascii(frame + 26, data_len - 26);
-	}
+		body_start = 26; // QoS Data
+	} else return;
+
+	int body_len = frame_len - body_start;
+
+	std::string frame_body(frame + body_start, body_len);
+
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Frame Body"), pmt::mp(frame_body));
+	dout << frame_body << std::endl;
+
+	message_port_pub(pmt::mp("out"), pmt::cons(d_meta, d_msg));
 }
 
 void parse_management(char *buf, int length) {
@@ -113,30 +130,39 @@ void parse_management(char *buf, int length) {
 	dout << "Subtype: ";
 	switch(((h->frame_control) >> 4) & 0xf) {
 		case 0:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Association Request"));
 			dout << "Association Request";
 			break;
 		case 1:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Association Response"));
 			dout << "Association Response";
 			break;
 		case 2:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reassociation Request"));
 			dout << "Reassociation Request";
 			break;
 		case 3:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reassociation Response"));
 			dout << "Reassociation Response";
 			break;
 		case 4:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Probe Request"));
 			dout << "Probe Request";
 			break;
 		case 5:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Probe Response"));
 			dout << "Probe Response";
 			break;
 		case 6:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Timing Advertisement"));
 			dout << "Timing Advertisement";
 			break;
 		case 7:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reserved"));
 			dout << "Reserved";
 			break;
 		case 8:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Beacon"));
 			dout << "Beacon" << std::endl;
 			if(length < 38) {
 				return;
@@ -147,28 +173,36 @@ void parse_management(char *buf, int length) {
 				return;
 			}
 			std::string s(buf + 24 + 14, *len);
+			d_meta = pmt::dict_add(d_meta, pmt::mp("SSID"), pmt::mp(s));
 			dout << "SSID: " << s;
 			}
 			break;
 		case 9:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("ATIM"));
 			dout << "ATIM";
 			break;
 		case 10:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Disassociation"));
 			dout << "Disassociation";
 			break;
 		case 11:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Authentication"));
 			dout << "Authentication";
 			break;
 		case 12:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Deauthentication"));
 			dout << "Deauthentication";
 			break;
 		case 13:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Action"));
 			dout << "Action";
 			break;
 		case 14:
-			dout << "Action No ACK";
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Action No Ack"));
+			dout << "Action No Ack";
 			break;
 		case 15:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reserved"));
 			dout << "Reserved";
 			break;
 		default:
@@ -176,14 +210,21 @@ void parse_management(char *buf, int length) {
 	}
 	dout << std::endl;
 
-	dout << "seq nr: " << int(h->seq_nr >> 4) << std::endl;
-	dout << "mac 1: ";
-	print_mac_address(h->addr1, true);
-	dout << "mac 2: ";
-	print_mac_address(h->addr2, true);
-	dout << "mac 3: ";
-	print_mac_address(h->addr3, true);
+	int seq_no = int(h->seq_nr >> 4);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Sequence number"), pmt::mp(seq_no));
+	dout << "seq nr: " << seq_no << std::endl;
 
+	auto address = format_mac_address(h->addr1);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 1"), pmt::mp(address));
+	dout << "address 1: " << address << std::endl;
+
+	address = format_mac_address(h->addr2);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 2"), pmt::mp(address));
+	dout << "address 2: "<< address << std::endl;
+
+	address = format_mac_address(h->addr3);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 3"), pmt::mp(address));
+	dout << "address 3: "<< address << std::endl;
 }
 
 
@@ -197,51 +238,67 @@ void parse_data(char *buf, int length) {
 	dout << "Subtype: ";
 	switch(((h->frame_control) >> 4) & 0xf) {
 		case 0:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Data"));
 			dout << "Data";
 			break;
 		case 1:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Data + CF-ACK"));
 			dout << "Data + CF-ACK";
 			break;
 		case 2:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Data + CR-Poll"));
 			dout << "Data + CR-Poll";
 			break;
 		case 3:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Data + CF-ACK + CF-Poll"));
 			dout << "Data + CF-ACK + CF-Poll";
 			break;
 		case 4:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Null"));
 			dout << "Null";
 			break;
 		case 5:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CF-ACK"));
 			dout << "CF-ACK";
 			break;
 		case 6:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CF-Poll"));
 			dout << "CF-Poll";
 			break;
 		case 7:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CF-ACK + CF-Poll"));
 			dout << "CF-ACK + CF-Poll";
 			break;
 		case 8:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS Data"));
 			dout << "QoS Data";
 			break;
 		case 9:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS Data + CF-ACK"));
 			dout << "QoS Data + CF-ACK";
 			break;
 		case 10:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS Data + CF-Poll"));
 			dout << "QoS Data + CF-Poll";
 			break;
 		case 11:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS Data + CF-ACK + CF-Poll"));
 			dout << "QoS Data + CF-ACK + CF-Poll";
 			break;
 		case 12:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS Null"));
 			dout << "QoS Null";
 			break;
 		case 13:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reserved"));
 			dout << "Reserved";
 			break;
 		case 14:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS CF-Poll"));
 			dout << "QoS CF-Poll";
 			break;
 		case 15:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("QoS CF-ACK + CF-Poll"));
 			dout << "QoS CF-ACK + CF-Poll";
 			break;
 		default:
@@ -249,29 +306,36 @@ void parse_data(char *buf, int length) {
 	}
 	dout << std::endl;
 
+
 	int seq_no = int(h->seq_nr >> 4);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Sequence number"), pmt::mp(seq_no));
 	dout << "seq nr: " << seq_no << std::endl;
-	dout << "mac 1: ";
-	print_mac_address(h->addr1, true);
-	dout << "mac 2: ";
-	print_mac_address(h->addr2, true);
-	dout << "mac 3: ";
-	print_mac_address(h->addr3, true);
+
+	auto address = format_mac_address(h->addr1);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 1"), pmt::mp(address));
+	dout << "address 1: " << address << std::endl;
+
+	address = format_mac_address(h->addr2);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 2"), pmt::mp(address));
+	dout << "address 2: "<< address << std::endl;
+
+	address = format_mac_address(h->addr3);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Address 3"), pmt::mp(address));
+	dout << "address 3: "<< address << std::endl;
+
 
 	float lost_frames = seq_no - d_last_seq_no - 1;
 	if(lost_frames  < 0)
 		lost_frames += 1 << 12;
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Lost frames"), pmt::mp(lost_frames));
 
 	// calculate frame error rate
 	float fer = lost_frames / (lost_frames + 1);
 	dout << "instantaneous fer: " << fer << std::endl;
+	d_meta = pmt::dict_add(d_meta, pmt::mp("Instantaneous FER"), pmt::mp(fer));
 
-	// keep track of values
+	// keep track of sequence numbers
 	d_last_seq_no = seq_no;
-
-	// publish FER estimate
-	pmt::pmt_t pdu = pmt::make_f32vector(lost_frames + 1, fer * 100);
-	message_port_pub(pmt::mp("fer"), pmt::cons( pmt::PMT_NIL, pdu ));
 }
 
 void parse_control(char *buf, int length) {
@@ -280,87 +344,78 @@ void parse_control(char *buf, int length) {
 	dout << "Subtype: ";
 	switch(((h->frame_control) >> 4) & 0xf) {
 		case 7:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Control Wrapper"));
 			dout << "Control Wrapper";
 			break;
 		case 8:
-			dout << "Block ACK Requrest";
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Block ACK Request"));
+			dout << "Block ACK Request";
 			break;
 		case 9:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Block ACK"));
 			dout << "Block ACK";
 			break;
 		case 10:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("PS Poll"));
 			dout << "PS Poll";
 			break;
 		case 11:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("RTS"));
 			dout << "RTS";
 			break;
 		case 12:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CTS"));
 			dout << "CTS";
 			break;
 		case 13:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("ACK"));
 			dout << "ACK";
 			break;
 		case 14:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CF-End"));
 			dout << "CF-End";
 			break;
 		case 15:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("CF-End + CF-ACK"));
 			dout << "CF-End + CF-ACK";
 			break;
 		default:
+			d_meta = pmt::dict_add(d_meta, pmt::mp("Subtype"), pmt::mp("Reserved"));
 			dout << "Reserved";
 			break;
 	}
 	dout << std::endl;
 
-	dout << "RA: ";
-	print_mac_address(h->addr1, true);
-	dout << "TA: ";
-	print_mac_address(h->addr2, true);
 
+	auto address = format_mac_address(h->addr1);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("RA"), pmt::mp(address));
+	dout << "RA: " << address << std::endl;
+
+	address = format_mac_address(h->addr2);
+	d_meta = pmt::dict_add(d_meta, pmt::mp("TA"), pmt::mp(address));
+	dout << "TA: "<< address << std::endl;
 }
 
-void print_mac_address(uint8_t *addr, bool new_line = false) {
-	if(!d_debug) {
-		return;
+std::string format_mac_address(uint8_t *addr) {
+	std::string str = "";
+
+	for(int i = 0; ; i++) {
+		str.append(std::to_string(addr[i]));
+		if(i == 5) return str;
+		str.append(":");
 	}
-
-	std::cout << std::setfill('0') << std::hex << std::setw(2);
-
-	for(int i = 0; i < 6; i++) {
-		std::cout << (int)addr[i];
-		if(i != 5) {
-			std::cout << ":";
-		}
-	}
-
-	std::cout << std::dec;
-
-	if(new_line) {
-		std::cout << std::endl;
-	}
-}
-
-void print_ascii(char* buf, int length) {
-
-	for(int i = 0; i < length; i++) {
-		if((buf[i] > 31) && (buf[i] < 127)) {
-			dout << buf[i];
-		} else {
-			dout << ".";
-		}
-	}
-	dout << std::endl;
 }
 
 private:
 	bool d_log;
 	bool d_debug;
 	int d_last_seq_no;
+	pmt::pmt_t d_meta;
+	pmt::pmt_t d_msg;
 };
 
 parse_mac::sptr
 parse_mac::make(bool log, bool debug) {
 	return gnuradio::get_initial_sptr(new parse_mac_impl(log, debug));
 }
-
 

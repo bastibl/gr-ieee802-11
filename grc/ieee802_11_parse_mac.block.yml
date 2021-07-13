@@ -24,7 +24,7 @@ inputs:
 
 outputs:
 -   domain: message
-    id: fer
+    id: out
     optional: true
 
 templates:
