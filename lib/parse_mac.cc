@@ -101,13 +101,13 @@ void parse(pmt::pmt_t pdu) {
 
 	char *frame = (char*)pmt::blob_data(d_msg);
 
-	int body_start;
+	int body_start = frame_len;
 
 	if((((h->frame_control) >> 2) & 63) == 2) {
 		body_start = 24; // DATA
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
 		body_start = 26; // QoS Data
-	} else return;
+	}
 
 	int body_len = frame_len - body_start;
 
