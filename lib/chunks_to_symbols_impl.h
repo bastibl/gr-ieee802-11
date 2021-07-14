@@ -35,7 +35,7 @@ public:
 			gr_vector_void_star &output_items);
 
 private:
-	boost::shared_ptr<gr::digital::constellation> d_mapping;
+	std::shared_ptr<gr::digital::constellation> d_mapping;
 	constellation_bpsk::sptr d_bpsk;
 	constellation_qpsk::sptr d_qpsk;
 	constellation_16qam::sptr d_16qam;

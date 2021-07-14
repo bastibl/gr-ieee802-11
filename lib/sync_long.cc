@@ -20,6 +20,8 @@
 #include <gnuradio/filter/fir_filter.h>
 #include <gnuradio/fft/fft.h>
 
+#include <volk/volk.h>
+
 #include <list>
 #include <tuple>
 
@@ -37,7 +39,7 @@ public:
 sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("sync_long",
 		gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
 		gr::io_signature::make(1, 1, sizeof(gr_complex))),
-		d_fir(gr::filter::kernel::fir_filter_ccc(1, LONG)),
+		d_fir(gr::filter::kernel::fir_filter_ccc(LONG)),
 		d_log(log),
 		d_debug(debug),
 		d_offset(0),
@@ -45,11 +47,13 @@ sync_long_impl(unsigned int sync_length, bool log, bool debug) : block("sync_lon
 		SYNC_LENGTH(sync_length) {
 
 	set_tag_propagation_policy(block::TPP_DONT);
-	d_correlation = gr::fft::malloc_complex(8192);
+	// d_correlation = gr::fft::malloc_complex(8192);
+	d_correlation = (gr_complex*)volk_malloc(sizeof(gr_complex) * 8192, volk_get_alignment());
 }
 
 ~sync_long_impl(){
-	gr::fft::free(d_correlation);
+	// gr::fft::free(d_correlation);
+	volk_free(d_correlation);
 }
 
 int general_work (int noutput, gr_vector_int& ninput_items,

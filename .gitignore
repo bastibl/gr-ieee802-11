@@ -7,3 +7,4 @@ examples/*.py
 *.pyc
 **/.DS_Store
 .clang_complete
+.vscode

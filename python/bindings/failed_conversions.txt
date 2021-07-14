@@ -1,0 +1,3 @@
+./include/ieee802_11/sync_short.hError occurred while running CASTXML:  status:1
+./include/ieee802_11/sync_short.hUnable to find declaration. Matcher: [(decl type==namespace_t) and (name==ieee802_11)]
+./include/ieee802_11/sync_long.hUnable to find declaration. Matcher: [(decl type==namespace_t) and (name==ieee802_11)]

@@ -27,7 +27,7 @@ class IEEE802_11_API ether_encap : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<ether_encap> sptr;
+	typedef std::shared_ptr<ether_encap> sptr;
 	static sptr make(bool debug);
 
 };

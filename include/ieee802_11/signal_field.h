@@ -27,7 +27,7 @@ namespace ieee802_11 {
 class IEEE802_11_API signal_field : virtual public digital::packet_header_default
 {
 public:
-	typedef boost::shared_ptr<signal_field> sptr;
+	typedef std::shared_ptr<signal_field> sptr;
 	static sptr make();
 
 protected:

@@ -1,5 +1,5 @@
 #
-# This file is a part of gr-ieee802-11
+# This file is a part of gr-ieee802_11
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -135,6 +135,5 @@ add_custom_target(uninstall
 ########################################################################
 add_subdirectory(include/ieee802_11)
 add_subdirectory(lib)
-add_subdirectory(swig)
 add_subdirectory(python)
 add_subdirectory(grc)

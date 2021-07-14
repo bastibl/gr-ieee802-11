@@ -26,7 +26,7 @@ namespace ieee802_11 {
 class IEEE802_11_API @NAME@ : virtual public sync_block
 {
 public: 
-	typedef boost::shared_ptr<@NAME@> sptr;
+	typedef std::shared_ptr<@NAME@> sptr;
 	static sptr make(int length);
 
 	virtual int length() const = 0;

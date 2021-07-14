@@ -27,7 +27,7 @@ class IEEE802_11_API mac : virtual public block
 {
 public:
 
-	typedef boost::shared_ptr<mac> sptr;
+	typedef std::shared_ptr<mac> sptr;
 	static sptr make(std::vector<uint8_t> src_mac,
 			std::vector<uint8_t> dst_mac,
 			std::vector<uint8_t> bss_mac);
