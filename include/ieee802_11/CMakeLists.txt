@@ -25,6 +25,7 @@ list(APPEND include_sources
     constellations.h
     decode_mac.h
     ether_encap.h
+    extract_csi.h
     frame_equalizer.h
     mac.h
     mapper.h

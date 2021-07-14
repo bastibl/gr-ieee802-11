@@ -22,6 +22,7 @@ install(FILES
     ieee802_11_chunks_to_symbols.block.yml
     ieee802_11_decode_mac.block.yml
     ieee802_11_ether_encap.block.yml
+    ieee802_11_extract_csi.block.yml
     ieee802_11_frame_equalizer.block.yml
     ieee802_11_mac.block.yml
     ieee802_11_mapper.block.yml

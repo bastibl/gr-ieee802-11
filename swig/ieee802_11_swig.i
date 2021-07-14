@@ -28,6 +28,7 @@
 #include "ieee802_11/constellations.h"
 #include "ieee802_11/decode_mac.h"
 #include "ieee802_11/ether_encap.h"
+#include "ieee802_11/extract_csi.h"
 #include "ieee802_11/frame_equalizer.h"
 #include "ieee802_11/mac.h"
 #include "ieee802_11/mapper.h"
@@ -48,6 +49,7 @@
 %include "ieee802_11/constellations.h"
 %include "ieee802_11/decode_mac.h"
 %include "ieee802_11/ether_encap.h"
+%include "ieee802_11/extract_csi.h"
 %include "ieee802_11/frame_equalizer.h"
 %include "ieee802_11/mac.h"
 %include "ieee802_11/mapper.h"
@@ -59,6 +61,7 @@
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, chunks_to_symbols);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, decode_mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, ether_encap);
+GR_SWIG_BLOCK_MAGIC2(ieee802_11, extract_csi);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, frame_equalizer);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, mac);
 GR_SWIG_BLOCK_MAGIC2(ieee802_11, mapper);

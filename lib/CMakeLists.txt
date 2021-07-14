@@ -39,6 +39,7 @@ list(APPEND ieee802_11_sources
     equalizer/lms.cc
     equalizer/sta.cc
     ether_encap_impl.cc
+    extract_csi_impl.cc
     frame_equalizer_impl.cc
     mac.cc
     mapper.cc
