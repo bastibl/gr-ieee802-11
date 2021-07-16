@@ -29,16 +29,17 @@ namespace gr {
   namespace ieee802_11 {
 
     meta_to_csv_sink::sptr
-    meta_to_csv_sink::make(const char* file_path, std::vector<std::string> keys)
+    meta_to_csv_sink::make(const char* file_path, std::vector<std::string> keys, std::string delimiter)
     {
       return gnuradio::get_initial_sptr
-        (new meta_to_csv_sink_impl(file_path, keys));
+        (new meta_to_csv_sink_impl(file_path, keys, delimiter));
     }
 
-    meta_to_csv_sink_impl::meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys)
+    meta_to_csv_sink_impl::meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys, std::string delimiter)
       : gr::block("meta_to_csv_sink",
               gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(0, 0, 0))
+              gr::io_signature::make(0, 0, 0)),
+        d_delimiter(delimiter)
     {
       d_file.open(file_path);
 
@@ -67,7 +68,7 @@ namespace gr {
       d_file << dict_ref(meta, pmt::vector_ref(d_keys, 0), pmt::PMT_NIL);
 
       for (int i = 1; i < pmt::length(d_keys); i++)
-        d_file << "," << dict_ref(meta, pmt::vector_ref(d_keys, i), pmt::PMT_NIL);
+        d_file << d_delimiter << dict_ref(meta, pmt::vector_ref(d_keys, i), pmt::PMT_NIL);
 
       d_file << std::endl;
     }

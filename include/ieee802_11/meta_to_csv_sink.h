@@ -45,7 +45,7 @@ namespace gr {
        * class. ieee802_11::meta_to_csv_sink::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const char* file_path, std::vector<std::string> keys);
+      static sptr make(const char* file_path, std::vector<std::string> keys, std::string delimiter);
     };
 
   } // namespace ieee802_11

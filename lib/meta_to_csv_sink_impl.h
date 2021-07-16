@@ -31,11 +31,12 @@ namespace gr {
      private:
       std::ofstream d_file;
       pmt::pmt_t d_keys;
+      std::string d_delimiter;
 
       void print_meta(pmt::pmt_t pdu);
 
      public:
-      meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys);
+      meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys, std::string delimiter);
       ~meta_to_csv_sink_impl();
     };
 
