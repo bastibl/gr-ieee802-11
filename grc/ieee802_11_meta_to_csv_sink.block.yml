@@ -1,0 +1,39 @@
+id: ieee802_11_meta_to_csv_sink
+label: Meta to CSV Sink
+category: '[IEEE802.11]'
+
+templates:
+  imports: |-
+    import ieee802_11
+    import pmt
+  make: ieee802_11.meta_to_csv_sink(${file_path}, ${keys})
+
+#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
+#     Keys include:
+#     * id (makes the value accessible as \$keyname, e.g. in the make entry)
+#     * label (label shown in the GUI)
+#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+parameters:
+- id: file_path
+  label: File
+  dtype: file_save
+- id: keys
+  label: Keys
+  dtype: raw
+  default: pmt.pmt_list("key 1", "key 2")
+
+#  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
+#  Keys include:
+#      * label (an identifier for the GUI)
+#      * domain (optional - stream or message. Default is stream)
+#      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+#      * vlen (optional - data stream vector length. Default is 1)
+#      * optional (optional - set to 1 for optional inputs. Default is 0)
+inputs:
+- label: pdu in
+  domain: message
+  optional: 0
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

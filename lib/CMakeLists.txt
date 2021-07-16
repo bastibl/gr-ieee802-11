@@ -43,6 +43,7 @@ list(APPEND ieee802_11_sources
     frame_equalizer_impl.cc
     mac.cc
     mapper.cc
+    meta_to_csv_sink_impl.cc
     parse_mac.cc
     signal_field_impl.cc
     sync_long.cc

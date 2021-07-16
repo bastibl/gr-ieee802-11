@@ -26,6 +26,7 @@ install(FILES
     ieee802_11_frame_equalizer.block.yml
     ieee802_11_mac.block.yml
     ieee802_11_mapper.block.yml
+    ieee802_11_meta_to_csv_sink.block.yml
     ieee802_11_parse_mac.block.yml
     ieee802_11_sync_long.block.yml
     ieee802_11_sync_short.block.yml DESTINATION share/gnuradio/grc/blocks

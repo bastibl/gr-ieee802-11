@@ -29,6 +29,7 @@ list(APPEND include_sources
     frame_equalizer.h
     mac.h
     mapper.h
+    meta_to_csv_sink.h
     parse_mac.h
     signal_field.h
     sync_long.h
