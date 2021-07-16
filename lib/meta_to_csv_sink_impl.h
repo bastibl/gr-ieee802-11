@@ -35,12 +35,8 @@ namespace gr {
       void print_meta(pmt::pmt_t pdu);
 
      public:
-      meta_to_csv_sink_impl(const char* file_path, pmt::pmt_t keys);
+      meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys);
       ~meta_to_csv_sink_impl();
-
-      /* int work(int noutput_items, */
-      /*          gr_vector_const_void_star &input_items, */
-      /*          gr_vector_void_star &output_items) override; */
     };
 
   } // namespace ieee802_11
