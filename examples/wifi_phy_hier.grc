@@ -24,6 +24,9 @@ options:
     title: WiFi PHY Hier
     window_size: 1280, 1024
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [8, 8]
     rotation: 0
     state: enabled
@@ -35,6 +38,9 @@ blocks:
     comment: ''
     value: ieee802_11.signal_field()
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [400, 12]
     rotation: 0
     state: enabled
@@ -44,6 +50,9 @@ blocks:
     comment: ''
     value: int(5 + 1 + ((16 + 800 * 8 + 6) * 2) / 24)
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [528, 12]
     rotation: 0
     state: enabled
@@ -53,6 +62,9 @@ blocks:
     comment: ''
     value: '320'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [192, 12]
     rotation: 0
     state: enabled
@@ -62,6 +74,9 @@ blocks:
     comment: ''
     value: '48'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [296, 12]
     rotation: 0
     state: enabled
@@ -76,6 +91,9 @@ blocks:
     type: eng_float
     value: 10e6
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1008, 12]
     rotation: 0
     state: enabled
@@ -89,6 +107,9 @@ blocks:
     minoutbuf: '0'
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [960, 584]
     rotation: 0
     state: enabled
@@ -102,6 +123,9 @@ blocks:
     minoutbuf: '0'
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [592, 504]
     rotation: 0
     state: enabled
@@ -114,6 +138,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [384, 600]
     rotation: 0
     state: enabled
@@ -130,6 +157,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [432, 764.0]
     rotation: 0
     state: enabled
@@ -146,6 +176,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [232, 596]
     rotation: 0
     state: enabled
@@ -161,6 +194,9 @@ blocks:
     type: float
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1120.0, 560]
     rotation: 270
     state: enabled
@@ -178,6 +214,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [752, 556.0]
     rotation: 0
     state: true
@@ -195,6 +234,9 @@ blocks:
     type: float
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [824, 476.0]
     rotation: 0
     state: true
@@ -210,6 +252,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [608, 568]
     rotation: 0
     state: enabled
@@ -225,6 +270,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [880, 776.0]
     rotation: 0
     state: enabled
@@ -242,6 +290,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [744, 256]
     rotation: 0
     state: enabled
@@ -256,6 +307,9 @@ blocks:
     type: ''
     value: ieee802_11.LS
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [640, 12]
     rotation: 0
     state: enabled
@@ -273,6 +327,9 @@ blocks:
     out_type: complex
     symbol_table: '[-1, 1]'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [504, 204]
     rotation: 0
     state: enabled
@@ -340,6 +397,9 @@ blocks:
       -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1,
       1, 1, 1, 1, 0, 0, 0, 0, 0))
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1040, 220.0]
     rotation: 0
     state: enabled
@@ -356,6 +416,9 @@ blocks:
     rolloff: '2'
     tagname: '"packet_len"'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [752, 372.0]
     rotation: 180
     state: enabled
@@ -370,6 +433,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [240, 204]
     rotation: 0
     state: enabled
@@ -384,6 +450,9 @@ blocks:
     type: intx
     value: ieee802_11.BPSK_1_2
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [728, 12]
     rotation: 0
     state: enabled
@@ -402,6 +471,9 @@ blocks:
     type: complex
     window: tuple([1/52**.5] * 64)
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [1040, 364.0]
     rotation: 180
     state: enabled
@@ -420,6 +492,9 @@ blocks:
     type: complex
     window: window.rectangular(64)
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [992, 888]
     rotation: 180
     state: enabled
@@ -434,6 +509,9 @@ blocks:
     type: eng_float
     value: 5.89e9
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [920, 12]
     rotation: 0
     state: enabled
@@ -446,6 +524,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: max_symbols * 48 * 8
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [496, 288]
     rotation: 0
     state: enabled
@@ -460,6 +541,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [544, 900.0]
     rotation: 180
     state: enabled
@@ -477,6 +561,9 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [776, 888]
     rotation: 180
     state: enabled
@@ -486,11 +573,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    debug: 'True'
+    debug: 'False'
     encoding: encoding
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [208, 108]
     rotation: 180
     state: enabled
@@ -506,6 +596,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [576, 396.0]
     rotation: 180
     state: enabled
@@ -521,6 +614,9 @@ blocks:
     type: message
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [560, 980.0]
     rotation: 180
     state: enabled
@@ -536,6 +632,9 @@ blocks:
     type: message
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [368, 908.0]
     rotation: 180
     state: enabled
@@ -553,6 +652,9 @@ blocks:
     type: complex
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [64, 500]
     rotation: 0
     state: enabled
@@ -570,6 +672,9 @@ blocks:
     type: message
     vlen: '1'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [424, 116]
     rotation: 180
     state: enabled
@@ -584,6 +689,9 @@ blocks:
     type: eng_float
     value: '0.56'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [824, 12]
     rotation: 0
     state: enabled
@@ -599,6 +707,9 @@ blocks:
     minoutbuf: '0'
     sync_length: sync_length
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [608, 732.0]
     rotation: 0
     state: enabled
@@ -615,6 +726,9 @@ blocks:
     minoutbuf: '0'
     threshold: sensitivity
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [112, 704]
     rotation: 0
     state: enabled
