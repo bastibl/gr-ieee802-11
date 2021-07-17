@@ -422,8 +422,8 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    debug: 'False'
-    log: 'True'
+    debug: 'True'
+    log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
