@@ -1,5 +1,5 @@
 id: ieee802_11_extract_csi
-label: Extract CSI
+label: WiFi Extract CSI
 category: '[IEEE802.11]'
 
 templates:
