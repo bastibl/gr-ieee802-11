@@ -21,85 +21,59 @@
 
 using namespace gr::ieee802_11;
 
-base::base() :
-	d_store_pos(0) {
-}
+base::base() : d_store_pos(0) {}
 
-base::~base() {
-}
+base::~base() {}
 
-uint8_t*
-base::depuncture(uint8_t *in) {
+uint8_t* base::depuncture(uint8_t* in)
+{
 
-	int count;
-	int n_cbps = d_ofdm->n_cbps;
-	uint8_t *depunctured;
+    int count;
+    int n_cbps = d_ofdm->n_cbps;
+    uint8_t* depunctured;
 
-	if (d_ntraceback == 5) {
-		count = d_frame->n_sym * n_cbps;
-		depunctured = in;
+    if (d_ntraceback == 5) {
+        count = d_frame->n_sym * n_cbps;
+        depunctured = in;
 
-	} else {
-		depunctured = d_depunctured;
-		count = 0;
-		for(int i = 0; i < d_frame->n_sym; i++) {
-			for(int k = 0; k < n_cbps; k++) {
-				while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
-					depunctured[count] = 2;
-					count++;
-				}
+    } else {
+        depunctured = d_depunctured;
+        count = 0;
+        for (int i = 0; i < d_frame->n_sym; i++) {
+            for (int k = 0; k < n_cbps; k++) {
+                while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
+                    depunctured[count] = 2;
+                    count++;
+                }
 
-				// Insert received bits
-				depunctured[count] = in[i * n_cbps + k];
-				count++;
+                // Insert received bits
+                depunctured[count] = in[i * n_cbps + k];
+                count++;
 
-				while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
-					depunctured[count] = 2;
-					count++;
-				}
-			}
-		}
-	}
+                while (d_depuncture_pattern[count % (2 * d_k)] == 0) {
+                    depunctured[count] = 2;
+                    count++;
+                }
+            }
+        }
+    }
 
-	return depunctured;
+    return depunctured;
 }
 
 /* Parity lookup table */
 const unsigned char base::PARTAB[256] = {
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	0, 1, 1, 0, 1, 0, 0, 1,
-	1, 0, 0, 1, 0, 1, 1, 0,
+    0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1,
+    0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0,
+    0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0,
+    1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1,
+    0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0,
+    1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1,
+    1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0,
+    1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+    0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
 };
 
-const unsigned char base::PUNCTURE_1_2[2] = {1, 1};
-const unsigned char base::PUNCTURE_2_3[4] = {1, 1, 1, 0};
-const unsigned char base::PUNCTURE_3_4[6] = {1, 1, 1, 0, 0, 1};
+const unsigned char base::PUNCTURE_1_2[2] = { 1, 1 };
+const unsigned char base::PUNCTURE_2_3[4] = { 1, 1, 1, 0 };
+const unsigned char base::PUNCTURE_3_4[6] = { 1, 1, 1, 0, 0, 1 };

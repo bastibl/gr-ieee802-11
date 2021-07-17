@@ -33,35 +33,34 @@ namespace ieee802_11 {
 class base
 {
 public:
-
-	base();
-	~base();
-	virtual uint8_t* decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in) = 0;
+    base();
+    ~base();
+    virtual uint8_t* decode(ofdm_param* ofdm, frame_param* frame, uint8_t* in) = 0;
 
 protected:
-	// Position in circular buffer where the current decoded byte is stored
-	int d_store_pos;
-	// Metrics for each state
-	unsigned char d_mmresult[64] __attribute__((aligned(16)));
-	// Paths for each state
-	unsigned char d_ppresult[TRACEBACK_MAX][64] __attribute__((aligned(16)));
+    // Position in circular buffer where the current decoded byte is stored
+    int d_store_pos;
+    // Metrics for each state
+    unsigned char d_mmresult[64] __attribute__((aligned(16)));
+    // Paths for each state
+    unsigned char d_ppresult[TRACEBACK_MAX][64] __attribute__((aligned(16)));
 
-	int d_ntraceback;
-	int d_k;
-	ofdm_param *d_ofdm;
-	frame_param *d_frame;
-	const unsigned char *d_depuncture_pattern;
+    int d_ntraceback;
+    int d_k;
+    ofdm_param* d_ofdm;
+    frame_param* d_frame;
+    const unsigned char* d_depuncture_pattern;
 
-	uint8_t d_depunctured[MAX_ENCODED_BITS];
-	uint8_t d_decoded[MAX_ENCODED_BITS * 3 / 4];
+    uint8_t d_depunctured[MAX_ENCODED_BITS];
+    uint8_t d_decoded[MAX_ENCODED_BITS * 3 / 4];
 
-	static const unsigned char PARTAB[256];
-	static const unsigned char PUNCTURE_1_2[2];
-	static const unsigned char PUNCTURE_2_3[4];
-	static const unsigned char PUNCTURE_3_4[6];
+    static const unsigned char PARTAB[256];
+    static const unsigned char PUNCTURE_1_2[2];
+    static const unsigned char PUNCTURE_2_3[4];
+    static const unsigned char PUNCTURE_3_4[6];
 
-	virtual void reset() = 0;
-	uint8_t* depuncture(uint8_t *in);
+    virtual void reset() = 0;
+    uint8_t* depuncture(uint8_t* in);
 };
 
 } // namespace ieee802_11

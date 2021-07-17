@@ -17,18 +17,18 @@
 #ifndef INCLUDED_IEEE802_11_MAPPER_H
 #define INCLUDED_IEEE802_11_MAPPER_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
+#include <ieee802_11/api.h>
 
 enum Encoding {
-	BPSK_1_2  = 0,
-	BPSK_3_4  = 1,
-	QPSK_1_2  = 2,
-	QPSK_3_4  = 3,
-	QAM16_1_2 = 4,
-	QAM16_3_4 = 5,
-	QAM64_2_3 = 6,
-	QAM64_3_4 = 7,
+    BPSK_1_2 = 0,
+    BPSK_3_4 = 1,
+    QPSK_1_2 = 2,
+    QPSK_3_4 = 3,
+    QAM16_1_2 = 4,
+    QAM16_3_4 = 5,
+    QAM64_2_3 = 6,
+    QAM64_3_4 = 7,
 };
 
 namespace gr {
@@ -37,13 +37,12 @@ namespace ieee802_11 {
 class IEEE802_11_API mapper : virtual public block
 {
 public:
-
-	typedef boost::shared_ptr<mapper> sptr;
-	static sptr make(Encoding mcs, bool debug = false);
-	virtual void set_encoding(Encoding mcs) = 0;
+    typedef boost::shared_ptr<mapper> sptr;
+    static sptr make(Encoding mcs, bool debug = false);
+    virtual void set_encoding(Encoding mcs) = 0;
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_MAPPER_H */

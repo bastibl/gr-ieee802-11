@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_CHUNKS_TO_SYMBOLS_H
 #define INCLUDED_IEEE802_11_CHUNKS_TO_SYMBOLS_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/tagged_stream_block.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -26,8 +26,8 @@ namespace ieee802_11 {
 class IEEE802_11_API chunks_to_symbols : virtual public tagged_stream_block
 {
 public:
-        typedef boost::shared_ptr<chunks_to_symbols> sptr;
-        static sptr make();
+    typedef boost::shared_ptr<chunks_to_symbols> sptr;
+    static sptr make();
 };
 
 } /* namespace ieee802_11 */

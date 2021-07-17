@@ -20,14 +20,14 @@
 #ifndef INCLUDED_IEEE802_11_FRAME_EQUALIZER_H
 #define INCLUDED_IEEE802_11_FRAME_EQUALIZER_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
+#include <ieee802_11/api.h>
 
 enum Equalizer {
-	LS   = 0,
-	LMS  = 1,
-	COMB = 2,
-	STA  = 3,
+    LS = 0,
+    LMS = 1,
+    COMB = 2,
+    STA = 3,
 };
 
 namespace gr {
@@ -37,12 +37,11 @@ class IEEE802_11_API frame_equalizer : virtual public gr::block
 {
 
 public:
-	typedef boost::shared_ptr<frame_equalizer> sptr;
-	static sptr make(Equalizer algo, double freq, double bw,
-			bool log, bool debug);
-	virtual void set_algorithm(Equalizer algo) = 0;
-	virtual void set_bandwidth(double bw) = 0;
-	virtual void set_frequency(double freq) = 0;
+    typedef boost::shared_ptr<frame_equalizer> sptr;
+    static sptr make(Equalizer algo, double freq, double bw, bool log, bool debug);
+    virtual void set_algorithm(Equalizer algo) = 0;
+    virtual void set_bandwidth(double bw) = 0;
+    virtual void set_frequency(double freq) = 0;
 };
 
 } // namespace ieee802_11

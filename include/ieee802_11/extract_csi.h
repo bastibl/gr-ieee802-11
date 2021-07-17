@@ -21,16 +21,17 @@
 #ifndef INCLUDED_IEEE802_11_EXTRACT_CSI_H
 #define INCLUDED_IEEE802_11_EXTRACT_CSI_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/sync_block.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
 
-class IEEE802_11_API extract_csi : virtual public gr::sync_block {
+class IEEE802_11_API extract_csi : virtual public gr::sync_block
+{
 public:
-	typedef boost::shared_ptr<extract_csi> sptr;
-	static sptr make();
+    typedef boost::shared_ptr<extract_csi> sptr;
+    static sptr make();
 };
 
 } // namespace ieee802_11

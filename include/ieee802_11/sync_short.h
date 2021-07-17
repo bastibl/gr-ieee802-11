@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_SYNC_SHORT_H
 #define INCLUDED_IEEE802_11_SYNC_SHORT_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -26,13 +26,14 @@ namespace ieee802_11 {
 class IEEE802_11_API sync_short : virtual public block
 {
 public:
-
-	typedef boost::shared_ptr<sync_short> sptr;
-	static sptr make(double threshold, unsigned int min_plateau, bool log = false, bool debug = false);
-
+    typedef boost::shared_ptr<sync_short> sptr;
+    static sptr make(double threshold,
+                     unsigned int min_plateau,
+                     bool log = false,
+                     bool debug = false);
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_SYNC_SHORT_H */

@@ -18,8 +18,8 @@
 #ifndef INCLUDED_IEEE802_11_SIGNAL_FIELD_H
 #define INCLUDED_IEEE802_11_SIGNAL_FIELD_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/digital/packet_header_default.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -27,15 +27,14 @@ namespace ieee802_11 {
 class IEEE802_11_API signal_field : virtual public digital::packet_header_default
 {
 public:
-	typedef boost::shared_ptr<signal_field> sptr;
-	static sptr make();
+    typedef boost::shared_ptr<signal_field> sptr;
+    static sptr make();
 
 protected:
-	signal_field();
+    signal_field();
 };
 
 } // namespace ieee802_11
 } // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_SIGNAL_FIELD_H */
-
