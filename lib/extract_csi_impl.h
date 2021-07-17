@@ -24,27 +24,24 @@
 #include <ieee802_11/extract_csi.h>
 
 namespace gr {
-  namespace ieee802_11 {
+namespace ieee802_11 {
 
-    class extract_csi_impl : public extract_csi
-    {
-     private:
-       pmt::pmt_t d_meta;
-       std::vector<gr_complex> d_csi;
+class extract_csi_impl : public extract_csi
+{
+private:
+    pmt::pmt_t d_meta;
+    std::vector<gr_complex> d_csi;
 
-     public:
-      extract_csi_impl();
-      ~extract_csi_impl();
+public:
+    extract_csi_impl();
+    ~extract_csi_impl();
 
-      int work(
-              int noutput_items,
-              gr_vector_const_void_star &input_items,
-              gr_vector_void_star &output_items
-      );
-    };
+    int work(int noutput_items,
+             gr_vector_const_void_star& input_items,
+             gr_vector_void_star& output_items);
+};
 
-  } // namespace ieee802_11
+} // namespace ieee802_11
 } // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_EXTRACT_CSI_IMPL_H */
-

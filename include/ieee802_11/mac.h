@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_MAC_H
 #define INCLUDED_IEEE802_11_MAC_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -26,14 +26,13 @@ namespace ieee802_11 {
 class IEEE802_11_API mac : virtual public block
 {
 public:
-
-	typedef boost::shared_ptr<mac> sptr;
-	static sptr make(std::vector<uint8_t> src_mac,
-			std::vector<uint8_t> dst_mac,
-			std::vector<uint8_t> bss_mac);
+    typedef boost::shared_ptr<mac> sptr;
+    static sptr make(std::vector<uint8_t> src_mac,
+                     std::vector<uint8_t> dst_mac,
+                     std::vector<uint8_t> bss_mac);
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_MAC_H */

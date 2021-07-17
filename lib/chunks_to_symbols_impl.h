@@ -26,20 +26,20 @@ namespace ieee802_11 {
 class chunks_to_symbols_impl : public chunks_to_symbols
 {
 public:
-	chunks_to_symbols_impl();
-	~chunks_to_symbols_impl();
+    chunks_to_symbols_impl();
+    ~chunks_to_symbols_impl();
 
-	int work(int noutput_items,
-			gr_vector_int &ninput_itmes,
-			gr_vector_const_void_star &input_items,
-			gr_vector_void_star &output_items);
+    int work(int noutput_items,
+             gr_vector_int& ninput_itmes,
+             gr_vector_const_void_star& input_items,
+             gr_vector_void_star& output_items);
 
 private:
-	boost::shared_ptr<gr::digital::constellation> d_mapping;
-	constellation_bpsk::sptr d_bpsk;
-	constellation_qpsk::sptr d_qpsk;
-	constellation_16qam::sptr d_16qam;
-	constellation_64qam::sptr d_64qam;
+    boost::shared_ptr<gr::digital::constellation> d_mapping;
+    constellation_bpsk::sptr d_bpsk;
+    constellation_qpsk::sptr d_qpsk;
+    constellation_16qam::sptr d_16qam;
+    constellation_64qam::sptr d_64qam;
 };
 
 } /* namespace ieee802_11 */

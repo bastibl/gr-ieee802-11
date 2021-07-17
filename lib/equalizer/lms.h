@@ -25,17 +25,23 @@ namespace gr {
 namespace ieee802_11 {
 namespace equalizer {
 
-class lms: public base {
+class lms : public base
+{
 public:
-	virtual void equalize(gr_complex *in, int n, gr_complex *symbols, uint8_t *bits, boost::shared_ptr<gr::digital::constellation> mod);
-private:
-	double get_snr();
+    virtual void equalize(gr_complex* in,
+                          int n,
+                          gr_complex* symbols,
+                          uint8_t* bits,
+                          boost::shared_ptr<gr::digital::constellation> mod);
 
-	double d_snr;
-	const double alpha = 0.5;
+private:
+    double get_snr();
+
+    double d_snr;
+    const double alpha = 0.5;
 };
 
-} /* namespace channel_estimation */
+} // namespace equalizer
 } /* namespace ieee802_11 */
 } /* namespace gr */
 

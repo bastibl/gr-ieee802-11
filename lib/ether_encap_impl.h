@@ -22,27 +22,27 @@
 namespace gr {
 namespace ieee802_11 {
 
-	struct ethernet_header {
-		uint8_t   dest[6];
-		uint8_t   src[6];
-		uint16_t  type;
-	}__attribute__((packed));
+struct ethernet_header {
+    uint8_t dest[6];
+    uint8_t src[6];
+    uint16_t type;
+} __attribute__((packed));
 
-	class ether_encap_impl : public ether_encap {
+class ether_encap_impl : public ether_encap
+{
 
-		public:
-			ether_encap_impl(bool debug);
+public:
+    ether_encap_impl(bool debug);
 
-		private:
-			void from_tap(pmt::pmt_t msg);
-			void from_wifi(pmt::pmt_t msg);
+private:
+    void from_tap(pmt::pmt_t msg);
+    void from_wifi(pmt::pmt_t msg);
 
-			bool d_debug;
-			uint16_t d_last_seq;
-	};
+    bool d_debug;
+    uint16_t d_last_seq;
+};
 
 } // namespace ieee802_11
 } // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_IMPL_H */
-

@@ -24,6 +24,9 @@ options:
     title: ''
     window_size: 1280, 1024
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [16, 12]
     rotation: 0
     state: enabled
@@ -42,6 +45,7 @@ blocks:
     label4: ''
     labels: '["LS", "LMS", "STA", "Linear Comb"]'
     num_opts: '0'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -52,6 +56,9 @@ blocks:
     value: '0'
     widget: combo_box
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [192, 8]
     rotation: 0
     state: enabled
@@ -69,6 +76,7 @@ blocks:
     labels: '["BPSK 1/2", "BPSK 3/4", "QPSK 1/2", "QPSK 3/4", "16QAM 1/2", "16QAM
       3/4", "64QAM 2/3", "64QAM 3/4"]'
     num_opts: '0'
+    option0: '0'
     option1: '1'
     option2: '2'
     option3: '3'
@@ -79,6 +87,9 @@ blocks:
     value: '0'
     widget: combo_box
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [376, 8]
     rotation: 0
     state: enabled
@@ -97,6 +108,9 @@ blocks:
     value: '0'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [688, 8]
     rotation: 0
     state: enabled
@@ -115,6 +129,9 @@ blocks:
     value: '300'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [808, 8]
     rotation: 0
     state: enabled
@@ -124,6 +141,9 @@ blocks:
     comment: ''
     value: '96000'
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [16, 76]
     rotation: 0
     state: enabled
@@ -142,6 +162,9 @@ blocks:
     value: '10'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [560, 8]
     rotation: 0
     state: enabled
@@ -160,9 +183,28 @@ blocks:
     value: '15'
     widget: counter_slider
   states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
     coordinate: [936, 8]
     rotation: 0
     state: enabled
+- name: blocks_complex_to_mag_0
+  id: blocks_complex_to_mag
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '52'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [168, 748.0]
+    rotation: 0
+    state: disabled
 - name: blocks_ctrlport_monitor_performance_0
   id: blocks_ctrlport_monitor_performance
   parameters:
@@ -170,9 +212,12 @@ blocks:
     comment: ''
     en: 'True'
   states:
-    coordinate: [520, 140.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 156.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -185,7 +230,10 @@ blocks:
     unbuffered: 'True'
     vlen: '1'
   states:
-    coordinate: [120, 556.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [128, 436.0]
     rotation: 180
     state: disabled
 - name: blocks_message_strobe_0
@@ -199,7 +247,10 @@ blocks:
     msg: pmt.intern("".join("x" for i in range(pdu_length)))
     period: interval
   states:
-    coordinate: [544, 204.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [464, 212.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_xx_0
@@ -214,7 +265,10 @@ blocks:
     type: complex
     vlen: '1'
   states:
-    coordinate: [720, 740.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [728, 620.0]
     rotation: 0
     state: true
 - name: blocks_pdu_to_tagged_stream_0_0
@@ -228,9 +282,49 @@ blocks:
     tag: packet_len
     type: complex
   states:
-    coordinate: [400, 372.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 348.0]
     rotation: 180
     state: enabled
+- name: blocks_tag_debug_0
+  id: blocks_tag_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    display: 'True'
+    filter: '""'
+    name: ''
+    num_inputs: '1'
+    type: complex
+    vlen: '52'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [152, 828.0]
+    rotation: 0
+    state: disabled
+- name: blocks_vector_to_stream_0
+  id: blocks_vector_to_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: '52'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 752.0]
+    rotation: 0
+    state: disabled
 - name: channels_channel_model_0
   id: channels_channel_model
   parameters:
@@ -246,7 +340,10 @@ blocks:
     seed: '0'
     taps: '1.0'
   states:
-    coordinate: [904, 700.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [912, 580.0]
     rotation: 0
     state: enabled
 - name: foo_packet_pad2_0
@@ -263,7 +360,10 @@ blocks:
     pad_front: '500'
     pad_tail: '0'
   states:
-    coordinate: [560, 708.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 588.0]
     rotation: 0
     state: enabled
 - name: foo_wireshark_connector_0
@@ -277,7 +377,25 @@ blocks:
     minoutbuf: '0'
     tech: '127'
   states:
-    coordinate: [328, 564.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 444.0]
+    rotation: 180
+    state: disabled
+- name: ieee802_11_extract_csi_0
+  id: ieee802_11_extract_csi
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [160, 608.0]
     rotation: 180
     state: disabled
 - name: ieee802_11_mac_0
@@ -292,7 +410,10 @@ blocks:
     minoutbuf: '0'
     src_mac: '[0x23, 0x23, 0x23, 0x23, 0x23, 0x23]'
   states:
-    coordinate: [784, 212.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 220.0]
     rotation: 0
     state: enabled
 - name: ieee802_11_parse_mac_0
@@ -301,12 +422,15 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    debug: 'True'
+    debug: 'False'
     log: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    coordinate: [360, 492.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 596.0]
     rotation: 180
     state: enabled
 - name: pfb_arb_resampler_xxx_0
@@ -324,7 +448,10 @@ blocks:
     taps: ''
     type: ccf
   states:
-    coordinate: [1092.0, 504]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1100.0, 384]
     rotation: 90
     state: enabled
 - name: qtgui_const_sink_x_0
@@ -413,9 +540,109 @@ blocks:
     ymax: '2'
     ymin: '-2'
   states:
-    coordinate: [152, 364.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [128, 340.0]
     rotation: 180
     state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'False'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '52'
+    srate: '1'
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '350'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 732.0]
+    rotation: 0
+    state: disabled
 - name: wifi_phy_hier_0
   id: wifi_phy_hier
   parameters:
@@ -430,18 +657,26 @@ blocks:
     minoutbuf: '0'
     sensitivity: '0.56'
   states:
-    coordinate: [736, 484.0]
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 364.0]
     rotation: 180
     state: true
 
 connections:
+- [blocks_complex_to_mag_0, '0', blocks_vector_to_stream_0, '0']
 - [blocks_message_strobe_0, strobe, ieee802_11_mac_0, app in]
 - [blocks_multiply_const_xx_0, '0', channels_channel_model_0, '0']
 - [blocks_pdu_to_tagged_stream_0_0, '0', qtgui_const_sink_x_0, '0']
+- [blocks_vector_to_stream_0, '0', qtgui_time_sink_x_0, '0']
 - [channels_channel_model_0, '0', pfb_arb_resampler_xxx_0, '0']
 - [foo_packet_pad2_0, '0', blocks_multiply_const_xx_0, '0']
 - [foo_wireshark_connector_0, '0', blocks_file_sink_0, '0']
+- [ieee802_11_extract_csi_0, '0', blocks_complex_to_mag_0, '0']
+- [ieee802_11_extract_csi_0, '0', blocks_tag_debug_0, '0']
 - [ieee802_11_mac_0, phy out, wifi_phy_hier_0, mac_in]
+- [ieee802_11_parse_mac_0, out, ieee802_11_extract_csi_0, pdu in]
 - [pfb_arb_resampler_xxx_0, '0', wifi_phy_hier_0, '0']
 - [wifi_phy_hier_0, '0', foo_packet_pad2_0, '0']
 - [wifi_phy_hier_0, carrier, blocks_pdu_to_tagged_stream_0_0, pdus]

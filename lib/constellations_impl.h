@@ -25,43 +25,40 @@ namespace ieee802_11 {
 class constellation_bpsk_impl : public constellation_bpsk
 {
 public:
-	constellation_bpsk_impl();
-	~constellation_bpsk_impl();
+    constellation_bpsk_impl();
+    ~constellation_bpsk_impl();
 
-	unsigned int decision_maker(const gr_complex *sample);
+    unsigned int decision_maker(const gr_complex* sample);
 };
 
 
 class constellation_qpsk_impl : public constellation_qpsk
 {
 public:
-	constellation_qpsk_impl();
-	~constellation_qpsk_impl();
+    constellation_qpsk_impl();
+    ~constellation_qpsk_impl();
 
-	unsigned int decision_maker(const gr_complex *sample);
+    unsigned int decision_maker(const gr_complex* sample);
 };
-
 
 
 class constellation_16qam_impl : public constellation_16qam
 {
 public:
-	constellation_16qam_impl();
-	~constellation_16qam_impl();
+    constellation_16qam_impl();
+    ~constellation_16qam_impl();
 
-	unsigned int decision_maker(const gr_complex *sample);
+    unsigned int decision_maker(const gr_complex* sample);
 };
-
-
 
 
 class constellation_64qam_impl : public constellation_64qam
 {
 public:
-	constellation_64qam_impl();
-	~constellation_64qam_impl();
+    constellation_64qam_impl();
+    ~constellation_64qam_impl();
 
-	unsigned int decision_maker(const gr_complex *sample);
+    unsigned int decision_maker(const gr_complex* sample);
 };
 
 

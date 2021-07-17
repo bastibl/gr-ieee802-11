@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_ETHER_ENCAP_H
 #define INCLUDED_IEEE802_11_ETHER_ENCAP_H
 
-#include <ieee802_11/api.h>
 #include <gnuradio/block.h>
+#include <ieee802_11/api.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -26,13 +26,11 @@ namespace ieee802_11 {
 class IEEE802_11_API ether_encap : virtual public block
 {
 public:
-
-	typedef boost::shared_ptr<ether_encap> sptr;
-	static sptr make(bool debug);
-
+    typedef boost::shared_ptr<ether_encap> sptr;
+    static sptr make(bool debug);
 };
 
-}  // namespace ieee802_11
-}  // namespace gr
+} // namespace ieee802_11
+} // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_ETHER_ENCAP_H */

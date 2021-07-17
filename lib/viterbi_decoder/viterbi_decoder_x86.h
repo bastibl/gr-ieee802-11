@@ -17,8 +17,8 @@
 #ifndef INCLUDED_IEEE802_11_VITERBI_DECODER_X86_H
 #define INCLUDED_IEEE802_11_VITERBI_DECODER_X86_H
 
-#include <xmmintrin.h>
 #include "base.h"
+#include <xmmintrin.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -31,28 +31,28 @@ namespace ieee802_11 {
 class viterbi_decoder : public base
 {
 public:
-
-	virtual uint8_t* decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in);
+    virtual uint8_t* decode(ofdm_param* ofdm, frame_param* frame, uint8_t* in);
 
 private:
+    union branchtab27 {
+        unsigned char c[32];
+        __m128i v[2];
+    } d_branchtab27_sse2[2];
 
-	union branchtab27 {
-		unsigned char c[32];
-		__m128i v[2];
-	} d_branchtab27_sse2[2];
+    __m128i d_metric0[4] __attribute__((aligned(16)));
+    __m128i d_metric1[4] __attribute__((aligned(16)));
+    __m128i d_path0[4] __attribute__((aligned(16)));
+    __m128i d_path1[4] __attribute__((aligned(16)));
 
-	__m128i d_metric0[4] __attribute__ ((aligned(16)));
-	__m128i d_metric1[4] __attribute__ ((aligned(16)));
-	__m128i d_path0[4] __attribute__ ((aligned(16)));
-	__m128i d_path1[4] __attribute__ ((aligned(16)));
+    virtual void reset();
 
-	virtual void reset();
-
-	void viterbi_chunks_init_sse2();
-	void viterbi_butterfly2_sse2(unsigned char *symbols,
-			__m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
-	unsigned char viterbi_get_output_sse2(__m128i *mm0,
-			__m128i *pp0, int ntraceback, unsigned char *outbuf);
+    void viterbi_chunks_init_sse2();
+    void viterbi_butterfly2_sse2(
+        unsigned char* symbols, __m128i m0[], __m128i m1[], __m128i p0[], __m128i p1[]);
+    unsigned char viterbi_get_output_sse2(__m128i* mm0,
+                                          __m128i* pp0,
+                                          int ntraceback,
+                                          unsigned char* outbuf);
 };
 
 } // namespace ieee802_11

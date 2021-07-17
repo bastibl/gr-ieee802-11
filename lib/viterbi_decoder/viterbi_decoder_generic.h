@@ -30,28 +30,30 @@ namespace ieee802_11 {
 class viterbi_decoder : public base
 {
 public:
-
-	virtual uint8_t* decode(ofdm_param *ofdm, frame_param *frame, uint8_t *in);
+    virtual uint8_t* decode(ofdm_param* ofdm, frame_param* frame, uint8_t* in);
 
 private:
+    union branchtab27 {
+        unsigned char c[32];
+    } d_branchtab27_generic[2];
 
-	union branchtab27 {
-		unsigned char c[32];
-	} d_branchtab27_generic[2];
+    unsigned char d_metric0_generic[64] __attribute__((aligned(16)));
+    unsigned char d_metric1_generic[64] __attribute__((aligned(16)));
+    unsigned char d_path0_generic[64] __attribute__((aligned(16)));
+    unsigned char d_path1_generic[64] __attribute__((aligned(16)));
 
-	unsigned char d_metric0_generic[64] __attribute__ ((aligned(16)));
-	unsigned char d_metric1_generic[64] __attribute__ ((aligned(16)));
-	unsigned char d_path0_generic[64] __attribute__ ((aligned(16)));
-	unsigned char d_path1_generic[64] __attribute__ ((aligned(16)));
+    void reset();
 
-	void reset();
-
-	void viterbi_chunks_init_generic();
-	void viterbi_butterfly2_generic(unsigned char *symbols,
-			unsigned char m0[], unsigned char m1[], unsigned char p0[],
-			unsigned char p1[]);
-	unsigned char viterbi_get_output_generic(unsigned char *mm0,
-			unsigned char *pp0, int ntraceback, unsigned char *outbuf);
+    void viterbi_chunks_init_generic();
+    void viterbi_butterfly2_generic(unsigned char* symbols,
+                                    unsigned char m0[],
+                                    unsigned char m1[],
+                                    unsigned char p0[],
+                                    unsigned char p1[]);
+    unsigned char viterbi_get_output_generic(unsigned char* mm0,
+                                             unsigned char* pp0,
+                                             int ntraceback,
+                                             unsigned char* outbuf);
 };
 
 } // namespace ieee802_11

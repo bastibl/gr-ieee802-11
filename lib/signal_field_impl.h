@@ -18,8 +18,8 @@
 #ifndef INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
 #define INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H
 
-#include <ieee802_11/signal_field.h>
 #include "utils.h"
+#include <ieee802_11/signal_field.h>
 
 namespace gr {
 namespace ieee802_11 {
@@ -27,21 +27,20 @@ namespace ieee802_11 {
 class signal_field_impl : public signal_field
 {
 public:
-	signal_field_impl();
-	~signal_field_impl();
+    signal_field_impl();
+    ~signal_field_impl();
 
-	bool header_formatter(long packet_len, unsigned char *out,
-			const std::vector<tag_t> &tags);
+    bool
+    header_formatter(long packet_len, unsigned char* out, const std::vector<tag_t>& tags);
 
-	bool header_parser(const unsigned char *header,
-			std::vector<tag_t> &tags);
+    bool header_parser(const unsigned char* header, std::vector<tag_t>& tags);
+
 private:
-	int get_bit(int b, int i);
-	void generate_signal_field(char *out, frame_param &frame, ofdm_param &ofdm);
+    int get_bit(int b, int i);
+    void generate_signal_field(char* out, frame_param& frame, ofdm_param& ofdm);
 };
 
 } // namespace ieee802_11
 } // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_SIGNAL_FIELD_IMPL_H */
-
