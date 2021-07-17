@@ -78,7 +78,7 @@ public:
                     d_meta = pmt::dict_add(d_meta, tag.key, tag.value);
 
                 int len_data = pmt::to_uint64(pmt::dict_ref(
-                    d_meta, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE + 1)));
+                    d_meta, pmt::mp("frame bytes"), pmt::from_uint64(MAX_PSDU_SIZE + 1)));
                 int encoding = pmt::to_uint64(
                     pmt::dict_ref(d_meta, pmt::mp("encoding"), pmt::from_uint64(0)));
 

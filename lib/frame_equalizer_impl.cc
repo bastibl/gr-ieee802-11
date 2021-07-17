@@ -219,14 +219,14 @@ int frame_equalizer_impl::general_work(int noutput_items,
 
                 pmt::pmt_t dict = pmt::make_dict();
                 dict = pmt::dict_add(
-                    dict, pmt::mp("frame_bytes"), pmt::from_uint64(d_frame_bytes));
+                    dict, pmt::mp("frame bytes"), pmt::from_uint64(d_frame_bytes));
                 dict = pmt::dict_add(
                     dict, pmt::mp("encoding"), pmt::from_uint64(d_frame_encoding));
                 dict = pmt::dict_add(
                     dict, pmt::mp("snr"), pmt::from_double(d_equalizer->get_snr()));
-                dict = pmt::dict_add(dict, pmt::mp("nom_freq"), pmt::from_double(d_freq));
+                dict = pmt::dict_add(dict, pmt::mp("nominal frequency"), pmt::from_double(d_freq));
                 dict = pmt::dict_add(dict,
-                                     pmt::mp("freq_offset"),
+                                     pmt::mp("frequency offset"),
                                      pmt::from_double(d_freq_offset_from_synclong));
                 dict = pmt::dict_add(dict, pmt::mp("beta"), pmt::from_double(beta));
 
