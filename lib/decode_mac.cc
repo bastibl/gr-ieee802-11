@@ -150,8 +150,8 @@ public:
 
         // create PDU
         pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
-        d_meta = pmt::dict_add(
-            d_meta, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
+        d_meta =
+            pmt::dict_add(d_meta, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
 
         message_port_pub(pmt::mp("out"), pmt::cons(d_meta, blob));
     }
