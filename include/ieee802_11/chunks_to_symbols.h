@@ -26,7 +26,7 @@ namespace ieee802_11 {
 class IEEE802_11_API chunks_to_symbols : virtual public tagged_stream_block
 {
 public:
-    typedef boost::shared_ptr<chunks_to_symbols> sptr;
+    typedef std::shared_ptr<chunks_to_symbols> sptr;
     static sptr make();
 };
 

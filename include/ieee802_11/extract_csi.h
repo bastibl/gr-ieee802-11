@@ -30,7 +30,7 @@ namespace ieee802_11 {
 class IEEE802_11_API extract_csi : virtual public gr::sync_block
 {
 public:
-    typedef boost::shared_ptr<extract_csi> sptr;
+    typedef std::shared_ptr<extract_csi> sptr;
     static sptr make();
 };
 

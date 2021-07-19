@@ -25,7 +25,7 @@ void lms::equalize(gr_complex* in,
                    int n,
                    gr_complex* symbols,
                    uint8_t* bits,
-                   boost::shared_ptr<gr::digital::constellation> mod)
+                   std::shared_ptr<gr::digital::constellation> mod)
 {
 
     if (n == 0) {

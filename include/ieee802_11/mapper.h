@@ -37,7 +37,7 @@ namespace ieee802_11 {
 class IEEE802_11_API mapper : virtual public block
 {
 public:
-    typedef boost::shared_ptr<mapper> sptr;
+    typedef std::shared_ptr<mapper> sptr;
     static sptr make(Encoding mcs, bool debug = false);
     virtual void set_encoding(Encoding mcs) = 0;
 };

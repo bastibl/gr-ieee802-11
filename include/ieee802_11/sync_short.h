@@ -26,7 +26,7 @@ namespace ieee802_11 {
 class IEEE802_11_API sync_short : virtual public block
 {
 public:
-    typedef boost::shared_ptr<sync_short> sptr;
+    typedef std::shared_ptr<sync_short> sptr;
     static sptr make(double threshold,
                      unsigned int min_plateau,
                      bool log = false,

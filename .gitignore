@@ -1,9 +1,12 @@
-build
 examples/*.py
 .cproject
 .project
 .pydevproject
 .settings
-*.pyc
 **/.DS_Store
 .clang_complete
+*~
+*.pyc
+*.pyo
+build*/
+examples/grc/*.py

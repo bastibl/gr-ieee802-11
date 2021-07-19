@@ -19,6 +19,7 @@
 #include <gnuradio/filter/fir_filter.h>
 #include <gnuradio/io_signature.h>
 #include <ieee802_11/sync_long.h>
+#include <volk/volk.h>
 
 #include <list>
 #include <tuple>
@@ -41,7 +42,7 @@ public:
         : block("sync_long",
                 gr::io_signature::make2(2, 2, sizeof(gr_complex), sizeof(gr_complex)),
                 gr::io_signature::make(1, 1, sizeof(gr_complex))),
-          d_fir(gr::filter::kernel::fir_filter_ccc(1, LONG)),
+          d_fir(gr::filter::kernel::fir_filter_ccc(LONG)),
           d_log(log),
           d_debug(debug),
           d_offset(0),
@@ -50,10 +51,12 @@ public:
     {
 
         set_tag_propagation_policy(block::TPP_DONT);
-        d_correlation = gr::fft::malloc_complex(8192);
+        d_correlation = (gr_complex*)volk_malloc(sizeof(gr_complex) * 8192, volk_get_alignment());
     }
 
-    ~sync_long_impl() { gr::fft::free(d_correlation); }
+    ~sync_long_impl() {
+        volk_free(d_correlation);
+    }
 
     int general_work(int noutput,
                      gr_vector_int& ninput_items,
@@ -252,7 +255,6 @@ sync_long::sptr sync_long::make(unsigned int sync_length, bool log, bool debug)
 }
 
 const std::vector<gr_complex> sync_long_impl::LONG = {
-
     gr_complex(-0.0455, -1.0679), gr_complex(0.3528, -0.9865),
     gr_complex(0.8594, 0.7348),   gr_complex(0.1874, 0.2475),
     gr_complex(0.5309, -0.7784),  gr_complex(-1.0218, -0.4897),
@@ -285,5 +287,4 @@ const std::vector<gr_complex> sync_long_impl::LONG = {
     gr_complex(0.5309, 0.7784),   gr_complex(0.1874, -0.2475),
     gr_complex(0.8594, -0.7348),  gr_complex(0.3528, 0.9865),
     gr_complex(-0.0455, 1.0679),  gr_complex(1.3868, -0.0000),
-
 };

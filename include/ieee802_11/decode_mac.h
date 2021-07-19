@@ -26,7 +26,7 @@ namespace ieee802_11 {
 class IEEE802_11_API decode_mac : virtual public block
 {
 public:
-    typedef boost::shared_ptr<decode_mac> sptr;
+    typedef std::shared_ptr<decode_mac> sptr;
     static sptr make(bool log = false, bool debug = false);
 };
 
