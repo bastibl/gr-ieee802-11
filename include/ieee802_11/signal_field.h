@@ -20,6 +20,7 @@
 
 #include <gnuradio/digital/packet_header_default.h>
 #include <ieee802_11/api.h>
+#include <memory>
 
 namespace gr {
 namespace ieee802_11 {
@@ -29,6 +30,12 @@ class IEEE802_11_API signal_field : virtual public digital::packet_header_defaul
 public:
     typedef std::shared_ptr<signal_field> sptr;
     static sptr make();
+    sptr base() {
+        return std::dynamic_pointer_cast<signal_field>(shared_from_this());
+    }
+    sptr formatter() {
+        return std::dynamic_pointer_cast<signal_field>(shared_from_this());
+    }
 
 protected:
     signal_field();

@@ -21,6 +21,18 @@ namespace py = pybind11;
 // Please do not delete
 /**************************************/
 // BINDING_FUNCTION_PROTOTYPES(
+void bind_chunks_to_symbols(py::module& m);
+void bind_constellations(py::module& m);
+void bind_decode_mac(py::module& m);
+void bind_ether_encap(py::module& m);
+void bind_extract_csi(py::module& m);
+void bind_frame_equalizer(py::module& m);
+void bind_mac(py::module& m);
+void bind_mapper(py::module& m);
+void bind_parse_mac(py::module& m);
+void bind_signal_field(py::module& m);
+void bind_sync_long(py::module& m);
+void bind_sync_short(py::module& m);
 // ) END BINDING_FUNCTION_PROTOTYPES
 
 
@@ -42,6 +54,7 @@ PYBIND11_MODULE(ieee802_11_python, m)
 
     // Allow access to base block methods
     py::module::import("gnuradio.gr");
+    py::module::import("gnuradio.digital");
 
     /**************************************/
     // The following comment block is used for
@@ -49,5 +62,17 @@ PYBIND11_MODULE(ieee802_11_python, m)
     // Please do not delete
     /**************************************/
     // BINDING_FUNCTION_CALLS(
+    bind_chunks_to_symbols(m);
+    bind_constellations(m);
+    bind_decode_mac(m);
+    bind_ether_encap(m);
+    bind_extract_csi(m);
+    bind_frame_equalizer(m);
+    bind_mac(m);
+    bind_mapper(m);
+    bind_parse_mac(m);
+    bind_signal_field(m);
+    bind_sync_long(m);
+    bind_sync_short(m);
     // ) END BINDING_FUNCTION_CALLS
 }

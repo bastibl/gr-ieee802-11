@@ -29,6 +29,18 @@ include(GrPybind)
 ########################################################################
 
 list(APPEND ieee802_11_python_files
+    chunks_to_symbols_python.cc
+    constellations_python.cc
+    decode_mac_python.cc
+    ether_encap_python.cc
+    extract_csi_python.cc
+    frame_equalizer_python.cc
+    mac_python.cc
+    mapper_python.cc
+    parse_mac_python.cc
+    signal_field_python.cc
+    sync_long_python.cc
+    sync_short_python.cc
     python_bindings.cc)
 
 GR_PYBIND_MAKE_OOT(ieee802_11 

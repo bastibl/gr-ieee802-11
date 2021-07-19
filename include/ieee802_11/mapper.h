@@ -20,6 +20,9 @@
 #include <gnuradio/block.h>
 #include <ieee802_11/api.h>
 
+namespace gr {
+namespace ieee802_11 {
+
 enum Encoding {
     BPSK_1_2 = 0,
     BPSK_3_4 = 1,
@@ -30,9 +33,6 @@ enum Encoding {
     QAM64_2_3 = 6,
     QAM64_3_4 = 7,
 };
-
-namespace gr {
-namespace ieee802_11 {
 
 class IEEE802_11_API mapper : virtual public block
 {

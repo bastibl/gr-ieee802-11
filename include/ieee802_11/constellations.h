@@ -29,6 +29,7 @@ class IEEE802_11_API constellation_bpsk : virtual public digital::constellation
 public:
     typedef std::shared_ptr<gr::ieee802_11::constellation_bpsk> sptr;
     static sptr make();
+    sptr base() { return std::dynamic_pointer_cast<gr::ieee802_11::constellation_bpsk>(shared_from_this()); }
 
 protected:
     constellation_bpsk();
@@ -39,6 +40,7 @@ class IEEE802_11_API constellation_qpsk : virtual public digital::constellation
 public:
     typedef std::shared_ptr<gr::ieee802_11::constellation_qpsk> sptr;
     static sptr make();
+    sptr base() { return std::dynamic_pointer_cast<gr::ieee802_11::constellation_qpsk>(shared_from_this()); }
 
 protected:
     constellation_qpsk();
@@ -49,6 +51,7 @@ class IEEE802_11_API constellation_16qam : virtual public digital::constellation
 public:
     typedef std::shared_ptr<gr::ieee802_11::constellation_16qam> sptr;
     static sptr make();
+    sptr base() { return std::dynamic_pointer_cast<gr::ieee802_11::constellation_16qam>(shared_from_this()); }
 
 protected:
     constellation_16qam();
@@ -59,6 +62,7 @@ class IEEE802_11_API constellation_64qam : virtual public digital::constellation
 public:
     typedef std::shared_ptr<gr::ieee802_11::constellation_64qam> sptr;
     static sptr make();
+    sptr base() { return std::dynamic_pointer_cast<gr::ieee802_11::constellation_64qam>(shared_from_this()); }
 
 protected:
     constellation_64qam();

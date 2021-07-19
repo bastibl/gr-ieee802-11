@@ -23,6 +23,9 @@
 #include <gnuradio/block.h>
 #include <ieee802_11/api.h>
 
+namespace gr {
+namespace ieee802_11 {
+
 enum Equalizer {
     LS = 0,
     LMS = 1,
@@ -30,8 +33,6 @@ enum Equalizer {
     STA = 3,
 };
 
-namespace gr {
-namespace ieee802_11 {
 
 class IEEE802_11_API frame_equalizer : virtual public gr::block
 {

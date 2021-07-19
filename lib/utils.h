@@ -23,6 +23,8 @@
 #include <cinttypes>
 #include <iostream>
 
+using gr::ieee802_11::Encoding;
+
 #define MAX_PAYLOAD_SIZE 1500
 #define MAX_PSDU_SIZE (MAX_PAYLOAD_SIZE + 28) // MAC, CRC
 #define MAX_SYM (((16 + 8 * MAX_PSDU_SIZE + 6) / 24) + 1)

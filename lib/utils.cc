@@ -20,6 +20,15 @@
 #include <cassert>
 #include <cstring>
 
+using gr::ieee802_11::BPSK_1_2;
+using gr::ieee802_11::BPSK_3_4;
+using gr::ieee802_11::QPSK_1_2;
+using gr::ieee802_11::QPSK_3_4;
+using gr::ieee802_11::QAM16_1_2;
+using gr::ieee802_11::QAM16_3_4;
+using gr::ieee802_11::QAM64_2_3;
+using gr::ieee802_11::QAM64_3_4;
+
 ofdm_param::ofdm_param(Encoding e)
 {
     encoding = e;
