@@ -235,6 +235,13 @@ int frame_equalizer_impl::general_work(int noutput_items,
                 dict = pmt::dict_add(
                     dict, pmt::mp("csi"), pmt::init_c32vector(csi.size(), csi));
 
+                struct timeval time_now {
+                };
+                gettimeofday(&time_now, nullptr);
+                time_t ms_since_epoch =
+                    (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
+                dict = pmt::dict_add(dict, pmt::mp("timestamp"), pmt::mp(ms_since_epoch));
+
                 pmt::pmt_t pairs = pmt::dict_items(dict);
                 for (int i = 0; i < pmt::length(pairs); i++) {
                     pmt::pmt_t pair = pmt::nth(i, pairs);
