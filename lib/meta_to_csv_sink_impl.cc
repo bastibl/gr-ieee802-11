@@ -22,57 +22,56 @@
 #include "config.h"
 #endif
 
-#include <gnuradio/io_signature.h>
 #include "meta_to_csv_sink_impl.h"
+#include <gnuradio/io_signature.h>
 
 namespace gr {
-  namespace ieee802_11 {
+namespace ieee802_11 {
 
-    meta_to_csv_sink::sptr
-    meta_to_csv_sink::make(const char* file_path, std::vector<std::string> keys, std::string delimiter)
-    {
-      return gnuradio::get_initial_sptr
-        (new meta_to_csv_sink_impl(file_path, keys, delimiter));
-    }
+meta_to_csv_sink::sptr meta_to_csv_sink::make(const char* file_path,
+                                              std::vector<std::string> keys,
+                                              std::string delimiter)
+{
+    return gnuradio::get_initial_sptr(
+        new meta_to_csv_sink_impl(file_path, keys, delimiter));
+}
 
-    meta_to_csv_sink_impl::meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys, std::string delimiter)
-      : gr::block("meta_to_csv_sink",
-              gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(0, 0, 0)),
-        d_delimiter(delimiter)
-    {
-      d_file.open(file_path);
+meta_to_csv_sink_impl::meta_to_csv_sink_impl(const char* file_path,
+                                             std::vector<std::string> keys,
+                                             std::string delimiter)
+    : gr::block("meta_to_csv_sink",
+                gr::io_signature::make(0, 0, 0),
+                gr::io_signature::make(0, 0, 0)),
+      d_delimiter(delimiter)
+{
+    d_file.open(file_path);
 
-      d_keys = pmt::make_vector(keys.size(), pmt::PMT_NIL);
+    d_keys = pmt::make_vector(keys.size(), pmt::PMT_NIL);
 
-      for (int i = 0; i < keys.size(); i++)
+    for (int i = 0; i < keys.size(); i++)
         pmt::vector_set(d_keys, i, pmt::mp(keys[i]));
 
-      message_port_register_in(pmt::mp("pdu in"));
-      set_msg_handler(pmt::mp("pdu in"), [this](const pmt::pmt_t &pdu) { print_meta(pdu); });
-    }
+    message_port_register_in(pmt::mp("pdu in"));
+    set_msg_handler(pmt::mp("pdu in"),
+                    [this](const pmt::pmt_t& pdu) { print_meta(pdu); });
+}
 
-    meta_to_csv_sink_impl::~meta_to_csv_sink_impl()
-    {
-      d_file.close();
-    }
+meta_to_csv_sink_impl::~meta_to_csv_sink_impl() { d_file.close(); }
 
-    void
-    meta_to_csv_sink_impl::print_meta(pmt::pmt_t pdu)
-    {
-      if (!pmt::is_pair(pdu) || !pmt::is_dict(pmt::car(pdu)))
+void meta_to_csv_sink_impl::print_meta(pmt::pmt_t pdu)
+{
+    if (!pmt::is_pair(pdu) || !pmt::is_dict(pmt::car(pdu)))
         throw std::runtime_error("received a malformed pdu message");
 
-      pmt::pmt_t meta = pmt::car(pdu);
+    pmt::pmt_t meta = pmt::car(pdu);
 
-      d_file << dict_ref(meta, pmt::vector_ref(d_keys, 0), pmt::PMT_NIL);
+    d_file << dict_ref(meta, pmt::vector_ref(d_keys, 0), pmt::PMT_NIL);
 
-      for (int i = 1; i < pmt::length(d_keys); i++)
+    for (int i = 1; i < pmt::length(d_keys); i++)
         d_file << d_delimiter << dict_ref(meta, pmt::vector_ref(d_keys, i), pmt::PMT_NIL);
 
-      d_file << std::endl;
-    }
+    d_file << std::endl;
+}
 
-  } /* namespace ieee802_11 */
+} /* namespace ieee802_11 */
 } /* namespace gr */
-

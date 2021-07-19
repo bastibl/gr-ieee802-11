@@ -24,24 +24,25 @@
 #include <ieee802_11/meta_to_csv_sink.h>
 
 namespace gr {
-  namespace ieee802_11 {
+namespace ieee802_11 {
 
-    class meta_to_csv_sink_impl : public meta_to_csv_sink
-    {
-     private:
-      std::ofstream d_file;
-      pmt::pmt_t d_keys;
-      std::string d_delimiter;
+class meta_to_csv_sink_impl : public meta_to_csv_sink
+{
+private:
+    std::ofstream d_file;
+    pmt::pmt_t d_keys;
+    std::string d_delimiter;
 
-      void print_meta(pmt::pmt_t pdu);
+    void print_meta(pmt::pmt_t pdu);
 
-     public:
-      meta_to_csv_sink_impl(const char* file_path, std::vector<std::string> keys, std::string delimiter);
-      ~meta_to_csv_sink_impl();
-    };
+public:
+    meta_to_csv_sink_impl(const char* file_path,
+                          std::vector<std::string> keys,
+                          std::string delimiter);
+    ~meta_to_csv_sink_impl();
+};
 
-  } // namespace ieee802_11
+} // namespace ieee802_11
 } // namespace gr
 
 #endif /* INCLUDED_IEEE802_11_META_TO_CSV_SINK_IMPL_H */
-
