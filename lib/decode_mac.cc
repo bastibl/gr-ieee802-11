@@ -36,14 +36,10 @@ public:
                 gr::io_signature::make(0, 0, 0)),
           d_log(log),
           d_debug(debug),
-          d_snr(0),
-          d_nom_freq(0.0),
-          d_freq_offset(0.0),
           d_ofdm(BPSK_1_2),
           d_frame(d_ofdm, 0),
           d_frame_complete(true)
     {
-
         message_port_register_out(pmt::mp("out"));
     }
 
@@ -64,8 +60,7 @@ public:
 
         while (i < ninput_items[0]) {
 
-            get_tags_in_range(
-                tags, 0, nread + i, nread + i + 1, pmt::string_to_symbol("wifi_start"));
+            get_tags_in_range(tags, 0, nread + i, nread + i + 1);
 
             if (tags.size()) {
                 if (d_frame_complete == false) {
@@ -77,21 +72,16 @@ public:
                 }
                 d_frame_complete = false;
 
-                pmt::pmt_t dict = tags[0].value;
+                // Enter tags into metadata dictionary
+                d_meta = pmt::make_dict();
+                for (auto tag : tags)
+                    d_meta = pmt::dict_add(d_meta, tag.key, tag.value);
+
                 int len_data = pmt::to_uint64(pmt::dict_ref(
-                    dict, pmt::mp("frame_bytes"), pmt::from_uint64(MAX_PSDU_SIZE + 1)));
+                    d_meta, pmt::mp("frame bytes"), pmt::from_uint64(MAX_PSDU_SIZE + 1)));
                 int encoding = pmt::to_uint64(
-                    pmt::dict_ref(dict, pmt::mp("encoding"), pmt::from_uint64(0)));
-                d_snr = pmt::to_double(
-                    pmt::dict_ref(dict, pmt::mp("snr"), pmt::from_double(0)));
-                d_nom_freq = pmt::to_double(
-                    pmt::dict_ref(dict, pmt::mp("freq"), pmt::from_double(0)));
-                d_freq_offset = pmt::to_double(
-                    pmt::dict_ref(dict, pmt::mp("freq_offset"), pmt::from_double(0)));
-                d_beta = pmt::to_double(
-                    pmt::dict_ref(dict, pmt::mp("beta"), pmt::from_double(0)));
-                d_csi = pmt::c32vector_elements(
-                    pmt::dict_ref(dict, pmt::mp("csi"), pmt::make_c32vector(52, 0)));
+                    pmt::dict_ref(d_meta, pmt::mp("encoding"), pmt::from_uint64(0)));
+
                 ofdm_param ofdm = ofdm_param((Encoding)encoding);
                 frame_param frame = frame_param(ofdm, len_data);
 
@@ -160,16 +150,10 @@ public:
 
         // create PDU
         pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
-        pmt::pmt_t enc = pmt::from_uint64(d_ofdm.encoding);
-        pmt::pmt_t dict = pmt::make_dict();
-        dict = pmt::dict_add(dict, pmt::mp("encoding"), enc);
-        dict = pmt::dict_add(dict, pmt::mp("snr"), pmt::from_double(d_snr));
-        dict = pmt::dict_add(dict, pmt::mp("nomfreq"), pmt::from_double(d_nom_freq));
-        dict = pmt::dict_add(dict, pmt::mp("freqofs"), pmt::from_double(d_freq_offset));
-        dict = pmt::dict_add(dict, pmt::mp("beta"), pmt::from_double(d_beta));
-        dict = pmt::dict_add(dict, pmt::mp("csi"), pmt::init_c32vector(52, d_csi));
-        dict = pmt::dict_add(dict, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
-        message_port_pub(pmt::mp("out"), pmt::cons(dict, blob));
+        d_meta =
+            pmt::dict_add(d_meta, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
+
+        message_port_pub(pmt::mp("out"), pmt::cons(d_meta, blob));
     }
 
     void deinterleave()
@@ -249,13 +233,11 @@ private:
     bool d_debug;
     bool d_log;
 
+    pmt::pmt_t d_meta;
+
     frame_param d_frame;
     ofdm_param d_ofdm;
-    double d_snr;         // dB
-    double d_nom_freq;    // nominal frequency, Hz
-    double d_freq_offset; // frequency offset, Hz
-    double d_beta;
-    std::vector<gr_complex> d_csi;
+
     viterbi_decoder d_decoder;
 
     uint8_t d_rx_symbols[48 * MAX_SYM];
