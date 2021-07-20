@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(signal_field.h)                                        */
-/* BINDTOOL_HEADER_FILE_HASH(704b5399c8f91c472b1826c74dee0a5a)                     */
+/* BINDTOOL_HEADER_FILE_HASH(423674352455f6357bd249e1f5221cb4)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
@@ -34,7 +34,7 @@ void bind_signal_field(py::module& m)
 
 
     py::class_<signal_field, gr::digital::packet_header_default,
-        std::shared_ptr<signal_field>>(m, "signal_field", D(signal_field))
+        std::shared_ptr<signal_field>>(m, "signal_field", D(signal_field), py::multiple_inheritance())
 
         .def(py::init(&signal_field::make),
            D(signal_field,make)
@@ -42,18 +42,6 @@ void bind_signal_field(py::module& m)
         
 
 
-
-
-        
-        .def("base",&signal_field::base,       
-            D(signal_field,base)
-        )
-
-
-        
-        .def("formatter",&signal_field::formatter,       
-            D(signal_field,formatter)
-        )
 
         ;
 

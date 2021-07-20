@@ -37,7 +37,7 @@ void bind_constellations(py::module& m)
 
 
     py::class_<constellation_bpsk, gr::digital::constellation,
-        std::shared_ptr<constellation_bpsk>>(m, "constellation_bpsk", D(constellation_bpsk))
+        std::shared_ptr<constellation_bpsk>>(m, "constellation_bpsk", D(constellation_bpsk), py::multiple_inheritance())
 
         .def(py::init(&constellation_bpsk::make),
            D(constellation_bpsk,make)
@@ -56,7 +56,7 @@ void bind_constellations(py::module& m)
 
 
     py::class_<constellation_qpsk, gr::digital::constellation,
-        std::shared_ptr<constellation_qpsk>>(m, "constellation_qpsk", D(constellation_qpsk))
+        std::shared_ptr<constellation_qpsk>>(m, "constellation_qpsk", D(constellation_qpsk), py::multiple_inheritance())
 
         .def(py::init(&constellation_qpsk::make),
            D(constellation_qpsk,make)
@@ -75,7 +75,7 @@ void bind_constellations(py::module& m)
 
 
     py::class_<constellation_16qam, gr::digital::constellation,
-        std::shared_ptr<constellation_16qam>>(m, "constellation_16qam", D(constellation_16qam))
+        std::shared_ptr<constellation_16qam>>(m, "constellation_16qam", D(constellation_16qam), py::multiple_inheritance())
 
         .def(py::init(&constellation_16qam::make),
            D(constellation_16qam,make)
@@ -94,7 +94,7 @@ void bind_constellations(py::module& m)
 
 
     py::class_<constellation_64qam, gr::digital::constellation,
-        std::shared_ptr<constellation_64qam>>(m, "constellation_64qam", D(constellation_64qam))
+        std::shared_ptr<constellation_64qam>>(m, "constellation_64qam", D(constellation_64qam), py::multiple_inheritance())
 
         .def(py::init(&constellation_64qam::make),
            D(constellation_64qam,make)

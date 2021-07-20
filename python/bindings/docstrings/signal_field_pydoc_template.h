@@ -24,10 +24,4 @@
 
  static const char *__doc_gr_ieee802_11_signal_field_make = R"doc()doc";
 
-
- static const char *__doc_gr_ieee802_11_signal_field_base = R"doc()doc";
-
-
- static const char *__doc_gr_ieee802_11_signal_field_formatter = R"doc()doc";
-
   
