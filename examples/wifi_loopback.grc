@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: Custom
     cmake_opt: ''
     comment: ''
@@ -22,7 +23,6 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: ''
-    window_size: 1280, 1024
   states:
     bus_sink: false
     bus_source: false
@@ -43,18 +43,18 @@ blocks:
     label2: ''
     label3: ''
     label4: ''
-    labels: '["LS", "LMS", "STA", "Linear Comb"]'
+    labels: '["LS", "LMS", "Linear Comb", "STA"]'
     num_opts: '0'
-    option0: '0'
-    option1: '1'
-    option2: '2'
-    option3: '3'
+    option0: ''
+    option1: ''
+    option2: ''
+    option3: ''
     option4: '4'
-    options: '[ieee802_11.LS, ieee802_11.LMS, ieee802_11.STA, ieee802_11.COMB]'
+    options: '[0, 1, 2, 3]'
     orient: Qt.QHBoxLayout
     type: int
     value: '0'
-    widget: combo_box
+    widget: radio_buttons
   states:
     bus_sink: false
     bus_source: false
@@ -100,7 +100,7 @@ blocks:
     gui_hint: 3,1,1,1
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: -20e-6
     step: 1e-6
@@ -121,7 +121,7 @@ blocks:
     gui_hint: 2,1,1,1
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '10'
     step: '1'
@@ -154,7 +154,7 @@ blocks:
     gui_hint: 3,0,1,1
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: int
     start: '0'
     step: '1'
@@ -175,7 +175,7 @@ blocks:
     gui_hint: 2,0,1,1
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-15'
     step: '0.1'
@@ -649,9 +649,9 @@ blocks:
     affinity: ''
     alias: ''
     bandwidth: 10e6
-    chan_est: chan_est
+    chan_est: ieee802_11.Equalizer(chan_est)
     comment: ''
-    encoding: encoding
+    encoding: ieee802_11.Encoding(encoding)
     frequency: 5.9e6
     maxoutbuf: '0'
     minoutbuf: '0'

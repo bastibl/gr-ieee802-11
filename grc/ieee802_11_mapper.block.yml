@@ -7,7 +7,7 @@ category: '[IEEE802.11]'
 parameters:
 -   id: encoding
     label: Encoding
-    dtype: int
+    dtype: enum
     default: ieee802_11.BPSK_1_2
     options: [ieee802_11.BPSK_1_2, ieee802_11.BPSK_3_4, ieee802_11.QPSK_1_2, ieee802_11.QPSK_3_4,
         ieee802_11.16QAM_1_2, ieee802_11.16QAM_3_4, ieee802_11.64QAM_2_3, ieee802_11.64QAM_3_4]
@@ -28,8 +28,6 @@ outputs:
 -   domain: stream
     dtype: byte
     multiplicity: '1'
-asserts:
-- ${ encoding in range(8) }
 
 templates:
     imports: import ieee802_11

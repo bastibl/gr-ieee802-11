@@ -7,7 +7,7 @@ category: '[IEEE802.11]'
 parameters:
 -   id: algo
     label: Algorithm
-    dtype: int
+    dtype: enum
     default: ieee802_11.LS
     options: [ieee802_11.LS, ieee802_11.LMS, ieee802_11.COMB, ieee802_11.STA]
     option_labels: [LS, LMS, Comb, STA]
