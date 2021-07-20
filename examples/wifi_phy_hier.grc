@@ -276,25 +276,6 @@ blocks:
     coordinate: [880, 776.0]
     rotation: 0
     state: enabled
-- name: blocks_tag_debug_0
-  id: blocks_tag_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    display: 'True'
-    filter: '""'
-    name: ''
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [776, 156.0]
-    rotation: 0
-    state: true
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
@@ -570,7 +551,7 @@ blocks:
   id: ieee802_11_frame_equalizer
   parameters:
     affinity: ''
-    algo: ieee802_11.LS
+    algo: chan_est
     alias: ''
     bw: bandwidth
     comment: ''
@@ -593,7 +574,7 @@ blocks:
     alias: ''
     comment: ''
     debug: 'False'
-    encoding: ieee802_11.BPSK_1_2
+    encoding: encoding
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -694,7 +675,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 116]
+    coordinate: [456, 116.0]
     rotation: 180
     state: enabled
 - name: sensitivity
@@ -766,14 +747,12 @@ connections:
 - [blocks_multiply_xx_0, '0', blocks_moving_average_xx_0, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0_1, '0']
 - [blocks_tagged_stream_mux_0, '0', digital_ofdm_carrier_allocator_cvc_0_0_0, '0']
-- [digital_chunks_to_symbols_xx_0, '0', blocks_tag_debug_0, '0']
 - [digital_chunks_to_symbols_xx_0, '0', blocks_tagged_stream_mux_0, '0']
 - [digital_ofdm_carrier_allocator_cvc_0_0_0, '0', fft_vxx_0_0, '0']
 - [digital_ofdm_cyclic_prefixer_0_0, '0', pad_sink_0, '0']
 - [digital_packet_headergenerator_bb_0, '0', digital_chunks_to_symbols_xx_0, '0']
 - [fft_vxx_0_0, '0', digital_ofdm_cyclic_prefixer_0_0, '0']
 - [fft_vxx_0_1, '0', ieee802_11_frame_equalizer_0, '0']
-- [ieee802_11_chunks_to_symbols_xx_0, '0', blocks_tag_debug_0, '1']
 - [ieee802_11_chunks_to_symbols_xx_0, '0', blocks_tagged_stream_mux_0, '1']
 - [ieee802_11_decode_mac_0, out, pad_sink_2, in]
 - [ieee802_11_frame_equalizer_0, '0', ieee802_11_decode_mac_0, '0']

@@ -7,12 +7,8 @@ category: '[IEEE802.11]'
 parameters:
 -   id: encoding
     label: Encoding
-    dtype: enum
+    dtype: raw
     default: ieee802_11.BPSK_1_2
-    options: [ieee802_11.BPSK_1_2, ieee802_11.BPSK_3_4, ieee802_11.QPSK_1_2, ieee802_11.QPSK_3_4,
-        ieee802_11.16QAM_1_2, ieee802_11.16QAM_3_4, ieee802_11.64QAM_2_3, ieee802_11.64QAM_3_4]
-    option_labels: [BPSK 1/2, BPSK 3/4, QPSK 1/2, QPSK 3/4, 16QAM 1/2, 16QAM 3/4,
-        64QAM 2/3, 64QAM 3/4]
 -   id: debug
     label: Debug
     dtype: bool
