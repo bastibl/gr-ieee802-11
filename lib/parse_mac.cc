@@ -419,7 +419,7 @@ public:
         str << std::setfill('0') << std::hex << std::setw(2) << (int)addr[0];
 
         for (int i = 1; i < 6; i++) {
-            str << ":" << (int)addr[i];
+            str << ":" << std::setw(2) << (int)addr[i];
         }
 
         return str.str();
