@@ -19,6 +19,7 @@
 #include <ieee802_11/sync_short.h>
 
 #include <iostream>
+#include <boost/format.hpp> 
 
 using namespace gr::ieee802_11;
 

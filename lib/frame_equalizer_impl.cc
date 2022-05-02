@@ -23,6 +23,7 @@
 #include "frame_equalizer_impl.h"
 #include "utils.h"
 #include <gnuradio/io_signature.h>
+#include <boost/format.hpp> 
 
 namespace gr {
 namespace ieee802_11 {
