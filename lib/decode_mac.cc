@@ -21,6 +21,7 @@
 
 #include <gnuradio/io_signature.h>
 #include <boost/crc.hpp>
+#include <boost/format.hpp> 
 #include <iomanip>
 
 using namespace gr::ieee802_11;
