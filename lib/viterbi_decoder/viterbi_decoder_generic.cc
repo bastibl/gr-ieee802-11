@@ -414,7 +414,7 @@ void viterbi_decoder::viterbi_chunks_init_generic()
 {
     int i, j;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 64; i++) {
         d_metric0_generic[i] = 0;
         d_path0_generic[i] = 0;
     }
