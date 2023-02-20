@@ -34,7 +34,9 @@ using gr::ieee802_11::Encoding;
 #define mylog(msg)                      \
     do {                                \
         if (d_log) {                    \
-            GR_LOG_INFO(d_logger, msg); \
+            std::ostringstream msgx;    \
+            msgx << msg;                \
+            GR_LOG_INFO(d_logger, msgx.str()); \
         }                               \
     } while (0);
 
