@@ -144,6 +144,7 @@ add_subdirectory(include/ieee802_11)
 add_subdirectory(lib)
 add_subdirectory(apps)
 add_subdirectory(docs)
+add_subdirectory(examples)
 # NOTE: manually update below to use GRC to generate C++ flowgraphs w/o python
 if(ENABLE_PYTHON)
   message(STATUS "PYTHON and GRC components are enabled")
