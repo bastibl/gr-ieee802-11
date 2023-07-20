@@ -22,11 +22,13 @@
 namespace gr {
 namespace ieee802_11 {
 
+#pragma pack(push, 1)
 struct ethernet_header {
     uint8_t dest[6];
     uint8_t src[6];
     uint16_t type;
-} __attribute__((packed));
+};
+#pragma pack(pop)
 
 class ether_encap_impl : public ether_encap
 {
