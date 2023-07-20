@@ -224,8 +224,8 @@ void interleave(
 {
 
     int n_cbps = ofdm.n_cbps;
-    int first[n_cbps];
-    int second[n_cbps];
+    int first[MAX_BITS_PER_SYM];
+    int second[MAX_BITS_PER_SYM];
     int s = std::max(ofdm.n_bpsc / 2, 1);
 
     for (int j = 0; j < n_cbps; j++) {
