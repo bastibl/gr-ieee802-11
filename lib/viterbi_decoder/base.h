@@ -41,9 +41,9 @@ protected:
     // Position in circular buffer where the current decoded byte is stored
     int d_store_pos;
     // Metrics for each state
-    unsigned char d_mmresult[64] __attribute__((aligned(16)));
+    alignas(16) unsigned char d_mmresult[64];
     // Paths for each state
-    unsigned char d_ppresult[TRACEBACK_MAX][64] __attribute__((aligned(16)));
+    alignas(16) unsigned char d_ppresult[TRACEBACK_MAX][64];
 
     int d_ntraceback;
     int d_k;
