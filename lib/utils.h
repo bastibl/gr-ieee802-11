@@ -38,6 +38,7 @@ using gr::ieee802_11::Encoding;
         }                               \
     } while (0);
 
+#pragma pack(push, 1)
 struct mac_header {
     // protocol version, type, subtype, to_ds, from_ds, ...
     uint16_t frame_control;
@@ -46,7 +47,8 @@ struct mac_header {
     uint8_t addr2[6];
     uint8_t addr3[6];
     uint16_t seq_nr;
-} __attribute__((packed));
+};
+#pragma pack(pop)
 
 /**
  * WIFI parameters
