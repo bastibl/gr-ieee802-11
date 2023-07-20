@@ -28,7 +28,8 @@ using gr::ieee802_11::Encoding;
 #define MAX_PAYLOAD_SIZE 1500
 #define MAX_PSDU_SIZE (MAX_PAYLOAD_SIZE + 28) // MAC, CRC
 #define MAX_SYM (((16 + 8 * MAX_PSDU_SIZE + 6) / 24) + 1)
-#define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + 288)
+#define MAX_BITS_PER_SYM 288
+#define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + MAX_BITS_PER_SYM)
 
 #define dout d_debug&& std::cout
 #define mylog(msg)                      \
