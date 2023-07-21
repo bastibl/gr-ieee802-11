@@ -24,6 +24,8 @@
 #if defined(__APPLE__)
 #include <architecture/byte_order.h>
 #define htole16(x) OSSwapHostToLittleInt16(x)
+#elif defined(_WIN32)
+#define htole16(x) (x)
 #else
 #include <endian.h>
 #endif
