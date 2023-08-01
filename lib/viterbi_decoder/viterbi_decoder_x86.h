@@ -39,10 +39,10 @@ private:
         __m128i v[2];
     } d_branchtab27_sse2[2];
 
-    __m128i d_metric0[4] __attribute__((aligned(16)));
-    __m128i d_metric1[4] __attribute__((aligned(16)));
-    __m128i d_path0[4] __attribute__((aligned(16)));
-    __m128i d_path1[4] __attribute__((aligned(16)));
+    alignas(16) __m128i d_metric0[4];
+    alignas(16) __m128i d_metric1[4];
+    alignas(16) __m128i d_path0[4];
+    alignas(16) __m128i d_path1[4];
 
     virtual void reset();
 

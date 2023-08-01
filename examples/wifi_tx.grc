@@ -23,6 +23,7 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: ''
+    window_size: (1000,1000)
   states:
     bus_sink: false
     bus_source: false
@@ -294,26 +295,6 @@ blocks:
     coordinate: [240, 396.0]
     rotation: 180
     state: enabled
-- name: blocks_socket_pdu_0
-  id: blocks_socket_pdu
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    host: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    mtu: '10000'
-    port: '52001'
-    tcp_no_delay: 'False'
-    type: TCP_SERVER
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [232, 260.0]
-    rotation: 0
-    state: enabled
 - name: blocks_vector_source_x_0
   id: blocks_vector_source_x
   parameters:
@@ -372,6 +353,26 @@ blocks:
     coordinate: [440, 284]
     rotation: 0
     state: enabled
+- name: network_socket_pdu_0
+  id: network_socket_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    host: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mtu: '10000'
+    port: '52001'
+    tcp_no_delay: 'False'
+    type: TCP_SERVER
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 260.0]
+    rotation: 0
+    state: true
 - name: osmosdr_sink_0
   id: osmosdr_sink
   parameters:
@@ -934,12 +935,13 @@ blocks:
 connections:
 - [blocks_message_strobe_0_0, strobe, ieee802_11_mac_0, app in]
 - [blocks_multiply_const_vxx_0, '0', foo_packet_pad2_0, '0']
-- [blocks_socket_pdu_0, pdus, ieee802_11_mac_0, app in]
 - [blocks_vector_source_x_0, '0', wifi_phy_hier_0, '0']
 - [foo_packet_pad2_0, '0', osmosdr_sink_0, '0']
 - [foo_packet_pad2_0, '0', uhd_usrp_sink_0, '0']
 - [ieee802_11_mac_0, phy out, wifi_phy_hier_0, mac_in]
+- [network_socket_pdu_0, pdus, ieee802_11_mac_0, app in]
 - [wifi_phy_hier_0, '0', blocks_multiply_const_vxx_0, '0']
 
 metadata:
   file_format: 1
+  grc_version: v3.10.2.0-68-g62a7e451

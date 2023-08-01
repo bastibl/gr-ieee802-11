@@ -23,6 +23,7 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: ''
+    window_size: (1000,1000)
   states:
     bus_sink: false
     bus_source: false
@@ -292,41 +293,6 @@ blocks:
     coordinate: [476.0, 568]
     rotation: 270
     state: enabled
-- name: blocks_pdu_to_tagged_stream_0_0
-  id: blocks_pdu_to_tagged_stream
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    tag: packet_len
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [124.0, 560]
-    rotation: 270
-    state: enabled
-- name: blocks_tuntap_pdu_0
-  id: blocks_tuntap_pdu
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ifn: tap0
-    istunflag: 'False'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    mtu: '440'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [616, 157]
-    rotation: 180
-    state: disabled
 - name: foo_packet_pad2_0
   id: foo_packet_pad2
   parameters:
@@ -415,6 +381,41 @@ blocks:
     coordinate: [264, 340.0]
     rotation: 180
     state: enabled
+- name: network_tuntap_pdu_0
+  id: network_tuntap_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ifn: tap0
+    istunflag: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mtu: '440'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 164.0]
+    rotation: 180
+    state: disabled
+- name: pdu_pdu_to_tagged_stream_0
+  id: pdu_pdu_to_tagged_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tag: packet_len
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [124.0, 552]
+    rotation: 270
+    state: true
 - name: qtgui_const_sink_x_0
   id: qtgui_const_sink_x
   parameters:
@@ -1243,16 +1244,16 @@ blocks:
 
 connections:
 - [blocks_multiply_const_vxx_0, '0', foo_packet_pad2_0, '0']
-- [blocks_pdu_to_tagged_stream_0_0, '0', qtgui_const_sink_x_0, '0']
-- [blocks_tuntap_pdu_0, pdus, ieee802_11_ether_encap_0, from tap]
 - [foo_packet_pad2_0, '0', uhd_usrp_sink_0, '0']
 - [foo_wireshark_connector_0, '0', blocks_file_sink_0, '0']
-- [ieee802_11_ether_encap_0, to tap, blocks_tuntap_pdu_0, pdus]
+- [ieee802_11_ether_encap_0, to tap, network_tuntap_pdu_0, pdus]
 - [ieee802_11_ether_encap_0, to wifi, ieee802_11_mac_0, app in]
 - [ieee802_11_mac_0, phy out, wifi_phy_hier_0, mac_in]
+- [network_tuntap_pdu_0, pdus, ieee802_11_ether_encap_0, from tap]
+- [pdu_pdu_to_tagged_stream_0, '0', qtgui_const_sink_x_0, '0']
 - [uhd_usrp_source_0, '0', wifi_phy_hier_0, '0']
 - [wifi_phy_hier_0, '0', blocks_multiply_const_vxx_0, '0']
-- [wifi_phy_hier_0, carrier, blocks_pdu_to_tagged_stream_0_0, pdus]
+- [wifi_phy_hier_0, carrier, pdu_pdu_to_tagged_stream_0, pdus]
 - [wifi_phy_hier_0, mac_out, foo_wireshark_connector_0, in]
 - [wifi_phy_hier_0, mac_out, ieee802_11_ether_encap_0, from wifi]
 - [wifi_phy_hier_0, mac_out, ieee802_11_mac_0, phy in]
@@ -1260,3 +1261,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: v3.10.2.0-68-g62a7e451
