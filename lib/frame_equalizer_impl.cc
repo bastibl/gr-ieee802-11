@@ -360,8 +360,8 @@ bool frame_equalizer_impl::parse_signal(uint8_t* decoded_bits)
         return false;
     }
 
-    mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%") % d_frame_encoding %
-          d_frame_bytes % d_frame_symbols);
+    d_logger->info("encoding: {} - length: {} - symbols: {}",d_frame_encoding,
+          d_frame_bytes, d_frame_symbols);
     return true;
 }
 
