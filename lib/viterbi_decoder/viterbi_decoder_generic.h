@@ -37,10 +37,10 @@ private:
         unsigned char c[32];
     } d_branchtab27_generic[2];
 
-    unsigned char d_metric0_generic[64] __attribute__((aligned(16)));
-    unsigned char d_metric1_generic[64] __attribute__((aligned(16)));
-    unsigned char d_path0_generic[64] __attribute__((aligned(16)));
-    unsigned char d_path1_generic[64] __attribute__((aligned(16)));
+    alignas(16) unsigned char d_metric0_generic[64];
+    alignas(16) unsigned char d_metric1_generic[64];
+    alignas(16) unsigned char d_path0_generic[64];
+    alignas(16) unsigned char d_path1_generic[64];
 
     void reset();
 
