@@ -147,8 +147,8 @@ public:
             return;
         }
 
-        mylog(boost::format("encoding: %1% - length: %2% - symbols: %3%") %
-              d_ofdm.encoding % d_frame.psdu_size % d_frame.n_sym);
+        d_logger->info("encoding: {} - length: {} - symbols: {}",
+              d_ofdm.encoding, d_frame.psdu_size, d_frame.n_sym);
 
         // create PDU
         pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);

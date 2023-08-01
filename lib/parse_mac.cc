@@ -64,7 +64,7 @@ public:
         int frame_len = pmt::blob_length(d_msg);
         mac_header* h = (mac_header*)pmt::blob_data(d_msg);
 
-        mylog(boost::format("length: %1%") % frame_len);
+        d_logger->info("length: {}",frame_len);
 
         dout << std::endl << "new mac frame  (length " << frame_len << ")" << std::endl;
         dout << "=========================================" << std::endl;
