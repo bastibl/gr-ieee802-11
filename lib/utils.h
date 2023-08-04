@@ -32,10 +32,10 @@ using gr::ieee802_11::Encoding;
 #define MAX_ENCODED_BITS ((16 + 8 * MAX_PSDU_SIZE + 6) * 2 + MAX_BITS_PER_SYM)
 
 #define dout d_debug&& std::cout
-#define mylog(msg)                      \
+#define mylog(...)                      \
     do {                                \
         if (d_log) {                    \
-            GR_LOG_INFO(d_logger, msg); \
+            d_logger->info(__VA_ARGS__); \
         }                               \
     } while (0);
 

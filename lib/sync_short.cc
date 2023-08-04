@@ -19,7 +19,6 @@
 #include <ieee802_11/sync_short.h>
 
 #include <iostream>
-#include <boost/format.hpp> 
 
 using namespace gr::ieee802_11;
 
@@ -139,7 +138,7 @@ public:
 
     void insert_tag(uint64_t item, double freq_offset, uint64_t input_item)
     {
-        mylog(boost::format("frame start at in: %2% out: %1%") % item % input_item);
+        mylog("frame start at in: {} out: {}", item, input_item);
 
         const pmt::pmt_t key = pmt::string_to_symbol("wifi_start");
         const pmt::pmt_t value = pmt::from_double(freq_offset);
