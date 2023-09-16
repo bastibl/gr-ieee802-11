@@ -17,6 +17,7 @@
 #ifndef INCLUDED_IEEE802_11_MAPPER_H
 #define INCLUDED_IEEE802_11_MAPPER_H
 
+#include <cstdint>
 #include <gnuradio/block.h>
 #include <ieee802_11/api.h>
 
@@ -33,6 +34,11 @@ enum Encoding {
     QAM64_2_3 = 6,
     QAM64_3_4 = 7,
 };
+
+// Required for fmt 10
+inline uint8_t format_as(Encoding e) {
+  return static_cast<uint8_t>(e);
+}
 
 class IEEE802_11_API mapper : virtual public block
 {
