@@ -33,7 +33,7 @@ list(APPEND ieee802_11_sources
     extract_csi_impl.cc
     frame_equalizer_impl.cc
     mac.cc
-    mapper.cc
+    mapper_impl.cc
     parse_mac.cc
     signal_field_impl.cc
     sync_long.cc
