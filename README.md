@@ -46,7 +46,7 @@ needed. For example the Wireshark connector. You can find these blocks at
 [https://github.com/bastibl/gr-foo](https://github.com/bastibl/gr-foo). They are
 installed with the typical command sequence:
 
-    git clone https://github.com/bastibl/gr-foo.git
+    git clone https://github.com/bastibl/gr-foo
     cd gr-foo
     mkdir build
     cd build
@@ -60,7 +60,7 @@ installed with the typical command sequence:
 
 To actually install the blocks do
 
-    git clone git://github.com/bastibl/gr-ieee802-11.git
+    git clone https://github.com/bastibl/gr-ieee802-11
     cd gr-ieee802-11
     mkdir build
     cd build
