@@ -1,0 +1,23 @@
+title: The IEEE801_11 OOT Module
+version: 1.0
+brief: IEEE 802.11 a/g/p Transceiver
+tags: # Tags are arbitrary, but look at CGRAN what other authors are using
+  - IEEE 802.11
+  - WiFi
+  - OFDM
+author:
+  - Bastian Bloessl <bloessl@ccs-labs.org>
+copyright_owner:
+  - Bastian Bloessl
+license: GPL-3.0-or-later
+gr_supported_version:
+  - 3.7
+  - 3.8
+  - 3.9
+  - 3.10
+repo: https://github.com/bastibl/gr-ieee802-11.git
+website: http://www.ccs-labs.org/projects/wime/
+icon: http://www.ccs-labs.org/projects/wime/wime.png
+description: |-
+  This an IEEE 802.11 a/g/p transceiver for GNU Radio. Over the air, I tested it with the Ettus USRP N210 with XCVR2450 and CBX daughterboards. For interoperability tests I use mainly an Atheros (ath5k) WiFi card. The code can also be used for packet error rate simulations.
+file_format: 1

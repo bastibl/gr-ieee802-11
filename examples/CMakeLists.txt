@@ -11,4 +11,4 @@ install(
           wifi_rx.grc
           wifi_transceiver.grc
           wifi_tx.grc
-    DESTINATION ${GR_PKG_DATA_DIR}/examples)
+    DESTINATION share/gnuradio/examples/ieee802_11)

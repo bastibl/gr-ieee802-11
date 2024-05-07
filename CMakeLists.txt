@@ -161,3 +161,7 @@ endif(ENABLE_PYTHON)
 install(FILES cmake/Modules/ieee802_11Config.cmake
     DESTINATION ${CMAKE_MODULES_DIR}/ieee802_11
 )
+
+install(FILES MANIFEST.yml
+    RENAME MANIFEST-${VERSION_MAJOR}.${VERSION_API}.${VERSION_ABI}${VERSION_PATCH}.yml
+    DESTINATION share/gnuradio/manifests/ieee802_11)
