@@ -216,3 +216,5 @@ of the TUN/TAP interface is handled by the scripts in the ```apps``` folder.
 
 For further information please checkout our project page
 [https://www.wime-project.net](https://www.wime-project.net)
+
+For information and an implementation surrounding IEEE 802.11ah, please refer to [gr-ieee802-11ah](https://github.com/irongiant33/gr-ieee802-11ah).
