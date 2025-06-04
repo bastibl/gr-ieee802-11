@@ -22,14 +22,11 @@
 using namespace gr::ieee802_11::equalizer;
 
 void lms::equalize(gr_complex* in,
-                        int n,
-                        gr_complex* symbols,
-                        gr_complex* bits,
-                        uint8_t pilot1_index,
-                        uint8_t pilot2_index,
-                        std::shared_ptr<gr::digital::constellation> mod)
+                   int n,
+                   gr_complex* symbols,
+                   uint8_t* bits,
+                   std::shared_ptr<gr::digital::constellation> mod)
 {
-    /*
 
     if (n == 0) {
         std::memcpy(d_H, in, 64 * sizeof(gr_complex));
@@ -66,8 +63,6 @@ void lms::equalize(gr_complex* in,
             }
         }
     }
-
-    */
 }
 
 double lms::get_snr() { return d_snr; }

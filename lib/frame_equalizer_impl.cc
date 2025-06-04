@@ -38,8 +38,8 @@ frame_equalizer::make(Equalizer algo, double freq, double bw, bool log, bool deb
 frame_equalizer_impl::frame_equalizer_impl(
     Equalizer algo, double freq, double bw, bool log, bool debug)
     : gr::block("frame_equalizer",
-                gr::io_signature::make(1, 1, SAMPLES_PER_OFDM_SYMBOL * sizeof(gr_complex)),
-                gr::io_signature::make(1, 1, CODED_BITS_PER_OFDM_SYMBOL * sizeof(gr_complex))),
+                gr::io_signature::make(1, 1, 64 * sizeof(gr_complex)),
+                gr::io_signature::make(1, 1, 48)),
       d_current_symbol(0),
       d_log(log),
       d_debug(debug),
@@ -122,19 +122,17 @@ int frame_equalizer_impl::general_work(int noutput_items,
     gr::thread::scoped_lock lock(d_mutex);
 
     const gr_complex* in = (const gr_complex*)input_items[0];
-    gr_complex* out = (gr_complex*)output_items[0];
+    uint8_t* out = (uint8_t*)output_items[0];
 
     int i = 0;
     int o = 0;
-    gr_complex symbols[CODED_BITS_PER_OFDM_SYMBOL];
-    gr_complex current_symbol[SAMPLES_PER_OFDM_SYMBOL];
+    gr_complex symbols[48];
+    gr_complex current_symbol[64];
 
     dout << "FRAME EQUALIZER: input " << ninput_items[0] << "  output " << noutput_items
          << std::endl;
 
     while ((i < ninput_items[0]) && (o < noutput_items)) {
-        
-        dout << "d_current_symbol: " << d_current_symbol << " i: " << i << " o: " << o << std::endl;
 
         get_tags_in_window(tags, 0, i, i + 1, pmt::string_to_symbol("wifi_start"));
 
@@ -142,8 +140,6 @@ int frame_equalizer_impl::general_work(int noutput_items,
         if (tags.size()) {
             d_current_symbol = 0;
             d_frame_symbols = 0;
-            d_sig = 0;
-            d_travel_pilots = false;
             d_frame_mod = d_bpsk;
 
             d_freq_offset_from_synclong =
@@ -154,106 +150,72 @@ int frame_equalizer_impl::general_work(int noutput_items,
             dout << "epsilon: " << d_epsilon0 << std::endl;
         }
 
-        // if we reached the end of the frame, drop remaining samples
-        if (d_current_symbol > (d_frame_symbols + NUM_OFDM_SYMBOLS_IN_LTF1 + NUM_OFDM_SYMBOLS_IN_SIG_FIELD)) {
+        // not interesting -> skip
+        if (d_current_symbol > (d_frame_symbols + 2)) {
             i++;
             continue;
         }
-        
 
-        std::memcpy(current_symbol, in + i * SAMPLES_PER_OFDM_SYMBOL, SAMPLES_PER_OFDM_SYMBOL * sizeof(gr_complex));
+        std::memcpy(current_symbol, in + i * 64, 64 * sizeof(gr_complex));
 
-        //we define pilot_mapping, which holds the values of the pilots iaw pilot mapping p.3253
-        gr_complex pilot_mapping[NUM_PILOTS];
-
-        if(d_current_symbol < NUM_OFDM_SYMBOLS_IN_LTF1){//pilot mapping is always {-1, -1} for all LTS inside LTF1
-            pilot_mapping[0] = -1;
-            pilot_mapping[1] = -1;
-        }
-
-        else{
-            //As from the end of LTF1 until end of DATA field, pilot mapping is {1, -1} for all even symbols and {-1, 1} for all odd symbols.
-            gr_complex first_pilot = d_current_symbol % 2 ? -1 : 1;                     
-            //we mulitply the pilot values with a polarity factor as described in OFMD modulation p.3258
-            gr_complex p_n = equalizer::base::POLARITY[(d_current_symbol - NUM_OFDM_SYMBOLS_IN_LTF1) % 127];
-
-            pilot_mapping[0] = first_pilot * p_n;
-            pilot_mapping[1] = - first_pilot * p_n;
-
-        }
-
-        //compute the pilot indexes
-        uint8_t pilot1_index = PILOT1_INDEX;
-        uint8_t pilot2_index = PILOT2_INDEX;
-
-        if(d_travel_pilots){//in the case of traveling pilots
-
-            //compute the indexes iaw table 23-21 (p. 3254)
-            uint8_t m = (d_current_symbol - NUM_OFDM_SYMBOLS_IN_LTF1 - NUM_OFDM_SYMBOLS_IN_SIG_FIELD) % TRAVELING_PILOT_POSITIONS;
-
-            pilot1_index = TRAVEL_PILOT1[m];
-            pilot2_index = TRAVEL_PILOT2[m];
-        }
-
-        // compensate sampling offset        
-        for (int i = 0; i < SAMPLES_PER_OFDM_SYMBOL; i++) {
+        // compensate sampling offset
+        for (int i = 0; i < 64; i++) {
             current_symbol[i] *= exp(gr_complex(0,
-                                                - 2 * M_PI * d_current_symbol * (SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI) * 
-                                                    (d_epsilon0 + d_er) * (i - SAMPLES_PER_OFDM_SYMBOL / 2) / SAMPLES_PER_OFDM_SYMBOL));
-            
-            //@irongiant33 To answer your question "what is 32? Half of the 802.11a number of subcarriers?". The "32" seem indeed to come from the number of subcarriers in 802.11a. The sampling offset compensation performed is described in Equation 7 of paper "Frequency Offset Estimation and Correction in the IEEE 802.11a WLAN" (see https://openofdm.readthedocs.io/en/latest/_downloads/vtc04_freq_offset.pdf). The number (i - 32) actually corresponds to the k variable that ranges from -26 to 26. Consequently, you should replace "32" with "SAMPLES_PER_OFDM_SYMBOL/2" in your code.
-            
-        }
-        
-        /*
-        Below you compute beta according to Equation (8) from paper.
-        */
-
-        double beta = 0;
-        if(d_current_symbol != 0){
-            beta = arg( pilot_mapping[0] * current_symbol[pilot1_index] * conj(d_equalizer->get_csi_at(pilot1_index)) + 
-                        pilot_mapping[1] * current_symbol[pilot2_index] * conj(d_equalizer->get_csi_at(pilot2_index)) );
+                                                2 * M_PI * d_current_symbol * 80 *
+                                                    (d_epsilon0 + d_er) * (i - 32) / 64));
         }
 
-        //debug
-        //dout << "Pilot 0 is " << current_symbol[pilot1_index] / d_equalizer->get_csi_at(pilot1_index) <<", pilot 1 is " << current_symbol[pilot2_index]/ d_equalizer->get_csi_at(pilot2_index) << std::endl;
-        //dout << "Polarity pilot 0 should be " << pilot_mapping[0] << " , polarity pilot 1 should be " << pilot_mapping[1] << std::endl;
-        //dout << "Epsilon is " << epsilon << std::endl;
-        //dout << "Beta is " << beta << std::endl;
+        gr_complex p = equalizer::base::POLARITY[(d_current_symbol - 2) % 127];
 
-        /*
-        Below you compute epsilon_r using Formula (10) from paper.
-        */
+        double beta;
+        if (d_current_symbol < 2) {
+            beta = arg(current_symbol[11] - current_symbol[25] + current_symbol[39] +
+                       current_symbol[53]);
 
-        double er = arg((conj(d_prev_pilots_with_corrected_polarity[0]) * pilot_mapping[0] * current_symbol[pilot1_index]) +
-                        (conj(d_prev_pilots_with_corrected_polarity[1]) * pilot_mapping[1] * current_symbol[pilot2_index]));
-
-        er *= d_bw / (2 * M_PI * d_freq * (SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI));
-
-        // compensate residual frequency offset iaw Equation (9)
-        for (int i = 0; i < SAMPLES_PER_OFDM_SYMBOL; i++) {
-            current_symbol[i] *= exp(gr_complex(0, - beta));
+        } else {
+            beta = arg((current_symbol[11] * p) + (current_symbol[39] * p) +
+                       (current_symbol[25] * p) + (current_symbol[53] * -p));
         }
-        
-        // update estimate of residual frequency offset using exponential moving average
-        if (d_current_symbol >= NUM_OFDM_SYMBOLS_IN_LTF1) {
+
+        double er = arg((conj(d_prev_pilots[0]) * current_symbol[11] * p) +
+                        (conj(d_prev_pilots[1]) * current_symbol[25] * p) +
+                        (conj(d_prev_pilots[2]) * current_symbol[39] * p) +
+                        (conj(d_prev_pilots[3]) * current_symbol[53] * -p));
+
+        er *= d_bw / (2 * M_PI * d_freq * 80);
+
+        if (d_current_symbol < 2) {
+            d_prev_pilots[0] = current_symbol[11];
+            d_prev_pilots[1] = -current_symbol[25];
+            d_prev_pilots[2] = current_symbol[39];
+            d_prev_pilots[3] = current_symbol[53];
+        } else {
+            d_prev_pilots[0] = current_symbol[11] * p;
+            d_prev_pilots[1] = current_symbol[25] * p;
+            d_prev_pilots[2] = current_symbol[39] * p;
+            d_prev_pilots[3] = current_symbol[53] * -p;
+        }
+
+        // compensate residual frequency offset
+        for (int i = 0; i < 64; i++) {
+            current_symbol[i] *= exp(gr_complex(0, -beta));
+        }
+
+        // update estimate of residual frequency offset
+        if (d_current_symbol >= 2) {
+
             double alpha = 0.1;
             d_er = (1 - alpha) * d_er + alpha * er;
         }
 
-        //update the previous pilots
-        d_prev_pilots_with_corrected_polarity[0] = pilot_mapping[0] * current_symbol[pilot1_index];
-        d_prev_pilots_with_corrected_polarity[1] = pilot_mapping[1] * current_symbol[pilot2_index];
-
-        // do equalization. this is what sends bytes downstream to HaLow Decode MAC starting at the 0 offset relative to (out + o * CODED_BITS_PER_OFDM_SYMBOL), ending at CODED_BITS_PER_OFDM_SYMBOL offset index.
+        // do equalization
         d_equalizer->equalize(
-            current_symbol, d_current_symbol, symbols, out + o * CODED_BITS_PER_OFDM_SYMBOL, pilot1_index, pilot2_index, d_frame_mod);
+            current_symbol, d_current_symbol, symbols, out + o * 48, d_frame_mod);
 
-        //if in SIG field
-        if (d_current_symbol >= NUM_OFDM_SYMBOLS_IN_LTF1 && d_current_symbol < NUM_OFDM_SYMBOLS_IN_LTF1 + NUM_OFDM_SYMBOLS_IN_SIG_FIELD){
-            dout << "o: " << o << std::endl;
+        // signal field
+        if (d_current_symbol == 2) {
 
-            if (decode_signal_field(symbols)) {
+            if (decode_signal_field(out + o * 48)) {
 
                 pmt::pmt_t dict = pmt::make_dict();
                 dict = pmt::dict_add(
@@ -285,13 +247,12 @@ int frame_equalizer_impl::general_work(int noutput_items,
             }
         }
 
-        //if DATA
-        if (d_current_symbol >= NUM_OFDM_SYMBOLS_IN_LTF1 + NUM_OFDM_SYMBOLS_IN_SIG_FIELD) {
+        if (d_current_symbol > 2) {
             o++;
             pmt::pmt_t pdu = pmt::make_dict();
             message_port_pub(
                 pmt::mp("symbols"),
-                pmt::cons(pmt::make_dict(), pmt::init_c32vector(CODED_BITS_PER_OFDM_SYMBOL, symbols)));            
+                pmt::cons(pmt::make_dict(), pmt::init_c32vector(48, symbols)));
         }
 
         i++;
@@ -302,162 +263,99 @@ int frame_equalizer_impl::general_work(int noutput_items,
     return o;
 }
 
-bool frame_equalizer_impl::decode_signal_field(gr_complex* rx_symbols)
+bool frame_equalizer_impl::decode_signal_field(uint8_t* rx_bits)
 {
-    static ofdm_param ofdm(BPSK_1_2_REP);
-    static frame_param frame(ofdm);
-    
-    //deinterleave
-    deinterleave(d_deinterleaved, rx_symbols);
 
-    //unrepeat
-    unrepeat(d_unrepeated, d_deinterleaved);
+    static ofdm_param ofdm(BPSK_1_2);
+    static frame_param frame(ofdm, 0);
 
-    //add the decided bit into d_sig_field_bits
-    for (int i = 0; i < NUM_BITS_UNREPEATED_SIG_SYMBOL; i++){
-        d_sig_field_bits[d_sig * NUM_BITS_UNREPEATED_SIG_SYMBOL + i] = ofdm.constellation->decision_maker(&d_unrepeated[i]);
-    }
+    deinterleave(rx_bits);
+    uint8_t* decoded_bits = d_decoder.decode(&ofdm, &frame, d_deinterleaved);
 
-    //increment the sig number
-    d_sig++;
-
-    //if we derepeated the whole sig field already
-    if(d_sig == NUM_OFDM_SYMBOLS_IN_SIG_FIELD){
-
-        //decode
-        uint8_t* decoded_bits = d_decoder.decode(&ofdm, &frame, d_sig_field_bits);
-        
-        //parse the sig field
-        return parse_signal(decoded_bits);
-    }
-    //otherwise, wait for remaining sig field symbols to be decoded
-    else{
-        return false;
-    }
+    return parse_signal(decoded_bits);
 }
 
-void frame_equalizer_impl::print_coding(frame_coding coding){
-    switch (coding)
-    {
-    case BCC:
-        dout << "BCC";
-        break;
-    case LDPC:
-        dout << "LDPC";
-        break;
-    default:
-        break;
+void frame_equalizer_impl::deinterleave(uint8_t* rx_bits)
+{
+    for (int i = 0; i < 48; i++) {
+        d_deinterleaved[i] = rx_bits[interleaver_pattern[i]];
     }
 }
-
 
 bool frame_equalizer_impl::parse_signal(uint8_t* decoded_bits)
-{    
+{
 
-    //number of spatial streams
-    uint8_t nsts = decoded_bits[0] * 0x1 + decoded_bits[1] * 0x2 + 1;
+    int r = 0;
+    d_frame_bytes = 0;
+    bool parity = false;
+    for (int i = 0; i < 17; i++) {
+        parity ^= decoded_bits[i];
 
-    //short GI
-    bool short_gi = decoded_bits[2] == 1 ? true : false;
+        if ((i < 4) && decoded_bits[i]) {
+            r = r | (1 << i);
+        }
 
-    //coding
-    frame_coding coding = decoded_bits[3] == 1 ? frame_coding::LDPC : frame_coding::BCC;
-    if(coding == frame_coding::LDPC){
-        dout << "ERROR : frame coding (LDPC) unsupported" << std::endl;
-    }
-    
-    //mcs
-    uint8_t mcs = decoded_bits[7] * 0x1 + decoded_bits[8] * 0x2 + decoded_bits[9] * 0x4 + decoded_bits[10] * 0x8;
-    d_frame_encoding = mcs;
-
-    //aggregation
-    bool aggregation = decoded_bits[11] == 1 ? true : false;
-
-    //length
-    uint16_t length = 0;
-    for (int i = 0; i < 9; i++){
-        //length += decoded_bits[i] * pow(2, (20 - i));
-        length += decoded_bits[12 + i] * pow(2, i);
-    }
-    if(!aggregation){
-        //when Aggregation is set to OFF, length is the number of octets in the PSDU (Table 23-18)
-        d_frame_bytes = length;
-    }
-    else{
-        //TODO
+        if (decoded_bits[i] && (i > 4) && (i < 17)) {
+            d_frame_bytes = d_frame_bytes | (1 << (i - 5));
+        }
     }
 
-    //travelling pilots
-    d_travel_pilots = decoded_bits[24] == 1 ? true : false;
-
-    //NDP indication
-    bool ndp = !!(decoded_bits[25]);
-
-    //crc received
-    uint8_t rx_crc4 = decoded_bits[26] * 0x8 + decoded_bits[27] * 0x4 + decoded_bits[28] * 0x2 + decoded_bits[29] * 0x1;
-
-    //debug
-    dout << "sts : " << unsigned(nsts) << std::endl;
-    dout << "Short GI : " << short_gi << std::endl;
-    dout << "Coding : ";
-    print_coding(coding);
-    dout << std::endl;
-    dout << "mcs : " << unsigned(mcs) << std::endl;
-    dout << "Aggregation : " << aggregation << std::endl;
-    dout << "length : " << unsigned(length) << std::endl;
-    dout << "Travelling Pilots " << d_travel_pilots << std::endl;
-    dout << "NDP Indication " << ndp << std::endl;
-    dout << "CRC-4 bit received : " << unsigned(rx_crc4) << std::endl;
-    dout << "CRC-4 bit computed : " << unsigned(compute_crc(decoded_bits)) << std::endl;
-
-    if(rx_crc4 == compute_crc(decoded_bits)){
-        dout << "SIG field read with success" << std::endl;
-    }
-    else{
-        dout << "ERROR while reading SIG field : bad crc" << std::endl;
-
+    if (parity != decoded_bits[17]) {
+        dout << "SIGNAL: wrong parity" << std::endl;
         return false;
     }
 
-    //compute frame symbols, encoding and bytes members
-    ofdm_param ofdm((gr::ieee802_11::Encoding) mcs);
-    frame_param frame(ofdm, (int)length);
-
-    d_frame_symbols = frame.n_sym;
-    d_frame_encoding = (int) mcs;
-    d_frame_bytes = (int)length;
-
-    
-    switch (mcs) {//table 23-41
-    case 0:
-        dout << "Encoding: 300 kbit/s   ";
+    switch (r) {
+    case 11:
+        d_frame_encoding = 0;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)24);
+        d_frame_mod = d_bpsk;
+        dout << "Encoding: 3 Mbit/s   ";
         break;
-    case 1:
-        dout << "Encoding: 600 kbit/s   ";
-        break;
-    case 2:
-        dout << "Encoding: 900 kbit/s   ";
-        break;
-    case 3:
-        dout << "Encoding: 1200 kbit/s   ";
-        break;
-    case 4:
-        dout << "Encoding: 1800 kbit/s   ";
-        break;
-    case 5:
-        dout << "Encoding: 2400 kbit/s   ";
-        break;
-    case 6:
-        dout << "Encoding: 2700 kbit/s   ";
-        break;
-    case 7:
-        dout << "Encoding: 3000 kbit/s   ";
+    case 15:
+        d_frame_encoding = 1;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)36);
+        d_frame_mod = d_bpsk;
+        dout << "Encoding: 4.5 Mbit/s   ";
         break;
     case 10:
-        dout << "Encoding: 150 kbit/s   ";
+        d_frame_encoding = 2;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)48);
+        d_frame_mod = d_qpsk;
+        dout << "Encoding: 6 Mbit/s   ";
+        break;
+    case 14:
+        d_frame_encoding = 3;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)72);
+        d_frame_mod = d_qpsk;
+        dout << "Encoding: 9 Mbit/s   ";
+        break;
+    case 9:
+        d_frame_encoding = 4;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)96);
+        d_frame_mod = d_16qam;
+        dout << "Encoding: 12 Mbit/s   ";
+        break;
+    case 13:
+        d_frame_encoding = 5;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)144);
+        d_frame_mod = d_16qam;
+        dout << "Encoding: 18 Mbit/s   ";
+        break;
+    case 8:
+        d_frame_encoding = 6;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)192);
+        d_frame_mod = d_64qam;
+        dout << "Encoding: 24 Mbit/s   ";
+        break;
+    case 12:
+        d_frame_encoding = 7;
+        d_frame_symbols = (int)ceil((16 + 8 * d_frame_bytes + 6) / (double)216);
+        d_frame_mod = d_64qam;
+        dout << "Encoding: 27 Mbit/s   ";
         break;
     default:
-        dout << "unsupported encoding" << std::endl;
+        dout << "unknown encoding" << std::endl;
         return false;
     }
 
@@ -465,10 +363,14 @@ bool frame_equalizer_impl::parse_signal(uint8_t* decoded_bits)
           d_frame_encoding,
           d_frame_bytes,
           d_frame_symbols);
-          
     return true;
-    
 }
+
+const int frame_equalizer_impl::interleaver_pattern[48] = {
+    0, 3, 6, 9,  12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45,
+    1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46,
+    2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47
+};
 
 } /* namespace ieee802_11 */
 } /* namespace gr */

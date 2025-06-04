@@ -24,7 +24,7 @@ using namespace gr::ieee802_11;
 class mapper_impl : public mapper
 {
 public:
-    static const int DATA_CARRIERS = CODED_BITS_PER_OFDM_SYMBOL;
+    static const int DATA_CARRIERS = 48;
 
     mapper_impl(Encoding e, bool debug)
         : block("mapper",
@@ -96,20 +96,10 @@ public:
                 char* scrambled_data = (char*)calloc(frame.n_data_bits, sizeof(char));
                 char* encoded_data = (char*)calloc(frame.n_data_bits * 2, sizeof(char));
                 char* punctured_data = (char*)calloc(frame.n_encoded_bits, sizeof(char));
-                char* repeated_data;
-                char* interleaved_data;
-                char* symbols;
-
-                if(d_ofdm.encoding == gr::ieee802_11::BPSK_1_2_REP){
-                    repeated_data = (char*)calloc(frame.n_encoded_bits * 2, sizeof(char));
-                    interleaved_data = (char*)calloc(frame.n_encoded_bits * 2, sizeof(char));
-                    symbols = (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc) * 2, sizeof(char));
-                }
-                else{
-                    interleaved_data =(char*)calloc(frame.n_encoded_bits, sizeof(char));
-                    symbols =(char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
-                }
-
+                char* interleaved_data =
+                    (char*)calloc(frame.n_encoded_bits, sizeof(char));
+                char* symbols =
+                    (char*)calloc((frame.n_encoded_bits / d_ofdm.n_bpsc), sizeof(char));
 
                 // generate the WIFI data field, adding service field and pad bits
                 generate_bits(psdu, data_bits, frame);
@@ -126,21 +116,17 @@ public:
                 convolutional_encoding(scrambled_data, encoded_data, frame);
                 // puncturing
                 puncturing(encoded_data, punctured_data, frame, d_ofdm);
-                // repeate (only if necessary - MCS 10) and interleave
-                if(d_ofdm.encoding == gr::ieee802_11::BPSK_1_2_REP){
-                    repeat(punctured_data, repeated_data, frame, d_ofdm);
-                    interleave(repeated_data, interleaved_data, frame, d_ofdm);
-                }
-                else{
-                    interleave(punctured_data, interleaved_data, frame, d_ofdm);
-                }
+                // std::cout << "punctured" << std::endl;
+                // interleaving
+                interleave(punctured_data, interleaved_data, frame, d_ofdm);
+                // std::cout << "interleaved" << std::endl;
 
                 // one byte per symbol
                 split_symbols(interleaved_data, symbols, frame, d_ofdm);
 
-                d_symbols_len = frame.n_sym * CODED_BITS_PER_OFDM_SYMBOL;
-                dout << "d_symbols_len = " << d_symbols_len << std::endl;
-                d_symbols = (char*)calloc(d_symbols_len, sizeof(char));
+                d_symbols_len = frame.n_sym * 48;
+
+                d_symbols = (char*)calloc(d_symbols_len, 1);
                 std::memcpy(d_symbols, symbols, d_symbols_len);
 
 
@@ -162,9 +148,6 @@ public:
                 free(scrambled_data);
                 free(encoded_data);
                 free(punctured_data);
-                if(d_ofdm.encoding == gr::ieee802_11::BPSK_1_2_REP){
-                    free(repeated_data);
-                }
                 free(interleaved_data);
                 free(symbols);
 

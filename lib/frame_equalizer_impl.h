@@ -26,11 +26,6 @@
 namespace gr {
 namespace ieee802_11 {
 
-enum frame_coding{
-    BCC,
-    LDPC
-};
-
 class frame_equalizer_impl : virtual public frame_equalizer
 {
 
@@ -50,8 +45,8 @@ public:
 
 private:
     bool parse_signal(uint8_t* signal);
-    bool decode_signal_field(gr_complex* rx_bits);
-    void print_coding(frame_coding coding);
+    bool decode_signal_field(uint8_t* rx_bits);
+    void deinterleave(uint8_t* rx_bits);
 
     equalizer::base* d_equalizer;
     gr::thread::mutex d_mutex;
@@ -59,9 +54,6 @@ private:
     bool d_debug;
     bool d_log;
     int d_current_symbol;
-    int d_sig;//the current sig field number
-    uint8_t d_sig_field_bits[200] = {0};//the bits contained in the sig field before decoding
-    uint8_t d_crc4_input_bytes[4];//the input bytes to the crc computer
     viterbi_decoder d_decoder;
 
     // freq offset
@@ -70,22 +62,14 @@ private:
     double d_bw;                        // Hz
     double d_er;
     double d_epsilon0;
-    gr_complex d_prev_pilots_with_corrected_polarity[NUM_PILOTS] = {gr_complex(0,0)}; //initiate to 0
-
-    const gr_complex LONG[SAMPLES_PER_OFDM_SYMBOL] = { 0,  0,  0,  1, -1,  1, -1, -1,  1, -1, 1, 1, -1, 1, 1, 1, 0, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 0, 0};
-    
-    //traveling pilots
-    const int TRAVEL_PILOT1[TRAVELING_PILOT_POSITIONS] = {14, 6, 11, 3, 8, 13, 5, 10, 15, 7, 12, 4, 9};
-    const int TRAVEL_PILOT2[TRAVELING_PILOT_POSITIONS] = {28,20, 25,17,22, 27,19, 24, 29,21, 26,18,23};
-    bool d_travel_pilots = false;
+    gr_complex d_prev_pilots[4];
 
     int d_frame_bytes;
     int d_frame_symbols;
     int d_frame_encoding;
 
-    gr_complex d_deinterleaved[CODED_BITS_PER_OFDM_SYMBOL];
-    gr_complex d_unrepeated[NUM_BITS_UNREPEATED_SIG_SYMBOL];
-    gr_complex symbols[CODED_BITS_PER_OFDM_SYMBOL];
+    uint8_t d_deinterleaved[48];
+    gr_complex symbols[48];
 
     std::shared_ptr<gr::digital::constellation> d_frame_mod;
     constellation_bpsk::sptr d_bpsk;
@@ -93,6 +77,7 @@ private:
     constellation_16qam::sptr d_16qam;
     constellation_64qam::sptr d_64qam;
 
+    static const int interleaver_pattern[48];
 };
 
 } // namespace ieee802_11

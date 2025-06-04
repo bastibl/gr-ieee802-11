@@ -26,8 +26,6 @@
 using namespace gr::ieee802_11;
 
 #define LINKTYPE_IEEE802_11 105 /* http://www.tcpdump.org/linktypes.html */
-#define BYTE_SERVICE 1
-#define BYTE_CRC32 4
 
 class decode_mac_impl : public decode_mac
 {
@@ -35,7 +33,7 @@ class decode_mac_impl : public decode_mac
 public:
     decode_mac_impl(bool log, bool debug)
         : block("decode_mac",
-                gr::io_signature::make(1, 1, CODED_BITS_PER_OFDM_SYMBOL * sizeof(gr_complex)),
+                gr::io_signature::make(1, 1, 48),
                 gr::io_signature::make(0, 0, 0)),
           d_log(log),
           d_debug(debug),
@@ -52,7 +50,7 @@ public:
                      gr_vector_void_star& output_items)
     {
 
-        const gr_complex* in = (const gr_complex*)input_items[0];
+        const uint8_t* in = (const uint8_t*)input_items[0];
 
         int i = 0;
 
@@ -102,60 +100,22 @@ public:
             }
 
             if (copied < d_frame.n_sym) {
-
                 dout << "copy one symbol, copied " << copied << " out of "
                      << d_frame.n_sym << std::endl;
-                
-                //if MCS = 10
-                if(d_ofdm.encoding == gr::ieee802_11::BPSK_1_2_REP){
-                    
-                    //deinterleave the complex symbols
-                    gr_complex d_deinterleaved[CODED_BITS_PER_OFDM_SYMBOL];
-                    deinterleave(d_deinterleaved, in);
-
-                    //unrepeat the complex symbols
-                    unrepeat(d_unrepeated, d_deinterleaved);
-
-                    //bit decision last
-                    for (int j = 0; j < d_ofdm.n_cbps; j++){
-                        d_rx_bits[j] = d_ofdm.constellation->decision_maker(&d_unrepeated[j]);
-                    }
-                }
-
-                //for any other MCS
-                else{
-                    
-                    //bit decision first
-                    for (int j = 0; j < CODED_BITS_PER_OFDM_SYMBOL; j++){
-                        for(int k = 0; k < d_ofdm.n_bpsc; k++){
-                            d_rx_bits[j * d_ofdm.n_bpsc + k] = !!(d_ofdm.constellation->decision_maker(&in[j]) &(1 << k));
-                        }
-                    }
-
-                    //deinterleave the bits
-                    uint8_t d_deinterleaved[MAX_BITS_PER_SYM];
-                    deinterleave(d_rx_bits, d_deinterleaved, d_frame, d_ofdm);
-                    
-                    //copy deinterleaved bits back into d_rx_bits
-                    memcpy(d_rx_bits, d_deinterleaved, d_ofdm.n_cbps * sizeof(uint8_t));
-                }
-
-                //copy d_rx_bits into d_encoded_bits for future conv decoding
-                memcpy(d_encoded_bits + copied * d_ofdm.n_cbps, d_rx_bits, d_ofdm.n_cbps);
-
+                std::memcpy(d_rx_symbols + (copied * 48), in, 48);
                 copied++;
 
                 if (copied == d_frame.n_sym) {
                     dout << "received complete frame - decoding" << std::endl;
                     decode();
-                    in += CODED_BITS_PER_OFDM_SYMBOL;
+                    in += 48;
                     i++;
                     d_frame_complete = true;
                     break;
                 }
             }
 
-            in += CODED_BITS_PER_OFDM_SYMBOL;
+            in += 48;
             i++;
         }
 
@@ -165,29 +125,24 @@ public:
     }
 
     void decode()
-    {   
+    {
 
-        //round n_data_bits to superior and closest multiple of 8 (viterbi algorithm works byte per byte)
-        d_frame.n_data_bits  += 7;
-        d_frame.n_data_bits  &= 0xfff8;
-
-
-        if(d_frame.n_data_bits % 8 != 0){
-            dout << "ERROR : n data bits should be a multiple of 8 ! " << std::endl;
+        for (int i = 0; i < d_frame.n_sym * 48; i++) {
+            for (int k = 0; k < d_ofdm.n_bpsc; k++) {
+                d_rx_bits[i * d_ofdm.n_bpsc + k] = !!(d_rx_symbols[i] & (1 << k));
+            }
         }
-        
-        uint8_t* decoded = d_decoder.decode(&d_ofdm, &d_frame, d_encoded_bits);
 
+        deinterleave();
+        uint8_t* decoded = d_decoder.decode(&d_ofdm, &d_frame, d_deinterleaved_bits);
         descramble(decoded);
-
-
         print_output();
 
         // skip service field
         boost::crc_32_type result;
-        result.process_bytes(out_bytes + BYTE_SERVICE, d_frame.psdu_size);
+        result.process_bytes(out_bytes + 2, d_frame.psdu_size);
         if (result.checksum() != 558161692) {
-            dout << "checksum wrong -- dropping. expected 558161692 got: " << result.checksum() << std::endl;
+            dout << "checksum wrong -- dropping" << std::endl;
             return;
         }
 
@@ -197,19 +152,44 @@ public:
               d_frame.n_sym);
 
         // create PDU
-        pmt::pmt_t blob = pmt::make_blob(out_bytes + BYTE_SERVICE, d_frame.psdu_size - BYTE_CRC32);
+        pmt::pmt_t blob = pmt::make_blob(out_bytes + 2, d_frame.psdu_size - 4);
         d_meta =
             pmt::dict_add(d_meta, pmt::mp("dlt"), pmt::from_long(LINKTYPE_IEEE802_11));
 
         message_port_pub(pmt::mp("out"), pmt::cons(d_meta, blob));
-
     }
+
+    void deinterleave()
+    {
+
+        int n_cbps = d_ofdm.n_cbps;
+        int first[MAX_BITS_PER_SYM];
+        int second[MAX_BITS_PER_SYM];
+        int s = std::max(d_ofdm.n_bpsc / 2, 1);
+
+        for (int j = 0; j < n_cbps; j++) {
+            first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
+        }
+
+        for (int i = 0; i < n_cbps; i++) {
+            second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
+        }
+
+        int count = 0;
+        for (int i = 0; i < d_frame.n_sym; i++) {
+            for (int k = 0; k < n_cbps; k++) {
+                d_deinterleaved_bits[i * n_cbps + second[first[k]]] =
+                    d_rx_bits[i * n_cbps + k];
+            }
+        }
+    }
+
 
     void descramble(uint8_t* decoded_bits)
     {
 
         int state = 0;
-        std::memset(out_bytes, 0, d_frame.psdu_size + BYTE_SERVICE);
+        std::memset(out_bytes, 0, d_frame.psdu_size + 2);
 
         for (int i = 0; i < 7; i++) {
             if (decoded_bits[i]) {
@@ -221,7 +201,7 @@ public:
         int feedback;
         int bit;
 
-        for (int i = 7; i < d_frame.psdu_size * 8 + 8; i++) {
+        for (int i = 7; i < d_frame.psdu_size * 8 + 16; i++) {
             feedback = ((!!(state & 64))) ^ (!!(state & 8));
             bit = feedback ^ (decoded_bits[i] & 0x1);
             out_bytes[i / 8] |= bit << (i % 8);
@@ -234,7 +214,7 @@ public:
 
         dout << std::endl;
         dout << "psdu size" << d_frame.psdu_size << std::endl;
-        for (int i = BYTE_SERVICE; i < d_frame.psdu_size + BYTE_SERVICE; i++) {
+        for (int i = 2; i < d_frame.psdu_size + 2; i++) {
             dout << std::setfill('0') << std::setw(2) << std::hex
                  << ((unsigned int)out_bytes[i] & 0xFF) << std::dec << " ";
             if (i % 16 == 15) {
@@ -242,7 +222,7 @@ public:
             }
         }
         dout << std::endl;
-        for (int i = BYTE_SERVICE; i < d_frame.psdu_size + BYTE_SERVICE; i++) {
+        for (int i = 2; i < d_frame.psdu_size + 2; i++) {
             if ((out_bytes[i] > 31) && (out_bytes[i] < 127)) {
                 dout << ((char)out_bytes[i]);
             } else {
@@ -263,14 +243,10 @@ private:
 
     viterbi_decoder d_decoder;
 
-    gr_complex *d_rx_symbols;
+    uint8_t d_rx_symbols[48 * MAX_SYM];
     uint8_t d_rx_bits[MAX_ENCODED_BITS];
-
-    uint8_t out_bytes[MAX_PSDU_SIZE + 6]; // 2 for signal field
-
-    //gr_complex d_deinterleaved[CODED_BITS_PER_OFDM_SYMBOL];
-    gr_complex d_unrepeated[NUM_BITS_UNREPEATED_SIG_SYMBOL];
-    uint8_t d_encoded_bits[MAX_ENCODED_BITS] = {0};
+    uint8_t d_deinterleaved_bits[MAX_ENCODED_BITS];
+    uint8_t out_bytes[MAX_PSDU_SIZE + 2]; // 2 for signal field
 
     int copied;
     bool d_frame_complete;

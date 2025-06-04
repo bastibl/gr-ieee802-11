@@ -6,9 +6,9 @@
 #
 
 install(
-    FILES halow_loopback.grc
-          halow_phy_hier.grc
-          halow_rx.grc
-          halow_transceiver.grc
-          halow_tx.grc
+    FILES wifi_loopback.grc
+          wifi_phy_hier.grc
+          wifi_rx.grc
+          wifi_transceiver.grc
+          wifi_tx.grc
     DESTINATION ${GR_PKG_DATA_DIR}/examples)

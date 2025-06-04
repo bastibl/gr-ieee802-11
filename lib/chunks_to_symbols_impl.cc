@@ -61,9 +61,10 @@ int chunks_to_symbols_impl::work(int noutput_items,
     }
 
     Encoding encoding = (Encoding)pmt::to_long(tags[0].value);
+
     switch (encoding) {
     case BPSK_1_2:
-    case BPSK_1_2_REP:
+    case BPSK_3_4:
         d_mapping = d_bpsk;
         break;
 

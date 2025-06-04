@@ -83,6 +83,7 @@ public:
         // TODO: check for frame type to determine header size
         pmt::pmt_t blob(pmt::cdr(msg));
         const char* mpdu = reinterpret_cast<const char*>(pmt::blob_data(blob));
+        std::cout << "pdu len " << pmt::blob_length(blob) << std::endl;
         pmt::pmt_t msdu = pmt::make_blob(mpdu + 24, pmt::blob_length(blob) - 24);
 
         message_port_pub(pmt::mp("app out"), pmt::cons(pmt::car(msg), msdu));
@@ -166,16 +167,6 @@ public:
 
         uint32_t fcs = result.checksum();
         memcpy(d_psdu + msdu_size + 24, &fcs, sizeof(uint32_t));
-
-        //std::cout << "FCS : " << unsigned(fcs) << std::endl;
-
-        /*
-        std::cout << "Header : ";
-        for(int i = 0; i < 24; i++){
-            std::cout << unsigned(d_psdu[i]) << ",";
-        }
-        std::cout << std::endl;
-        */
     }
 
     bool check_mac(std::vector<uint8_t> mac)

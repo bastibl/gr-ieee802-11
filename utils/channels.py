@@ -88,5 +88,5 @@ for i in range(0, len(channels), 3):
 	freqs.append(channels[i+1])
 
 
-print(labels)
-print(freqs)
+print labels
+print freqs

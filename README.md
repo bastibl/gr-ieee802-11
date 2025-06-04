@@ -1,14 +1,14 @@
 Hi!
 
-This is a IEEE 802.11ah (Wifi HaLow) transceiver for GNU Radio based on the gr-ieee802-11 repository. Interoperability was tested with the Alpha Halow U radios. The code can also be used in simulations.
-
+This an IEEE 802.11 a/g/p transceiver for GNU Radio that is fitted for operation
+with Ettus N210s and B210s. Interoperability was tested with many off-the-shelf
+WiFi cards and IEEE 802.11p prototypes. The code can also be used in
+simulations.
 
 # Table of Contents
 1. [Development](#development)
 
 1. [Installation](#installation)
-
-2. [Switching back to gr-ieee802-11](#switching-back-to-gr-ieee802-11)
 
 1. [Usage](#usage)
 
@@ -56,27 +56,20 @@ installed with the typical command sequence:
     sudo ldconfig
 
 
-## Installation of the maint-3.10-802-11-ah branch
+## Installation of gr-ieee802-11
 
-First, clone the repository and switch to the maint-3.10-802-11-ah branch
+To actually install the blocks do
 
-```
-git clone https://github.com/bastibl/gr-ieee802-11
-cd gr-ieee802-11
-git checkout maint-3.10-802-11-ah
-```
-
-Then, proceed with the installation of the the maint-3.10-802-11-ah branch by running the ``build_and_install.sh`` script :
-
-```
-build_and_install.sh
-```
-
-This script will make sure to uninstall any previous instance of gr-ieee802-11. It will also check for previous installation artifacts on your computer that may interfere with the proper working of maint-3.10-802-11-ah.
-
+    git clone https://github.com/bastibl/gr-ieee802-11
+    cd gr-ieee802-11
+    mkdir build
+    cd build
+    cmake ..
+    make
+    sudo make install
+    sudo ldconfig
 
 ### Adjust Maximum Shared Memory
-
 Since the transmitter is using the Tagged Stream blocks it has to store a
 complete frame in the buffer before processing it. The default maximum shared
 memory might not be enough on most Linux systems. It can be increased with
@@ -89,7 +82,7 @@ memory might not be enough on most Linux systems. It can be increased with
 The physical layer is encapsulated in a hierarchical block to allow for a
 clearer transceiver structure in GNU Radio Companion. This hierarchical block is
 not included in the installation process. You have to open
-```/examples/halow_phy_hier.grc``` with GNU Radio Companion and build it. This
+```/examples/wifi_phy_hier.grc``` with GNU Radio Companion and build it. This
 will install the block in ```~/.grc_gnuradio/```.
 
 
@@ -124,27 +117,9 @@ minimize IQ imbalance and TX DC offsets. See the [application
 notes](http://files.ettus.com/manual/page_calibration.html).
 
 
-# Switching back to gr-ieee802-11
-
-If you want to switch back to the gr-ieee802-11 branch, we recommend you to run the ``clean_and_uninstall.sh`` script first :
-
-```
-./clean_and_uninstall.sh
-```
-
-This script will make sure to uninstall maint-3.10-802-11-ah properely so you can start with a fresh setup for the installation of gr-ieee802-11.
-
-After, switch back to the gr-ieee802-11 branch :
-
-```
-git checkout maint-3.10-802-11-ah
-```
-
-From there, follow the installation guidelines of the README.
-
 # Checking your installation
 
-As a first step I recommend to test the ```halow_loopback.grc``` flow graph. This
+As a first step I recommend to test the ```wifi_loopback.grc``` flow graph. This
 flow graph does not need any hardware and allows you to ensure that the software
 part is installed correctly. So open the flow graph and run it. If everything
 works as intended you should see some decoded packets on the console.
@@ -184,11 +159,28 @@ Wiki](https://wiki.gnuradio.org/index.php/Logging).
 
 ## Unidirectional communication
 
-As first over the air test I recommend to try ```halow_rx.grc``` and
-```halow_tx.grc```. Just open the flow graphs in GNU Radio companion and execute
+As first over the air test I recommend to try ```wifi_rx.grc``` and
+```wifi_tx.grc```. Just open the flow graphs in GNU Radio companion and execute
 them. If it does not work out of the box, try to play around with the gain. If
 everything works as intended you should see similar output as in the
-```halow_loopback.grc``` example.
+```wifi_loopback.grc``` example.
+
+
+## Ad Hoc Network with WiFi card
+
+- The transceiver is currently connected to a TAP device, i.e. is a virtual
+  Ethernet interface. Therefore, we have no WiFi signaling like association
+  requests and hence, the transceiver can not "join" an ad hoc network. You have
+  to make some small changes to the kernel in order to convince you WiFi card to
+  send to this hosts nevertheless.
+- The transceiver can not respond to ACKs in time. This is kind of an
+  architectural limitation of USRP + GNU Radio since Ethernet and computations
+  on a normal CPU introduce some latency. You can set the number of ACK retries
+  to zero and handle retransmits on higher layers (-> TCP).
+- RTS/CTS is not working for the same reason. You can however just disable this
+  mechanism.
+- Currently, there is no CSMA/CA mechanism, but this can be implemented on the
+  FPGA.
 
 
 # Troubleshooting

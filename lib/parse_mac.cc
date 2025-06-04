@@ -92,16 +92,13 @@ public:
             dout << " (CONTROL)" << std::endl;
             parse_control((char*)h, frame_len);
             break;
+
         case 2:
             d_meta = pmt::dict_add(d_meta, pmt::mp("type"), pmt::mp("Data"));
             dout << " (DATA)" << std::endl;
             parse_data((char*)h, frame_len);
             break;
-        case 3:
-            d_meta = pmt::dict_add(d_meta, pmt::mp("type"), pmt::mp("Extension Frame"));
-            dout << " (EXTENSION FRAME)" << std::endl;
-            parse_extension_frame((char*)h, frame_len);
-            break;
+
         default:
             d_meta = pmt::dict_add(d_meta, pmt::mp("type"), pmt::mp("Unknown"));
             dout << " (unknown)" << std::endl;
@@ -414,36 +411,6 @@ public:
         address = format_mac_address(h->addr2);
         d_meta = pmt::dict_add(d_meta, pmt::mp("ta"), pmt::mp(address));
         dout << "TA: " << address << std::endl;
-    }
-
-    void parse_extension_frame(char* buf, int length)
-    {
-        mac_header* h = (mac_header*)buf;
-
-        dout << "Subtype: ";
-        switch (((h->frame_control) >> 4) & 0xf) {
-        case 0:
-            d_meta =
-                pmt::dict_add(d_meta, pmt::mp("subtype"), pmt::mp("DMG Beacon"));
-            dout << "DMG Beacon";
-            break;
-        case 1:
-            d_meta =
-                pmt::dict_add(d_meta, pmt::mp("subtype"), pmt::mp("S1G Beacon"));
-            dout << "S1G Beacon";
-            break;
-        default:
-            d_meta = pmt::dict_add(d_meta, pmt::mp("subtype"), pmt::mp("Reserved"));
-            dout << "Reserved";
-            break;
-        }
-        dout << std::endl;
-
-
-        auto address = format_mac_address(h->addr1);
-        d_meta = pmt::dict_add(d_meta, pmt::mp("ra"), pmt::mp(address));
-        dout << "RA: " << address << std::endl;
-
     }
 
     std::string format_mac_address(uint8_t* addr)

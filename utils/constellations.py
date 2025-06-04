@@ -16,7 +16,7 @@ a = np.array(c.points())
 p = np.average(np.abs(a)**2)
 level = .1**.5
 
-print("16-QAM, average power: {0:.4f}".format(p))
+print "16-QAM, average power: {0:.4f}".format(p)
 
 plt.scatter(a.real, a.imag)
 for i, x in enumerate(a):
@@ -39,9 +39,9 @@ rx = np.array(map(lambda x: c.decision_maker_v([x]), noisy_const))
 rx_const = a[rx]
 
 if any(rx != data):
-    print("16-QAM: data does not match.")
+    print "16-QAM: data does not match."
 else:
-    print("16-QAM: points decoded successfully.")
+    print "16-QAM: points decoded successfully."
 
 plt.scatter(a.real, a.imag)
 plt.scatter(noisy_const.real, noisy_const.imag, marker='x')
@@ -61,7 +61,7 @@ a = np.array(c.points())
 p = np.average(np.abs(a)**2)
 level = (1.0/42)**.5
 
-print("64-QAM, average power: {0:.4f}".format(p))
+print "64-QAM, average power: {0:.4f}".format(p)
 
 plt.scatter(a.real, a.imag)
 for i, x in enumerate(a):
@@ -84,9 +84,9 @@ rx = np.array(map(lambda x: c.decision_maker_v([x]), noisy_const))
 rx_const = a[rx]
 
 if any(rx != data):
-    print("16-QAM: data does not match.")
+    print "16-QAM: data does not match."
 else:
-    print("16-QAM: points decoded successfully.")
+    print "16-QAM: points decoded successfully."
 
 plt.scatter(a.real, a.imag)
 plt.scatter(noisy_const.real, noisy_const.imag, marker='x')

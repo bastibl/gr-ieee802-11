@@ -21,14 +21,13 @@
 #include <cstring>
 
 using gr::ieee802_11::BPSK_1_2;
+using gr::ieee802_11::BPSK_3_4;
 using gr::ieee802_11::QPSK_1_2;
 using gr::ieee802_11::QPSK_3_4;
 using gr::ieee802_11::QAM16_1_2;
 using gr::ieee802_11::QAM16_3_4;
 using gr::ieee802_11::QAM64_2_3;
 using gr::ieee802_11::QAM64_3_4;
-using gr::ieee802_11::QAM64_5_6;
-using gr::ieee802_11::BPSK_1_2_REP;
 
 ofdm_param::ofdm_param(Encoding e)
 {
@@ -37,76 +36,59 @@ ofdm_param::ofdm_param(Encoding e)
     switch (e) {
     case BPSK_1_2:
         n_bpsc = 1;
-        n_cbps = 24;
-        n_dbps = 12;
-        //rate_field = 0x00; // i.e. MCS 0b00000000
-        constellation =  gr::ieee802_11::constellation_bpsk::make();
+        n_cbps = 48;
+        n_dbps = 24;
+        rate_field = 0x0D; // 0b00001101
+        break;
+
+    case BPSK_3_4:
+        n_bpsc = 1;
+        n_cbps = 48;
+        n_dbps = 36;
+        rate_field = 0x0F; // 0b00001111
         break;
 
     case QPSK_1_2:
         n_bpsc = 2;
-        n_cbps = 48;
-        n_dbps = 24;
-        //rate_field = 0x05; // 0b00000101
-        constellation =  gr::ieee802_11::constellation_qpsk::make();
+        n_cbps = 96;
+        n_dbps = 48;
+        rate_field = 0x05; // 0b00000101
         break;
 
     case QPSK_3_4:
         n_bpsc = 2;
-        n_cbps = 48;
-        n_dbps = 36;
-        //rate_field = 0x07; // 0b00000111
-        constellation =  gr::ieee802_11::constellation_qpsk::make();
+        n_cbps = 96;
+        n_dbps = 72;
+        rate_field = 0x07; // 0b00000111
         break;
 
     case QAM16_1_2:
         n_bpsc = 4;
-        n_cbps = 96;
-        n_dbps = 48;
-        //rate_field = 0x09; // 0b00001001
-        constellation =  gr::ieee802_11::constellation_16qam::make();
+        n_cbps = 192;
+        n_dbps = 96;
+        rate_field = 0x09; // 0b00001001
         break;
 
     case QAM16_3_4:
         n_bpsc = 4;
-        n_cbps = 96;
-        n_dbps = 72;
-        //rate_field = 0x0B; // 0b00001011
-        constellation =  gr::ieee802_11::constellation_16qam::make();
+        n_cbps = 192;
+        n_dbps = 144;
+        rate_field = 0x0B; // 0b00001011
         break;
 
     case QAM64_2_3:
         n_bpsc = 6;
-        n_cbps = 144;
-        n_dbps = 96;
-        //rate_field = 0x01; // 0b00000001
-        constellation =  gr::ieee802_11::constellation_16qam::make();
+        n_cbps = 288;
+        n_dbps = 192;
+        rate_field = 0x01; // 0b00000001
         break;
 
     case QAM64_3_4:
         n_bpsc = 6;
-        n_cbps = 144;
-        n_dbps = 108;
-        //rate_field = 0x03; // 0b00000011
-        constellation =  gr::ieee802_11::constellation_64qam::make();
+        n_cbps = 288;
+        n_dbps = 216;
+        rate_field = 0x03; // 0b00000011
         break;
-
-    case QAM64_5_6:
-        n_bpsc = 6;
-        n_cbps = 144;
-        n_dbps = 120;
-        //rate_field = 0x03; // 0b00000011
-        constellation =  gr::ieee802_11::constellation_64qam::make();
-        break;
-    
-    case BPSK_1_2_REP:
-        n_bpsc = 1;
-        n_cbps = 12;
-        n_dbps = 6;
-        //rate_field = 0x0a; // i.e. MCS 0b00001010
-        constellation =  gr::ieee802_11::constellation_bpsk::make();
-        break;
-
     defaut:
         assert(false);
         break;
@@ -124,34 +106,22 @@ void ofdm_param::print()
     std::cout << "n_dbps :" << n_dbps << std::endl;
 }
 
-//constructor to be used for data frames
+
 frame_param::frame_param(ofdm_param& ofdm, int psdu_length)
 {
 
     psdu_size = psdu_length;
 
-    // number of symbols p.3248 "Data Field" for HaLow OR EQN23-65 on p.3302 OR EQN 23-66 on p.3303
-    n_sym = (int)ceil((8 * psdu_size + 8 + 6) / (double) ofdm.n_dbps);//see Equation 23-79
+    // number of symbols (17-11)
+    n_sym = (int)ceil((16 + 8 * psdu_size + 6) / (double)ofdm.n_dbps);
 
     n_data_bits = n_sym * ofdm.n_dbps;
 
-    // number of symbols p.3248 "Data Field" for HaLow
-    n_pad = n_data_bits - (8 * psdu_size + 8 + 6);
+    // number of padding bits (17-13)
+    n_pad = n_data_bits - (16 + 8 * psdu_size + 6);
 
     n_encoded_bits = n_sym * ofdm.n_cbps;
 }
-
-//constructor to be used for SIG field
-frame_param::frame_param(ofdm_param& ofdm){
-    //sig field is always NUM_OFDM_SYMBOLS_IN_SIG_FIELD symbols long
-    n_sym = NUM_OFDM_SYMBOLS_IN_SIG_FIELD;
-    //viterbi decoder processes bytes per bytes. n_encoded_bits needs to be the nearest mulitple of 8 capable of holding the number of encoded bits in the sig field
-    n_encoded_bits = (n_sym * ofdm.n_cbps) + (8 - (n_sym * ofdm.n_cbps) % 8);
-    //sig field is bpsk 1/2 coded
-    n_data_bits = n_encoded_bits/2;
-
-}
-
 void frame_param::print()
 {
     std::cout << "FRAME Parameters:" << std::endl;
@@ -220,7 +190,6 @@ void puncturing(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
         case BPSK_1_2:
         case QPSK_1_2:
         case QAM16_1_2:
-        case BPSK_1_2_REP:
             *out = in[i];
             out++;
             break;
@@ -232,6 +201,7 @@ void puncturing(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
             }
             break;
 
+        case BPSK_3_4:
         case QPSK_3_4:
         case QAM16_3_4:
         case QAM64_3_4:
@@ -241,7 +211,6 @@ void puncturing(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
                 out++;
             }
             break;
-        //TODO : Add QAM64_5_6
         defaut:
             assert(false);
             break;
@@ -249,40 +218,22 @@ void puncturing(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
     }
 }
 
-void repeat(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
-{
-    char s[NUM_BITS_UNREPEATED_SIG_SYMBOL] = {1,0,0,0,0,1,0,1,0,1,1,1};
 
-    for (int i = 0; i < frame.n_sym; i++) {
-        for(int j = 0; j < CODED_BITS_PER_OFDM_SYMBOL/2; j++){
-            
-            //simple repeat
-            out[i * CODED_BITS_PER_OFDM_SYMBOL + j] = in[i * CODED_BITS_PER_OFDM_SYMBOL/2 + j];
-            //XORed repeat
-            out[i * CODED_BITS_PER_OFDM_SYMBOL + j + CODED_BITS_PER_OFDM_SYMBOL/2] = in[i * CODED_BITS_PER_OFDM_SYMBOL/2 + j] ^ s[j];
-
-        }
-    }
-
-}
-
-void interleave(const char* in, char* out, frame_param& frame, ofdm_param& ofdm, bool reverse)
+void interleave(
+    const char* in, char* out, frame_param& frame, ofdm_param& ofdm, bool reverse)
 {
 
-    int n_cbps = ofdm.n_cbps >= CODED_BITS_PER_OFDM_SYMBOL ? ofdm.n_cbps : CODED_BITS_PER_OFDM_SYMBOL;
-
+    int n_cbps = ofdm.n_cbps;
     int first[MAX_BITS_PER_SYM];
     int second[MAX_BITS_PER_SYM];
     int s = std::max(ofdm.n_bpsc / 2, 1);
-    int ncol = 8;
-    int nrow = 3 * ofdm.n_bpsc;
 
     for (int j = 0; j < n_cbps; j++) {
-        first[j] = s * (j / s) + ((j + int(floor(ncol * j / n_cbps))) % s); // Eq. 21-82 p. 3078
+        first[j] = s * (j / s) + ((j + int(floor(16.0 * j / n_cbps))) % s);
     }
 
     for (int i = 0; i < n_cbps; i++) {
-        second[i] = ncol * i - (n_cbps - 1) * int(floor(i / nrow)); // Eq. 21-83 p. 3078
+        second[i] = 16 * i - (n_cbps - 1) * int(floor(16.0 * i / n_cbps));
     }
 
     for (int i = 0; i < frame.n_sym; i++) {
@@ -296,39 +247,11 @@ void interleave(const char* in, char* out, frame_param& frame, ofdm_param& ofdm,
     }
 }
 
-void deinterleave(const uint8_t* in, uint8_t* out, frame_param& frame, ofdm_param& ofdm, bool reverse)
-{
-
-    int n_cbps = ofdm.n_cbps >= CODED_BITS_PER_OFDM_SYMBOL ? ofdm.n_cbps : CODED_BITS_PER_OFDM_SYMBOL;
-
-    int first[MAX_BITS_PER_SYM];
-    int second[MAX_BITS_PER_SYM];
-    int s = std::max(ofdm.n_bpsc / 2, 1);
-    int ncol = 8;
-    int nrow = 3 * ofdm.n_bpsc;
-
-    for (int j = 0; j < n_cbps; j++) {
-        first[j] = s * (j / s) + ((j + int(floor(ncol * j / n_cbps))) % s); // Eq. 21-82 p. 3078
-    }
-
-    for (int i = 0; i < n_cbps; i++) {
-        second[i] = ncol * i - (n_cbps - 1) * int(floor(i / nrow)); // Eq. 21-83 p. 3078
-    }
-
-    for (int k = 0; k < n_cbps; k++) {
-        if (reverse) {
-            out[second[first[k]]] = in[k];
-        } else {
-            out[k] = in[second[first[k]]];
-        }
-    }
-}
-
 
 void split_symbols(const char* in, char* out, frame_param& frame, ofdm_param& ofdm)
 {
 
-    int symbols = frame.n_sym * CODED_BITS_PER_OFDM_SYMBOL;
+    int symbols = frame.n_sym * 48;
 
     for (int i = 0; i < symbols; i++) {
         out[i] = 0;
@@ -344,106 +267,13 @@ void split_symbols(const char* in, char* out, frame_param& frame, ofdm_param& of
 void generate_bits(const char* psdu, char* data_bits, frame_param& frame)
 {
 
-    // first 8 bits are zero (SERVICE field) (see p. 3248)
-    memset(data_bits, 0, 8);
-    data_bits += 8;
+    // first 16 bits are zero (SERVICE/DATA field)
+    memset(data_bits, 0, 16);
+    data_bits += 16;
 
     for (int i = 0; i < frame.psdu_size; i++) {
         for (int b = 0; b < 8; b++) {
             data_bits[i * 8 + b] = !!(psdu[i] & (1 << b));
         }
     }
-}
-
-
-void deinterleave(gr_complex* deinterleaved, const gr_complex* rx_symbols)
-{   
-    for (int i = 0; i < CODED_BITS_PER_OFDM_SYMBOL; i++) {
-        deinterleaved[i] = rx_symbols[interleaver_pattern[i]];
-    }
-}
-
-void unrepeat(gr_complex* unrepeated, gr_complex* deinterleaved){
-
-    //Unrepeat using Maximum Ratio Combining
-    //in this case the symbols have already been multiplied by the channel conjugate (see equalizer)
-    //therefore all we still need to do is to peform an average of the signal repetitions
-
-    uint8_t s[NUM_BITS_UNREPEATED_SIG_SYMBOL] = {1,0,0,0,0,1,0,1,0,1,1,1};
-
-    for(int i = 0; i < NUM_BITS_UNREPEATED_SIG_SYMBOL; i++){
-
-        //combine
-        unrepeated[i] = deinterleaved[i] * gr_complex(0.5,0) + //first sample
-                          deinterleaved[i + NUM_BITS_UNREPEATED_SIG_SYMBOL] * gr_complex((s[i] == 0 ? 0.5 : -0.5),0); //second sample, inverted in case s == 1
-
-        /*
-        if((deinterleaved[i].real() < 0) != (deinterleaved[i + NUM_BITS_UNREPEATED_SIG_SYMBOL].real() * (s[i] == 0 ? 1 : -1) < 0 )){
-            std::cout << "ERROR in unrepeat" << std::endl;
-        }
-        */
-        
-    }
-}
-
-// Compute the crc-4bit, a byte at a time using the table approach
-// This code was partially generated from the crcany program of Mark Adler (see https://github.com/madler/crcany)
-uint8_t crc4HaLoW_byte(uint8_t crc, void const *mem, size_t len) {
-    unsigned char const *data = static_cast<unsigned char const *>(mem);
-    if (data == nullptr)
-        return 0;
-    crc <<= 4;
-    for (size_t i = 0; i < len; i++) {
-        crc = table_byte[crc ^ data[i]];
-    }
-    crc >>= 4;
-
-    return crc ^ 0xf;
-}
-
-uint8_t compute_crc(uint8_t* decoded_bits){
-
-    //copy first 26 bits, inverting the first four
-    uint8_t num_crc_input_bytes = 4;
-    uint32_t crc4_input_bits = 0;
-    for(int i = 0; i < 26; i++){
-        crc4_input_bits += (i < 4 ? (1 - decoded_bits[i]) : (decoded_bits[i])) * pow(2, (31 - i));
-    }
-
-    /*
-    std::cout << "To 32: ";
-    std::cout << std::bitset<32>(crc4_input_bits);
-    std::cout << std::endl;
-    */
-
-    //right shift by 6 (32 - 26) bits
-    crc4_input_bits = crc4_input_bits >> 6;
-
-    //debug
-    /*
-    std::cout << "Right shift: ";
-    std::cout << std::bitset<32>(crc4_input_bits);
-    std::cout << std::endl;
-    */
-    
-
-    //split into 4 bytes (to hold the 32 bits)
-    uint8_t crc4_input_bytes[num_crc_input_bytes];
-    crc4_input_bytes[0] = (crc4_input_bits & 0xff000000) >> 24;
-    crc4_input_bytes[1] = (crc4_input_bits & 0x00ff0000) >> 16;
-    crc4_input_bytes[2] = (crc4_input_bits & 0x0000ff00) >> 8;
-    crc4_input_bytes[3] = (crc4_input_bits & 0x000000ff);
-
-    //debug
-    /*
-    dout << "Post Formating: ";
-    for(int i = 0; i < 4; i++){
-        std::cout << std::bitset<8>(crc4_input_bytes[i]);
-    }
-    dout << std::endl;
-    */
-    
-
-    uint8_t computed_crc = 0;
-    return crc4HaLoW_byte(computed_crc, crc4_input_bytes, num_crc_input_bytes);
 }

@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(mapper.h)                                        */
-/* BINDTOOL_HEADER_FILE_HASH(b03e5a0662e0689869218b550814d68e)                     */
+/* BINDTOOL_HEADER_FILE_HASH(71fee88c2602a7b34f8996a1ff163569)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
@@ -56,18 +56,18 @@ void bind_mapper(py::module& m)
 
     py::enum_<::gr::ieee802_11::Encoding>(m,"Encoding")
         .value("BPSK_1_2", ::gr::ieee802_11::BPSK_1_2) // 0
-        .value("QPSK_1_2", ::gr::ieee802_11::QPSK_1_2) // 1
-        .value("QPSK_3_4", ::gr::ieee802_11::QPSK_3_4) // 2
-        .value("QAM16_1_2", ::gr::ieee802_11::QAM16_1_2) // 3
-        .value("QAM16_3_4", ::gr::ieee802_11::QAM16_3_4) // 4
-        .value("QAM64_2_3", ::gr::ieee802_11::QAM64_2_3) // 5
-        .value("QAM64_3_4", ::gr::ieee802_11::QAM64_3_4) // 6
-        .value("QAM64_5_6", ::gr::ieee802_11::QAM64_5_6) // 7
-        .value("BPSK_1_2_REP", ::gr::ieee802_11::BPSK_1_2_REP) //10
+        .value("BPSK_3_4", ::gr::ieee802_11::BPSK_3_4) // 1
+        .value("QPSK_1_2", ::gr::ieee802_11::QPSK_1_2) // 2
+        .value("QPSK_3_4", ::gr::ieee802_11::QPSK_3_4) // 3
+        .value("QAM16_1_2", ::gr::ieee802_11::QAM16_1_2) // 4
+        .value("QAM16_3_4", ::gr::ieee802_11::QAM16_3_4) // 5
+        .value("QAM64_2_3", ::gr::ieee802_11::QAM64_2_3) // 6
+        .value("QAM64_3_4", ::gr::ieee802_11::QAM64_3_4) // 7
         .export_values()
     ;
 
     py::implicitly_convertible<int, ::gr::ieee802_11::Encoding>();
+
 
 
 }

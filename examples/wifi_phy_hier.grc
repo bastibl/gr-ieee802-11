@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: hb
     hier_block_src_path: '.:'
-    id: halow_phy_hier
+    id: wifi_phy_hier
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,8 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: HaLow PHY Hier
-    window_size: (1000,1000)
+    title: WiFi PHY Hier
   states:
     bus_sink: false
     bus_source: false
@@ -33,18 +32,6 @@ options:
     state: enabled
 
 blocks:
-- name: alpha_mcs
-  id: variable
-  parameters:
-    comment: ''
-    value: 2**.5 if encoding == 10 else 1
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [608, 76.0]
-    rotation: 0
-    state: enabled
 - name: header_formatter
   id: variable
   parameters:
@@ -54,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 12.0]
+    coordinate: [400, 12]
     rotation: 0
     state: enabled
 - name: max_symbols
@@ -66,162 +53,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 12.0]
-    rotation: 0
-    state: enabled
-- name: min_plateau
-  id: variable
-  parameters:
-    comment: ''
-    value: '2'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1040, 76.0]
-    rotation: 0
-    state: enabled
-- name: occupied_carriers
-  id: variable
-  parameters:
-    comment: ''
-    value: ((-13, -12, -11, -10, -9, -8, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6,
-      8, 9, 10, 11, 12, 13),)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1352, 12.0]
-    rotation: 0
-    state: enabled
-- name: pilots
-  id: variable
-  parameters:
-    comment: ''
-    value: ((1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(1,-1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1,
-      1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1,
-      1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1,
-      -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1,
-      -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1,
-      1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1,1),(1,
-      -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1,
-      1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1,
-      -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1,-1),(1,
-      -1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1,
-      1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1,
-      1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(1,
-      -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1,
-      -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1,
-      -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1,
-      -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1,
-      -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1,
-      1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1,
-      1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1,
-      1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1,
-      -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1,
-      -1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1,
-      -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1,
-      1),(-1, 1),(1,-1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1,
-      -1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1,
-      -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1,
-      -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1,
-      -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1,
-      -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1,
-      1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1,
-      1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(-1,
-      1),(-1, 1),(-1, 1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(-1,
-      1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1,
-      1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1,
-      1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1, -1),(-1,
-      1),(1, -1),(1, -1),(1, -1),(-1, 1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1,
-      -1),(1, -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(1, -1),(-1, 1),(-1, 1),(-1, 1),(1,
-      -1),(-1, 1),(1, -1),(-1, 1),(1, -1),(1,-1),(1, -1),(-1, 1),(1, -1),(1, -1),(1,
-      -1),(-1, 1),(-1, 1),(1, -1),(1, -1),(-1, 1),(1, -1),(1, -1),(1, -1),(1, -1),(-1,
-      1),(1, -1),(1, -1),)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1192, 12.0]
+    coordinate: [584, 12.0]
     rotation: 0
     state: enabled
 - name: sync_length
   id: variable
   parameters:
     comment: ''
-    value: '240'
+    value: '320'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1144, 76.0]
+    coordinate: [192, 12]
     rotation: 0
     state: enabled
-- name: sync_words
+- name: window_size
   id: variable
   parameters:
     comment: ''
-    value: ((0.0, 0.0, 0.0, 0.0,  alpha_mcs * (0.849837+0.849837j), 0.0, 0.0, 0.0,  alpha_mcs
-      * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (1.69967+1.69967j), 0.0,
-      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs
-      * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (-0.849837-0.849837j), 0.0,
-      0.0, 0.0),(0.0, 0.0, 0.0, 0.0,  alpha_mcs * (0.849837+0.849837j), 0.0, 0.0,
-      0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (1.69967+1.69967j),
-      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0,0.0,
-      0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (-0.849837-0.849837j),
-      0.0, 0.0, 0.0),(0.0, 0.0, 0.0, 0.0,  alpha_mcs * (0.849837+0.849837j), 0.0,
-      0.0, 0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (1.69967+1.69967j),
-      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0,
-      0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (-0.849837-0.849837j),
-      0.0, 0.0, 0.0),(0.0, 0.0, 0.0, 0.0,  alpha_mcs * (0.849837+0.849837j), 0.0,
-      0.0, 0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (1.69967+1.69967j),
-      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0,
-      0.0,  alpha_mcs * (-1.69967-1.69967j), 0.0, 0.0, 0.0,  alpha_mcs * (-0.849837-0.849837j),
-      0.0, 0.0, 0.0),(0+0j, 0+0j, 0+0j, -1.83697e-16+1j, -1-2.44929e-16j, 3.06162e-16-1j,
-      1+3.67394e-16j, 4.28626e-16-1j, 1+4.89859e-16j, -5.51091e-16+1j, -1-6.12323e-16j,
-      -2.44991e-15+1j, -1-7.34788e-16j, -9.80336e-16-1j, -1-8.57253e-16j, -2.69484e-15+1j,
-      0+0j, 7.35407e-16+1j, 1+1.10218e-15j, 2.93977e-15-1j, 1+1.22465e-15j, 4.90478e-16+1j,
-      1+4.89983e-15j, 3.1847e-15-1j, 1+1.46958e-15j, 2.45548e-16+1j, -1+1.96067e-15j,
-      -3.42963e-15+1j, 1+1.71451e-15j, 6.18981e-19+1j, 0+0j, 0+0j),(0, 0, 0, 1, -1,
-      1, -1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 0, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1,
-      1, 1, -1, 0, 0),(0, 0, 0, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 0, -1,
-      -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1, 0, 0),(0, 0, 0, 1, -1, 1, -1, -1,
-      1, -1, 1, 1, -1, 1, 1, 1, 0, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, 1, -1,
-      0, 0))
+    value: '48'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1040, 12.0]
+    coordinate: [296, 12]
     rotation: 0
     state: enabled
 - name: bandwidth
@@ -233,12 +89,12 @@ blocks:
     label: ''
     short_id: ''
     type: eng_float
-    value: 1e6
+    value: 10e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [856, 12.0]
+    coordinate: [1064, 12.0]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -294,18 +150,17 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: sync_length-min_plateau
+    delay: sync_length
     maxoutbuf: '0'
     minoutbuf: '0'
     num_ports: '1'
-    showports: 'False'
     type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 804.0]
+    coordinate: [432, 764.0]
     rotation: 0
     state: enabled
 - name: blocks_delay_0_0
@@ -314,11 +169,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '8'
+    delay: '16'
     maxoutbuf: '0'
     minoutbuf: '0'
     num_ports: '1'
-    showports: 'False'
     type: complex
     vlen: '1'
   states:
@@ -346,31 +200,13 @@ blocks:
     coordinate: [1120.0, 560]
     rotation: 270
     state: enabled
-- name: blocks_file_sink_0
-  id: blocks_file_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    append: 'False'
-    comment: ''
-    file: chunks_post_mapper
-    type: complex
-    unbuffered: 'False'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [744, 148.0]
-    rotation: 0
-    state: disabled
 - name: blocks_moving_average_xx_0
   id: blocks_moving_average_xx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    length: '24'
+    length: window_size
     max_iter: '4000'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -381,7 +217,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 580.0]
+    coordinate: [752, 556.0]
     rotation: 0
     state: true
 - name: blocks_moving_average_xx_1
@@ -390,7 +226,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    length: '40'
+    length: window_size  + 16
     max_iter: '4000'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -430,7 +266,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_items: '32'
+    num_items: '64'
     type: complex
     vlen: '1'
   states:
@@ -448,7 +284,7 @@ blocks:
     comment: ''
     lengthtagname: '"packet_len"'
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8
+    minoutbuf: max_symbols * 48 * 8
     ninputs: '2'
     tag_preserve_head_pos: '1'
     type: complex
@@ -474,7 +310,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 12.0]
+    coordinate: [688, 12.0]
     rotation: 0
     state: enabled
 - name: digital_chunks_to_symbols_xx_0
@@ -486,7 +322,7 @@ blocks:
     dimension: '1'
     in_type: byte
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8 * 2
+    minoutbuf: max_symbols * 48 * 8 * 2
     num_ports: '1'
     out_type: complex
     symbol_table: '[-1, 1]'
@@ -503,16 +339,63 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_len: '32'
+    fft_len: '64'
     len_tag_key: '"packet_len"'
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8
-    occupied_carriers: ((-13, -12, -11, -10, -9, -8, -6, -5, -4, -3, -2, -1, 1, 2,
-      3, 4, 5, 6, 8, 9, 10, 11, 12, 13),)
+    minoutbuf: max_symbols * 48 * 8
+    occupied_carriers: (list(range(-26, -21)) + list(range(-20, -7)) + list(range(-6,
+      0)) + list(range(1, 7)) + list(range(8, 21)) +list( range(22, 27)),)
     output_is_shifted: 'True'
-    pilot_carriers: (( -7, 7,), )
-    pilot_symbols: pilots
-    sync_words: sync_words
+    pilot_carriers: ((-21, -7, 7, 21), )
+    pilot_symbols: ((1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1,
+      -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1),
+      (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1,
+      -1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1,
+      1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1,
+      -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1,
+      -1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1,
+      -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1,
+      -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1,
+      1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1,
+      -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1),
+      (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1),
+      (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1),
+      (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1,
+      1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1,
+      1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1,
+      -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1,
+      -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1),
+      (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1),
+      (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1,
+      1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (1,
+      1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1), (1,
+      1, 1, -1), (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1,
+      -1, -1, 1), (-1, -1, -1, 1), (1, 1, 1, -1), (-1, -1, -1, 1), (-1, -1, -1, 1),
+      (-1, -1, -1, 1), (1, 1, 1, -1), (1, 1, 1, -1), (1, 1, 1, -1), (-1, -1, -1, 1),
+      (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1, -1, 1), (-1, -1,
+      -1, 1), (-1, -1, -1, 1))
+    sync_words: ((0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j), 0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j), 0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j),
+      0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j),
+      0.0, 0.0, 0.0, (-1.4719601443879746-1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j),
+      0.0, 0.0, 0.0, (1.4719601443879746+1.4719601443879746j), 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0), (0, 0j, 0, 0j, 0, 0j, -1, 1j, -1, 1j, -1, 1j, -1, -1j, 1, 1j,
+      1, -1j, -1, 1j, 1, 1j, 1, 1j, 1, 1j, -1, (-0-1j), 1, -1j, -1, 1j, 0, -1j, 1,
+      (-0-1j), 1, -1j, 1, 1j, -1, -1j, 1, (-0-1j), -1, 1j, 1, 1j, 1, 1j, 1, 1j, -1,
+      -1j, 1, 1j, 1, -1j, -1, 0j, 0, 0j, 0, 0j), (0, 0, 0, 0, 0, 0, 1, 1, -1, -1,
+      1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 0, 1,
+      -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1,
+      1, 1, 1, 1, 0, 0, 0, 0, 0))
   states:
     bus_sink: false
     bus_source: false
@@ -526,10 +409,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    cp_len: '8'
-    input_size: '32'
+    cp_len: '16'
+    input_size: '64'
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8 * 10
+    minoutbuf: max_symbols * 48 * 8 * 10
     rolloff: '2'
     tagname: '"packet_len"'
   states:
@@ -553,7 +436,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 308.0]
+    coordinate: [240, 204]
     rotation: 0
     state: enabled
 - name: encoding
@@ -570,7 +453,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 12.0]
+    coordinate: [808, 12.0]
     rotation: 0
     state: enabled
 - name: fft_vxx_0_0
@@ -579,14 +462,14 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '32'
+    fft_size: '64'
     forward: 'False'
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8
+    minoutbuf: max_symbols * 48 * 8 * 10
     nthreads: '1'
     shift: 'True'
     type: complex
-    window: tuple([1/26**.5] * 32)
+    window: tuple([1/52**.5] * 64)
   states:
     bus_sink: false
     bus_source: false
@@ -600,19 +483,19 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '32'
+    fft_size: '64'
     forward: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
     nthreads: '1'
     shift: 'True'
     type: complex
-    window: window.rectangular(32)
+    window: window.rectangular(64)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 884.0]
+    coordinate: [992, 888]
     rotation: 180
     state: enabled
 - name: frequency
@@ -624,12 +507,12 @@ blocks:
     label: ''
     short_id: ''
     type: eng_float
-    value: 863.5e6
+    value: 5.89e9
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 12.0]
+    coordinate: [960, 12.0]
     rotation: 0
     state: enabled
 - name: ieee802_11_chunks_to_symbols_xx_0
@@ -639,7 +522,7 @@ blocks:
     alias: ''
     comment: ''
     maxoutbuf: '0'
-    minoutbuf: max_symbols * 24 * 8
+    minoutbuf: max_symbols * 48 * 8
   states:
     bus_sink: false
     bus_source: false
@@ -661,7 +544,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 900.0]
+    coordinate: [544, 900.0]
     rotation: 180
     state: enabled
 - name: ieee802_11_frame_equalizer_0
@@ -698,7 +581,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 124.0]
+    coordinate: [208, 108]
     rotation: 180
     state: enabled
 - name: pad_sink_0
@@ -752,7 +635,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [336, 908.0]
+    coordinate: [368, 908.0]
     rotation: 180
     state: enabled
 - name: pad_source_0
@@ -792,7 +675,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 132.0]
+    coordinate: [456, 116.0]
     rotation: 180
     state: enabled
 - name: sensitivity
@@ -809,7 +692,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [944, 12.0]
+    coordinate: [1152, 12.0]
     rotation: 0
     state: enabled
 - name: sync_long
@@ -822,7 +705,7 @@ blocks:
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    sync_length: sync_length-min_plateau
+    sync_length: sync_length
   states:
     bus_sink: false
     bus_source: false
@@ -839,7 +722,7 @@ blocks:
     debug: 'False'
     log: 'False'
     maxoutbuf: '0'
-    min_plateau: min_plateau
+    min_plateau: '2'
     minoutbuf: '0'
     threshold: sensitivity
   states:
@@ -870,7 +753,6 @@ connections:
 - [digital_packet_headergenerator_bb_0, '0', digital_chunks_to_symbols_xx_0, '0']
 - [fft_vxx_0_0, '0', digital_ofdm_cyclic_prefixer_0_0, '0']
 - [fft_vxx_0_1, '0', ieee802_11_frame_equalizer_0, '0']
-- [ieee802_11_chunks_to_symbols_xx_0, '0', blocks_file_sink_0, '0']
 - [ieee802_11_chunks_to_symbols_xx_0, '0', blocks_tagged_stream_mux_0, '1']
 - [ieee802_11_decode_mac_0, out, pad_sink_2, in]
 - [ieee802_11_frame_equalizer_0, '0', ieee802_11_decode_mac_0, '0']
@@ -887,4 +769,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.10.0-rc1

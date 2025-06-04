@@ -18,12 +18,12 @@ assert(len(long_norm) == 64)
 assert(len(long_rot)  == 64)
 assert(len(sync)      == 4)
 
-print("power short: " + str(sum([abs(x)**2 for x in short])))
-print("power long: " + str(sum([abs(x)**2 for x in long_norm])))
+print "power short: " + str(sum([abs(x)**2 for x in short]))
+print "power long: " + str(sum([abs(x)**2 for x in long_norm]))
 
-print("sync sequence")
-print(sync)
-print("len sync: " + str(len(sync)))
+print "sync sequence"
+print sync
+print "len sync: " + str(len(sync))
 
 
 

@@ -26,10 +26,10 @@ signal_field::sptr signal_field::make()
     return signal_field::sptr(new signal_field_impl());
 }
 
-signal_field::signal_field() : packet_header_default(NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD * 4, "packet_len"){};
+signal_field::signal_field() : packet_header_default(48, "packet_len"){};
 
 
-signal_field_impl::signal_field_impl() : packet_header_default(NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD * 4, "packet_len") {}
+signal_field_impl::signal_field_impl() : packet_header_default(48, "packet_len") {}
 
 
 signal_field_impl::~signal_field_impl() {}
@@ -44,97 +44,57 @@ void signal_field_impl::generate_signal_field(char* out,
 {
 
     // data bits of the signal header
-    char* signal_header = (char*)malloc(sizeof(char) * NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD);
+    char* signal_header = (char*)malloc(sizeof(char) * 24);
 
     // signal header after...
     // convolutional encoding
-    char* encoded_signal_header = (char*)malloc(sizeof(char) * NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD * 2);
-    // repeated
-    char* repeated_signal_header = (char*)malloc(sizeof(char) * NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD * 4);
+    char* encoded_signal_header = (char*)malloc(sizeof(char) * 48);
     // interleaving
-    char* interleaved_signal_header = (char*)malloc(sizeof(char) * NUM_BITS_DECODED_SIG_SYMBOL * NUM_OFDM_SYMBOLS_IN_SIG_FIELD * 4);
+    char* interleaved_signal_header = (char*)malloc(sizeof(char) * 48);
 
     int length = frame.psdu_size;
 
-    // B0-B1 NSTS
-    signal_header[0] = 0;//1 spatial stream
-    signal_header[1] = 0;
+    // first 4 bits represent the modulation and coding scheme
+    signal_header[0] = get_bit(ofdm.rate_field, 3);
+    signal_header[1] = get_bit(ofdm.rate_field, 2);
+    signal_header[2] = get_bit(ofdm.rate_field, 1);
+    signal_header[3] = get_bit(ofdm.rate_field, 0);
+    // 5th bit is reserved and must be set to 0
+    signal_header[4] = 0;
+    // then 12 bits represent the length
+    signal_header[5] = get_bit(length, 0);
+    signal_header[6] = get_bit(length, 1);
+    signal_header[7] = get_bit(length, 2);
+    signal_header[8] = get_bit(length, 3);
+    signal_header[9] = get_bit(length, 4);
+    signal_header[10] = get_bit(length, 5);
+    signal_header[11] = get_bit(length, 6);
+    signal_header[12] = get_bit(length, 7);
+    signal_header[13] = get_bit(length, 8);
+    signal_header[14] = get_bit(length, 9);
+    signal_header[15] = get_bit(length, 10);
+    signal_header[16] = get_bit(length, 11);
+    // 18-th bit is the parity bit for the first 17 bits
+    int sum = 0;
+    for (int i = 0; i < 17; i++) {
+        if (signal_header[i]) {
+            sum++;
+        }
+    }
+    signal_header[17] = sum % 2;
 
-    // B2 Short GI
-    signal_header[2] = 0;//short GI
+    // last 6 bits must be set to 0
+    for (int i = 0; i < 6; i++) {
+        signal_header[18 + i] = 0;
+    }
 
-    // B3 Coding
-    signal_header[3] = 0;//BCC
-
-    // B4 LDPC Extra
-    signal_header[4] = 1;//If Coding field is 0, this field is set to 1.
-
-    // B5 STBC 
-    signal_header[5] = 0;//1 spatial stream so no space time block coding
-
-    // B6 
-    signal_header[6] = 1;//Reserved
-
-    // B7-B10 MCS
-    signal_header[7] = get_bit(ofdm.encoding, 0);//MCS LSB first, MSB last
-    signal_header[8] = get_bit(ofdm.encoding, 1);
-    signal_header[9] = get_bit(ofdm.encoding, 2);
-    signal_header[10] = get_bit(ofdm.encoding, 3);
-
-    // B11 Aggregation
-    signal_header[11] = 0;//length field represents number of bytes in ofdm frame
-
-    // B12-B20 Length
-    signal_header[12] = get_bit(length, 0);
-    signal_header[13] = get_bit(length, 1);
-    signal_header[14] = get_bit(length, 2);
-    signal_header[15] = get_bit(length, 3);
-    signal_header[16] = get_bit(length, 4);
-    signal_header[17] = get_bit(length, 5);
-    signal_header[18] = get_bit(length, 6);
-    signal_header[19] = get_bit(length, 7);
-    signal_header[20] = get_bit(length, 8);
-
-    // B21-B22 Response Indication
-    signal_header[21] = 0;// 0 for the moment
-    signal_header[22] = 0;
-
-    // B23 Smoothing
-    signal_header[23] = 0;
-
-    // B24 Travelling Pilots
-    signal_header[24] = 0;//no travelling pilots for the moment
-
-    // B25 NDP Indication
-    signal_header[25] = 0;//no ndp for the moment
-
-    // B26-B29 CRC
-    uint8_t crc = compute_crc((uint8_t *) signal_header);
-
-    signal_header[26] = get_bit(crc, 3);//MCS LSB first, MSB last
-    signal_header[27] = get_bit(crc, 2);
-    signal_header[28] = get_bit(crc, 1);
-    signal_header[29] = get_bit(crc, 0);
-
-    // B30-B35 reset conv coder
-    signal_header[30] = 0;
-    signal_header[31] = 0;
-    signal_header[32] = 0;
-    signal_header[33] = 0;
-    signal_header[34] = 0;
-    signal_header[35] = 0;
-
-
-    ofdm_param signal_ofdm(BPSK_1_2_REP);
-    frame_param signal_param(signal_ofdm);
+    ofdm_param signal_ofdm(BPSK_1_2);
+    frame_param signal_param(signal_ofdm, 0);
 
     // convolutional encoding (scrambling is not needed)
     convolutional_encoding(signal_header, encoded_signal_header, signal_param);
-    // repeating
-    repeat(encoded_signal_header, repeated_signal_header, signal_param, signal_ofdm);
     // interleaving
-    interleave(repeated_signal_header, out, signal_param, signal_ofdm);
-    //TODO add p_n multiplyer here
+    interleave(encoded_signal_header, out, signal_param, signal_ofdm);
 
     free(signal_header);
     free(encoded_signal_header);

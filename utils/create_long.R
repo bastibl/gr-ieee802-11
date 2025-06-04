@@ -11,11 +11,11 @@ fft.shift <- function(sym) {
 	return(cbind(m1, m2))
 }
 
-### symbols as defined in the standard p.2814 eq17-8
+### symbols as defined in the standard
 sym <- c(1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 0, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, 1, 1)
-freq <- c(rep(0, 6), sym, rep(0, 5)) # fill empty subcarriers with 0
+freq <- c(rep(0, 6), sym, rep(0, 5))
 
-pre <- fft(fft.shift(freq), inverse=T) / sqrt(52) # 52 is the number of occupied subcarriers, data plus pilot
+pre <- fft(fft.shift(freq), inverse=T) / sqrt(52)
 pre <- Conj(pre)
 pre <- rev(pre)
 

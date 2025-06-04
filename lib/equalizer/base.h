@@ -20,7 +20,6 @@
 
 #include <gnuradio/digital/constellation.h>
 #include <gnuradio/gr_complex.h>
-#include "../utils.h"
 
 namespace gr {
 namespace ieee802_11 {
@@ -33,23 +32,18 @@ public:
     virtual void equalize(gr_complex* in,
                           int n,
                           gr_complex* symbols,
-                          gr_complex* bits,
-                          uint8_t pilot1_index,
-                          uint8_t pilot2_index,
+                          uint8_t* bits,
                           std::shared_ptr<gr::digital::constellation> mod) = 0;
-
     virtual double get_snr() = 0;
 
     static const gr_complex POLARITY[127];
 
     std::vector<gr_complex> get_csi();
 
-    gr_complex get_csi_at(int subcarrier_index);
-
 protected:
-    static const gr_complex LONG[SAMPLES_PER_OFDM_SYMBOL];
+    static const gr_complex LONG[64];
 
-    gr_complex d_H[SAMPLES_PER_OFDM_SYMBOL] = {gr_complex(0, 0)};
+    gr_complex d_H[64];
 };
 
 } // namespace equalizer

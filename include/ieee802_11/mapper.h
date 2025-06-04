@@ -26,14 +26,13 @@ namespace ieee802_11 {
 
 enum Encoding {
     BPSK_1_2 = 0,
-    QPSK_1_2 = 1,
-    QPSK_3_4 = 2,
-    QAM16_1_2 = 3,
-    QAM16_3_4 = 4,
-    QAM64_2_3 = 5,
-    QAM64_3_4 = 6,
-    QAM64_5_6 = 7,
-    BPSK_1_2_REP = 10,
+    BPSK_3_4 = 1,
+    QPSK_1_2 = 2,
+    QPSK_3_4 = 3,
+    QAM16_1_2 = 4,
+    QAM16_3_4 = 5,
+    QAM64_2_3 = 6,
+    QAM64_3_4 = 7,
 };
 
 // Required for fmt 10

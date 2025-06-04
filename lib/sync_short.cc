@@ -22,8 +22,8 @@
 
 using namespace gr::ieee802_11;
 
-static const int MIN_GAP = 16 * (SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI); // MIN_GAP is basically the minimum number of samples to be outputted. Basically, it corresponds to the minimum number of samples per Halow frame. If a similar approach is taken as from 802.11a, it should be equal to 16*(SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI) = 640 (4 symbols STF + 4 symbols LTF1 + 6 symbols SIG + 1 symbol LTF2 + 1 symbol DATA = 16 symbols)
-static const int MAX_SAMPLES = (MAX_PSDU_SIZE * 8 / 6 + 14) * (SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI); // MAX_SAMPLES is the maximum number of samples to be outputted and corresponds to the maximum number of samples per Halow frames. If you consider the max length to be 511 bytes (length field in SIG is coded on 9 bits, see Table 23-18), the corresponding number of data symbols in BPSK 1/2 x2 equals 511*8/6 (~682). If you add this up to 4 symbols STF, 4 symbols LTF1, 6 symbols SIG, you come out with MAX_SAMPLES = 696*(SAMPLES_PER_OFDM_SYMBOL + SAMPLES_PER_GI)
+static const int MIN_GAP = 480;
+static const int MAX_SAMPLES = 540 * 80;
 
 class sync_short_impl : public sync_short
 {
@@ -78,7 +78,7 @@ public:
                     } else {
                         d_state = COPY;
                         d_copied = 0;
-                        d_freq_offset = arg(in_abs[i]) / SAMPLES_PER_GI;
+                        d_freq_offset = arg(in_abs[i]) / 16;
                         d_plateau = 0;
                         insert_tag(nitems_written(0), d_freq_offset, nitems_read(0) + i);
                         dout << "SHORT Frame!" << std::endl;
@@ -105,7 +105,7 @@ public:
                     } else if (d_copied > MIN_GAP) {
                         d_copied = 0;
                         d_plateau = 0;
-                        d_freq_offset = arg(in_abs[o]) / SAMPLES_PER_GI;
+                        d_freq_offset = arg(in_abs[o]) / 16;
                         insert_tag(
                             nitems_written(0) + o, d_freq_offset, nitems_read(0) + o);
                         dout << "SHORT Frame!" << std::endl;
