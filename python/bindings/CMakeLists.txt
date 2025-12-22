@@ -41,7 +41,7 @@ list(APPEND ieee802_11_python_files
     signal_field_python.cc
     sync_long_python.cc
     sync_short_python.cc
-    python_bindings.cc)
+    append_crc32_python.cc python_bindings.cc)
 
 GR_PYBIND_MAKE_OOT(ieee802_11 
    ../..

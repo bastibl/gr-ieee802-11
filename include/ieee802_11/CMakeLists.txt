@@ -23,5 +23,5 @@ install(FILES
     signal_field.h
     sync_long.h
     sync_short.h
-    DESTINATION include/ieee802_11
+    append_crc32.h DESTINATION include/ieee802_11
 )

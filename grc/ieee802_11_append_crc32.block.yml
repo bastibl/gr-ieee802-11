@@ -1,0 +1,26 @@
+id: ieee802_11_append_crc32
+label: Append CRC32
+category: '[IEEE802.11]'
+
+parameters:
+-   id: append
+    label: Append
+    dtype: bool
+    default: 'True'
+    options: ['True', 'False']
+    option_labels: [Enable, Disable]
+
+inputs:
+-   domain: message
+    id: in
+
+outputs:
+-   domain: message
+    id: out
+    optional: true
+
+templates:
+    imports: import ieee802_11
+    make: ieee802_11.append_crc32(${append})
+
+file_format: 1
